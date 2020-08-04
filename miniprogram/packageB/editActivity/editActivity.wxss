@@ -1,0 +1,15 @@
+.intro{
+  line-height: 5rem;
+}
+.img_upload{
+  padding-left: 25rpx;
+}
+.button2{
+  margin-top: 1rem;
+  margin-right: 1rem;
+  position: relative;
+  left: 30%;
+}
+.button2 van-button{
+  padding: 0.5rem;
+}

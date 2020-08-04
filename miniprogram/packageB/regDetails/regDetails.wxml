@@ -1,0 +1,19 @@
+<!-- 整体统计 -->
+<view class="top">
+	<van-row>
+		<van-col span="10">报名人数 {{reg_number}}/{{max_number}}</van-col>
+		<van-col span="8" offset="6"><button type="primary" size="mini" plain="true" bindtap="excel">数据导出</button></van-col>
+	</van-row>
+</view>
+
+<!-- 搜索栏 -->
+<!-- <van-search value="{{ searchValue }}" shape="round" background="#ffffff" placeholder="输入姓名/学号" input-align="center" bind:change="onChange" bind:search="onSearch" /> -->
+
+<!-- 参与者信息表 -->
+<view wx:for="{{regStu}}" wx:for-index="i">
+	<van-collapse value="{{ activeNames }}" bind:change="onChangeUser">
+		<van-collapse-item title="{{item.name}}" value="{{item.phone}}" name="{{i}}" icon="smile-o" >
+			<view class="userDetail"><text>姓名：{{item.name}}\n学号：{{item.no}}\n学院：{{item.department}}\n电话：{{item.phone}}</text></view>
+		</van-collapse-item>
+	</van-collapse>
+</view>

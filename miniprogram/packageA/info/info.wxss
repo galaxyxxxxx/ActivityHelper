@@ -1,0 +1,35 @@
+page{
+  background-color: #80a0c07a;
+}
+.contain{
+  margin-top: 20%;
+  width: 100%;
+  height: 100%;
+  font-size: 30rpx;
+}
+.formGroup{
+  padding: 7%;
+  margin : 50rpx 40rpx;
+  background-color: white;
+  border-radius: 40rpx;
+  overflow:hidden;
+  box-shadow: 10rpx 10rpx 10rpx rgba(0,0,0,.5);
+}
+.btn-area{
+  margin-top: 70rpx;
+  margin-bottom: 30rpx;
+  position: relative;
+  left: 5%;
+}
+van-button{
+  width: 30%;
+  font-size: 30rpx;
+  margin-left: 50rpx;
+}
+.identify{
+  font-size: 20rpx;
+  line-height: 50rpx;
+}
+.department{
+  font-size:22rpx;
+}

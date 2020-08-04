@@ -1,0 +1,24 @@
+<!-- 该页面合并到pages/discovery/discovery里了  这个文件暂时不删除 留作之前写的备份，最后小程序完成时再删除 -->
+<view style="position:relative">
+	<image src="{{activity_detail.cover}}" mode="widthFix" class="poster"></image>
+	<view class="title">{{activity_detail.title}}</view>
+</view>
+<view class="activity-time">
+	<view wx:for="{{[{key:'开始时间',_key:'actTimeBegin'},{key:'结束时间',_key:'actTimeEnd'},{key:'报名开始时间',_key:'regTimeBegin'},{key:'报名结束时间',_key:'regTimeEnd'},{key:'活动地点',_key:'addr'},{key:'主办方',_key:'host'}]}}" wx:key="key" class="time-item">
+		<view class="event">{{item.key}}</view>
+		<view class="time">{{activity_detail[item._key]}}</view>
+	</view>
+</view>
+<view class="detail">{{activity_detail.description}}</view>
+<view class="registration">
+	<van-button type="info" size="large" disabled="{{alreadyTaken}}" bind:click="submit">
+		{{alreadyTaken?"已经报名":"报名"}}
+	</van-button>
+</view>
+<view class="comments-box">
+	<view wx:for="{{comments}}" wx:key="index" class="comment-box">{{item.comment}}</view>
+</view>
+<view class='comment-input'>
+	<van-field value="{{  comment_input}}" placeholder="输入评论..." border="{{ false }}" bind:change="onChange" />
+	<van-button type="info" size="small" bind:click="submitComment">评论</van-button>
+</view>

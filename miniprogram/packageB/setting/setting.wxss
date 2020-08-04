@@ -1,0 +1,33 @@
+page{
+  background-color: #80a0c07a;
+  font-size: 25rpx;
+  color: #868688;
+}
+
+.contain{
+  margin-top: 20%;
+  width: 100%;
+  height: 100%;
+}
+
+.inForm{
+  padding: 7%;
+  margin : 50rpx 40rpx;
+  background-color: white;
+  border-radius: 40rpx;
+  overflow:hidden;
+  box-shadow: 10rpx 10rpx 10rpx rgba(0,0,0,.5);
+  line-height: 2rem;
+}
+
+.intro{
+  margin-bottom: 30rpx;
+}
+
+.feedback{
+  margin-bottom: 30rpx;
+}
+
+.version{
+  margin-bottom:30rpx
+}

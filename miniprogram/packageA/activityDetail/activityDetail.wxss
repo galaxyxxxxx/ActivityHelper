@@ -1,0 +1,77 @@
+
+.title {
+  width      : 100%;
+  position   : absolute;
+  left       : 50%;
+  top        : 50%;
+  transform  : translate(-50%, -50%);
+  font-weight: 500;
+  text-align : center;
+  color      : whitesmoke;
+  font-size  : 20px;
+  background : rgba(3, 3, 3, 0.5);
+}
+
+.poster {
+  filter : blur(2px);
+  display: flex;
+  width  : 100%;
+}
+
+.time-item {
+  width     : 50%;
+  display   : flex;
+  font-size : 14px;
+  color     : rgba(3, 3, 3, 0.8);
+  margin-top: 5px;
+}
+
+.time-item .event {
+  background   : rgb(61, 138, 242);
+  color        : whitesmoke;
+  border-radius: 2px;
+  padding      : 2px;
+}
+
+.time-item .time {
+  font-size  : 10px;
+  color      : rgb(3, 3, 3);
+  margin-left: 3px;
+  line-height: 20px;
+}
+
+.registration {
+  width          : 90%;
+  margin         : 0px auto;
+  /* display     : flex;
+  justify-content: center;
+  margin-top     :20px */
+}
+
+.activity-time {
+  display        : flex;
+  flex-wrap      : wrap;
+  justify-content: space-around;
+}
+
+.detail {
+  font-size: 10px;
+  padding  : 10px;
+  color    : gray;
+}
+
+.comment-box {
+  border-radius: 3px;
+  box-shadow   : 0 6rpx 24rpx rgba(218, 220, 224, 0.8);
+  margin-top   : 5px;
+  padding      : 5px;
+
+}
+
+.comments-box {
+  padding: 10px;
+}
+
+.comment-input {
+  display: flex;
+}

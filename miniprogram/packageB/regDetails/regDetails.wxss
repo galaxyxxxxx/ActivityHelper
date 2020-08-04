@@ -1,0 +1,16 @@
+.top{
+  text-align: center;
+  color: darkcyan;
+  font-size: 14px;
+  line-height: 2rem;
+  margin-top: 1rem;
+}
+
+.userDetail{
+  margin-left: 40rpx;
+  line-height: 50rpx;
+}
+
+.top,button{
+  border-radius: 10px;
+}

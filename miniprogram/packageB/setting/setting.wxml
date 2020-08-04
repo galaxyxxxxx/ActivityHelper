@@ -1,0 +1,20 @@
+<view class="contain">
+
+  <view class="inForm">
+    
+    <view class="intro">
+    此处是一些信息声明
+    </view>
+
+    <view class="feedback">
+    此处是一些反馈组件
+    </view>
+
+    <view class="version">
+    此处是一些版本信息
+    </view>
+
+    该版块可以参考野生助手的"首页->关于"
+  </view>
+
+</view>
