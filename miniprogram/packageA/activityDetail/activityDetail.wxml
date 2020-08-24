@@ -1,4 +1,4 @@
-<!-- 该页面合并到pages/discovery/discovery里了  这个文件暂时不删除 留作之前写的备份，最后小程序完成时再删除 -->
+
 <view style="position:relative">
 	<image src="{{activity_detail.cover}}" mode="widthFix" class="poster"></image>
 	<view class="title">{{activity_detail.title}}</view>

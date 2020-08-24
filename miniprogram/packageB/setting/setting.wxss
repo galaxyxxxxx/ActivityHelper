@@ -16,7 +16,7 @@ page{
   background-color: white;
   border-radius: 40rpx;
   overflow:hidden;
-  box-shadow: 10rpx 10rpx 10rpx rgba(0,0,0,.5);
+  box-shadow: 10rpx 10rpx 10rpx rgba(150, 150, 150, 0.2);
   line-height: 2rem;
 }
 

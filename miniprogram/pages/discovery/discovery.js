@@ -63,9 +63,16 @@ Page({
       isToday: '' + year + month.toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0')
     })
     this.actInit();
+  },  
+  onShow: function () {
+    // tabbar
+    if (typeof this.getTabBar === 'function' &&
+      this.getTabBar()) {
+      this.getTabBar().setData({
+        active: 1
+      })
+    }
   },
-
-  
   //切换顶部tab
   onChangeTab(event) {
     console.log(event)
@@ -75,12 +82,6 @@ Page({
       duration: 500
     });
   },
-
-  //显示时加载tabbar
-  onShow: function () {
-    this.getTabBar().init();
-  },
-
   //日历部分的函数
   //关于日期的显示：视图层显示的是带斜杠的(eg 1999/8/15)
   //数据库里存储的和逻辑层均为便于比较的YYYYMMDD格式(eg 19990615)
@@ -208,11 +209,19 @@ Page({
     this.dateInit(year, month);
   },
   onChangeTabbar(e){
+    console.log(e.detail)
     this.setData({activeTab : e.detail});
   },
   returnTab(){
     wx.redirectTo({
       url: '/miniprogram/pages/home/home',
     })
-  }
+  },
+  //转换tab时 更改其tabbar值
+  changeTab(e){
+    console.log("tab2 打印转换tab事件值",e)
+    this.setData({
+      tabbar : e.detail.name
+    })
+  },
 });

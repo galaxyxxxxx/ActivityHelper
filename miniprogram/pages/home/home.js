@@ -1,14 +1,15 @@
-var util = require('../../utils/util.js');
-wx.cloud.init({env: 'x1-vgiba'})
-const db = wx.cloud.database({env: 'x1-vgiba'})
+let util = require('../../utils/util.js');
+wx.cloud.init({
+  env: 'x1-vgiba'
+})
+const db = wx.cloud.database({
+  env: 'x1-vgiba'
+})
 const act = db.collection('activity')
-const reg = db.collection('register')
 const collect = db.collection('collect')
-
 
 Page({
   data: {
-    testnum : 1,
     openid: "",
     collectIcon: 'star-o', // 收藏按钮的默认设置
     collectColor: '#80a0c0',
@@ -17,9 +18,9 @@ Page({
     year: 2020,
     month: 'Aug',
     day: 3,
-     
+
     //用于测试的静态数据
-    acting: [{
+    actingTest: [{
       id: 0,
       aid: 'b58263a25f2829950054151f2d77a647',
       title: '全国大学生数学建模竞赛(国内)',
@@ -29,7 +30,7 @@ Page({
       regNum: 233,
       actTimeEnd: '2020/7/30',
       collect: 0
-    },{
+    }, {
       id: 1,
       aid: 'b58263a25f282c3d005445dc2cfd16b8',
       title: '毕业季捐书活动',
@@ -41,10 +42,13 @@ Page({
       collect: 0
     }], //活动集 | 正在进行的
 
+
+    acting: [],
+
     //以下为测试的静态数据
-    act1: {
+    actMain: {
       id: 0,
-      aid:'0d06a2fd5f282af60049935b10c59212',
+      aid: '0d06a2fd5f282af60049935b10c59212',
       title: '这是一行测试长度最大值的数据',
       host: '新媒体',
       lable: ['文艺', '社交', '竞赛'],
@@ -53,12 +57,10 @@ Page({
       actTimeEnd: '2020/9/30',
       collect: 0
     },
-    
-  },
-
-  onLoad: function (options) {
 
   },
+
+  onLoad: function (options) {},
 
   //点击收藏按钮的事件
   collect(e) {
@@ -105,91 +107,84 @@ Page({
     }
 
   },
-  
   onShow: function () {
+    // tabbar
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        active: 0
+      })
+    }
 
-    //加载tabbar
-    this.getTabBar().init();
-
-    let openid = this.data.openid           //用户openid
-    let today = this.formatDate(new Date()) // 加载今日时间
-    var obj = {}                            //存放数据库查询结果的临时对象
-    console.log("数据库查询前的acting",this.data.acting)
-    var {acting} = this.data //网上看到的写法，好像是表示新建了一个与data里同名的变量，并且与data里赋值相同
+    let openid = this.data.openid
+    let today = this.formatDate(new Date())
+    let obj = {}
+    let {
+      acting
+    } = this.data //ES6语法
+    let collected = []
     //以下首先通过时间查找到对应活动的id 并到注册表及收藏表查询 
-    //但以下代码时间复杂度较高 为三表数据集的乘积 o(xyz)  需优化！
+
     const _ = db.command
-    act.where({
-        actTimeEnd: _.gt(today)
-      })
-      .orderBy('actTimeBegin', 'desc')
-      .limit(100)
-      .get({
-        success(res) {
-          console.log("查询成功",res.data.length)
-          if (res.data.length != 0) { //返回非空数据集时,依次给中间变量集合obj赋值，填充好后，再赋给acting数组
-
-            for (let i = 0; i < res.data.length; i++) {
-              obj.id = i
-              obj.aid = res.data[i]._id //此处为活动id
-              obj.title = res.data[i].title //活动标题
-              obj.host = res.data[i].host //活动举办部门
-              obj.lable = res.data[i].lable || '暂无'//活动标签
-              obj.addr = res.data[i].addr //活动地点
-              obj.actTimeBegin = res.data[i].actTimeBegin
-              obj.actTimeEnd = res.data[i].actTimeEnd
-              //报名人数
-              reg.where({
-                aid: obj.aid
-              }).get({
-                success(res2) {
-                  // console.log(i,"报名情况查询",res2)
-                  obj.regNum = res2.data.length //这里的regNum并没被放入obj里 为什么呢qwq 呜呜好难啊好难啊T^T
-                },
-                fail(err2){
-                  console.log(obj.title,i,"未查询到报名情况")
-                }
-              })
-              //是否被当前用户收藏
-              collect.where({
-                aid: obj.aid,
-                openid: openid
-              }).get({
-                success(res3) { //收藏表有相应记录 则说明被收藏啦 以下设置收藏符号样式 由前端渲染
-                  // console.log(i,"收藏记录查询",res3)
-                  if(res.data.length != 0){
-                    // console.log(i,"查询到收藏记录 且未收藏",res3)
-                    obj.collect = 1
-                    obj.patten = "star"
-                    obj.color =  "goldenrod"
-                  }else{
-                    // console.log(i,"查询到收藏记录 且已收藏",res3)
-                    obj.collect = 0
-                    obj.patten = "star-o"
-                    obj.color = "#80a0c0"
-                  }  
-                },
-                fail(err3) {
-                  console.log(i,"收藏记录查询失败",err3)
-                  obj.patten = "star-o"
-                  obj.color = "#80a0c0"
-                }
-              })
-              // console.log(i,"这是一个obj",obj)
-             
-              acting.push(Object.assign({}, obj))
-              this.setData({acting})
-              console.log(i,"push后的acting",acting)
-            }
-            console.log("最终push后的acting",acting)
-
-            // this.setData({acting})
-            console.log("push后的acting2",acting)
-          } else { //查询失败时
-            console.log("查询结果为0条")
-          }
+    // 查找该用户收藏了哪些活动 存在本地 留给下面activity查询的结果去匹配 
+    collect.where({
+      openid: openid
+    }).get({
+      success(res0) {
+        console.log("收藏结果", res0)
+        for (let index = 0; index < res0.length; index++) {
+          collected.push(res.data[index].aid);
+          console.log("push测试", collected) //此处好像有问题
         }
-      })
+
+        act.where({
+            actTimeEnd: _.gt(today)
+          })
+          .orderBy('actTimeBegin', 'desc')
+          .limit(100)
+          .get({
+            success(res) {
+              console.log("new:", res)
+              // 以下为获取活动信息的回调函数
+              if (res.data.length != 0) { //返回非空数据集时,依次给中间变量集合obj赋值，填充好后，再赋给acting数组
+                for (let i = 0; i < res.data.length; i++) {
+                  obj.id = i
+                  obj.aid = res.data[i]._id //此处为活动id
+                  obj.title = res.data[i].title //活动标题
+                  obj.host = res.data[i].host //活动举办部门
+                  obj.lable = res.data[i].lable || '暂无' //活动标签
+                  obj.addr = res.data[i].addr //活动地点
+                  obj.actTimeBegin = res.data[i].actTimeBegin
+                  obj.actTimeEnd = res.data[i].actTimeEnd
+                  obj.regNum = res.data[i].regNum
+                  console.log("test", i, obj)
+                  // 检测目前的活动 是否被收藏
+                  // console.log("收藏测试",collected)
+                  // if (collected.indexof(obj.aid) != -1) {
+                  //   console.log(i, "未收藏", obj)
+                  //   obj.collect = 1
+                  //   obj.patten = "star"
+                  //   obj.color = "goldenrod"
+                  // } else {
+                  //   console.log(i, "已收藏", obj)
+                  //   obj.collect = 0
+                  //   obj.patten = "star-o"
+                  //   obj.color = "#80a0c0"
+                  // }
+                  // console.log("test0000")
+                  acting.push(Object.assign({}, obj))
+                }
+                console.log("seted",acting)
+                this.setData({
+                  acting
+                })
+                console.log("seted2",this.data.acting)
+              } else { //查询失败时
+                console.log("查询结果为0条")
+              }
+            }
+          })
+      }
+    })
   },
 
   //点击查看更多(MORE)，跳转至活动详情页
@@ -197,9 +192,9 @@ Page({
     console.log(e)
     let that = this
     let aid = that.data.act1.aid
-    console.log("当前点击的活动id为",aid)
+    console.log("当前点击的活动id为", aid)
     wx.navigateTo({
-      url: '../../packageA/activityDetail/activityDetail?aid='+aid,
+      url: '../../packageA/activityDetail/activityDetail?aid=' + aid,
     })
   },
   viewMore(e) {
@@ -207,20 +202,20 @@ Page({
     let that = this
     let index = e.currentTarget.id
     let aid = that.data.acting[index].aid
-    console.log("当前点击的活动id为",aid)
+    console.log("当前点击的活动id为", aid)
     wx.navigateTo({
-      url: '../../packageA/activityDetail/activityDetail?aid='+aid,
+      url: '../../packageA/activityDetail/activityDetail?aid=' + aid,
     })
   },
   formatDate(date) {
     date = new Date(date);
-    var year = date.getFullYear();
-    var month = (date.getMonth() + 1).toString().padStart(2, '0');
-    var day = (date.getDate()).toString().padStart(2, '0');
-    var time = year + "/" + month + "/" + day;
+    let year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let day = (date.getDate()).toString().padStart(2, '0');
+    let time = year + "/" + month + "/" + day;
     return time;
   },
-  linkToMe(){
+  linkToMe() {
     wx.navigateTo({
       url: '../../packageA/info/info',
     })

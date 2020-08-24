@@ -25,17 +25,17 @@
     }
   ],
   "window": {
-    "backgroundColor": "#fff",
+    "backgroundColor": "#f7f7f7",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#80a0c0",
+    "navigationBarBackgroundColor": "#f7f7f7",
     "navigationBarTitleText": "BJUT活动助手",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "custom": true,
     "color": "#000000",
     "selectedColor": "#000000",
-    "backgroundColor": "#000000",
+    "backgroundColor": "#f7f7f7",
     "list": [{
       "pagePath": "pages/home/home",
       "text": "HOME"

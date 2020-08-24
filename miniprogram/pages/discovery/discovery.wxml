@@ -5,7 +5,7 @@
 		<view class="type">
 			<view wx:for="{{5}}" wx:key="index">
 				<van-grid clickable column-num="3" border="false">
-					<van-grid-item icon="home-o" link-type="navigateTo" url="/miniprogram/packageA/list/list?type={{item.type}}" text="学习" wx:for="{{3}}" wx:key="index2" />
+					<van-grid-item icon="smile-o" link-type="navigateTo" url="/miniprogram/packageA/list/list?type={{item.type}}" text="学习" wx:for="{{3}}" wx:key="index2" />
 				</van-grid>
 			</view>
 		</view>

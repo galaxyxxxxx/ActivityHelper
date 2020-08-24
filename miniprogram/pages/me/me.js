@@ -35,7 +35,16 @@ Page({
     })
   },
   onShow: function(){
-    this.getTabBar().init();
+    // this.getTabBar().init();
+    // tabbar
+    if (typeof this.getTabBar === 'function' &&
+      this.getTabBar()) {
+      this.getTabBar().setData({
+        active: 2
+      })
+    }
+
+
     let openid = this.data.openid
     var that = this
     //加载收藏历史
@@ -97,12 +106,6 @@ Page({
       }
     })
   },
-  //转换tab时 更改其tabbar值
-  changeTab(e){
-    this.setData({
-      tabbar : e.detail.name
-    })
-  },
   // 转至个人信息修改页
   edit(){
     let openid = this.data.openid
@@ -119,7 +122,10 @@ Page({
   },
   newActivity(){
     let openid = this.data.openid
-    if(openid == "oPlw85Fo1BkAN5nY3G66v0NW4XMc"){
+    console.log("openid",openid)
+    let role = this.data.role
+    console.log("角色",role)
+    if(role == 1){
       wx.navigateTo({
         url: '../../packageB/newActivity/newActivity?openid=' + openid,
       })

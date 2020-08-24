@@ -1,3 +1,4 @@
+<!-- 该页面合并到pages/discovery/discovery里了  这个文件暂时不删除 留作之前写的备份，最后小程序完成时再删除 -->
 <view class="container">
 	<!-- PART1. 头部tab -->
 
@@ -11,7 +12,7 @@
 				</view>
 			</van-col>
 			<van-col span="4">
-				<view class="text"bindtap="returnTab">{{return_date}}</view>
+				<view class="text" bindtap="returnTab">{{return_date}}</view>
 			</van-col>
 			<van-col span="1" offset="13">
 				<view class="detail_button">
@@ -30,7 +31,7 @@
 	<view class="body">
 		<!--星期标题 -->
 		<view class="week">
-			<block  wx:key="index" wx:for="{{weekArr}}">
+			<block wx:key="index" wx:for="{{weekArr}}">
 				<view class='{{item == "S" ? "weekend" : "{{item}}"}}'>
 					<view class="weekMark">
 						<view>{{item}}</view>
@@ -59,17 +60,17 @@
 		<!-- 活动事件 -->
 		<view class="activity">
 			<scroll-view bind:scroll="onScroll" scroll-y id="scroller" style="height: 400px;">
-        <block wx:key="index" wx:for="{{actLine}}">
-				<van-cell title="{{item.title}}" value="{{item.host}}" icon="bullhorn-o" is-link link-type="navigateTo" url="../activityDetail/index?act_id={{item.id}}"/>
-        </block>
+				<block wx:key="index" wx:for="{{actLine}}">
+					<van-cell title="{{item.title}}" value="{{item.host}}" icon="bullhorn-o" is-link link-type="navigateTo" url="../activityDetail/index?act_id={{item.id}}" />
+				</block>
 				<view class="noEvents" wx:if="{{actLine.length == 0 }}">No Events</view>
-      </scroll-view>
+			</scroll-view>
 		</view>
 	</view>
 
 	<!-- PART4.底部选项 -->
 	<view class="footer">
-		<van-divider custom-style="color: red"/>
+		<van-divider custom-style="color: red" />
 		<view>Today</view>
 		<view>Selector</view>
 		<view>Inbox</view>
