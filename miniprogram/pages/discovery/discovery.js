@@ -51,7 +51,7 @@ Page({
   },
 
   onLoad: function(){
-
+    
     //日历部分
     let now = new Date();
     let year = now.getFullYear();
