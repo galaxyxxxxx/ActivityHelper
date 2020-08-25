@@ -42,7 +42,6 @@ Page({
       collect: 0
     }], //活动集 | 正在进行的
 
-
     acting: [],
 
     //以下为测试的静态数据
@@ -57,10 +56,9 @@ Page({
       actTimeEnd: '2020/9/30',
       collect: 0
     },
-
   },
 
-  onLoad: function (options) {},
+  onLoad: function(options) {},
 
   //点击收藏按钮的事件
   collect(e) {
@@ -107,7 +105,7 @@ Page({
     }
 
   },
-  onShow: function () {
+  onShow: function() {
     // tabbar
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
@@ -116,11 +114,14 @@ Page({
     }
 
     let openid = this.data.openid
+
+    // 设置日期
     let today = this.formatDate(new Date())
+
     let obj = {}
     let {
       acting
-    } = this.data //ES6语法
+    } = this.data // ES6语法
     let collected = []
     //以下首先通过时间查找到对应活动的id 并到注册表及收藏表查询 
 
@@ -173,11 +174,11 @@ Page({
                   // console.log("test0000")
                   acting.push(Object.assign({}, obj))
                 }
-                console.log("seted",acting)
+                console.log("seted", acting)
                 this.setData({
                   acting
                 })
-                console.log("seted2",this.data.acting)
+                console.log("seted2", this.data.acting)
               } else { //查询失败时
                 console.log("查询结果为0条")
               }
@@ -191,7 +192,7 @@ Page({
   viewMore1(e) {
     console.log(e)
     let that = this
-    let aid = that.data.act1.aid
+    let aid = that.data.acting[0].aid
     console.log("当前点击的活动id为", aid)
     wx.navigateTo({
       url: '../../packageA/activityDetail/activityDetail?aid=' + aid,
@@ -208,11 +209,14 @@ Page({
     })
   },
   formatDate(date) {
-    date = new Date(date);
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let day = (date.getDate()).toString().padStart(2, '0');
-    let time = year + "/" + month + "/" + day;
+    var timestamp = Date.parse(new Date());
+    var today = new Date();
+    var monthEnglish = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Spt", "Oct", "Nov", "Dec"];
+    this.setData({
+      year: today.getFullYear(), 
+      month: monthEnglish[today.getMonth()], 
+      day: today.getDate() < 10 ? '0' + today.getDate() : today.getDate()
+    })
     return time;
   },
   linkToMe() {
