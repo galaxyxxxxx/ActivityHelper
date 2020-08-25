@@ -217,7 +217,6 @@ Page({
       month: monthEnglish[today.getMonth()], 
       day: today.getDate() < 10 ? '0' + today.getDate() : today.getDate()
     })
-    return time;
   },
   linkToMe() {
     wx.navigateTo({
