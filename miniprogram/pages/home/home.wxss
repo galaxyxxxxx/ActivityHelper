@@ -113,7 +113,7 @@ van-icon {
 /* 活动集块 */
 .acts{
   margin-top: 30rpx;
-  margin-bottom: 30rpx;
+  /* margin-bottom: 70rpx; */
 }
 
 .act {
@@ -161,4 +161,12 @@ van-icon {
 .act .collect {
   display: inline;
   float: right;
+}
+
+.null{
+  background-color: transparent;
+  height: 150rpx;
+  width: 100%;
+  color: #cfcfcf;
+  text-align: center;
 }
