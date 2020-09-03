@@ -8,13 +8,14 @@
     {
       "root": "packageA",
       "pages": [
-        "index/index",  
+        "index/index",
         "list/list",
         "info/info",
         "calendar/canlendar",
         "activityDetail/activityDetail"
       ]
-    }, {
+    },
+    {
       "root": "packageB",
       "pages": [
         "editActivity/editActivity",
@@ -36,16 +37,20 @@
     "color": "#000000",
     "selectedColor": "#000000",
     "backgroundColor": "#f7f7f7",
-    "list": [{
-      "pagePath": "pages/home/home",
-      "text": "HOME"
-    },{
-      "pagePath": "pages/discovery/discovery",
-      "text": "DISCOVERY"
-    },{
-      "pagePath": "pages/me/me",
-      "text": "ME"
-    }]
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "HOME"
+      },
+      {
+        "pagePath": "pages/discovery/discovery",
+        "text": "DISCOVERY"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "ME"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json",
   "usingComponents": {

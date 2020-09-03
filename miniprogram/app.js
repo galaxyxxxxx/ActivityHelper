@@ -5,12 +5,13 @@ App({
   },
   //获取openid
   getOpenId: function(){
+    let that = this
     wx.cloud.callFunction({
       name: 'login',
       data: {},
       success: res => {
         console.log("成功获取云函数login",res)
-        this.globalData.openid = res.result.openid
+        that.globalData.openid = res.result.openid
       },
       fail: err => {
         console.error(err)
@@ -28,5 +29,6 @@ App({
       })
     }
     this.getOpenId();
+    console.log(this.globalData.openid)
   }
 })

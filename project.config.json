@@ -121,6 +121,12 @@
 					"pathName": "packageB/setting/setting",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "pages/test/test",
+					"pathName": "pages/test/test",
+					"scene": null
 				}
 			]
 		}
