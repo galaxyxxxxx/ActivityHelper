@@ -126,6 +126,21 @@
 					"id": 10,
 					"name": "pages/test/test",
 					"pathName": "pages/test/test",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "activityDetail",
+					"pathName": "packageA/activityDetail/activityDetail",
+					"query": "0d06a2fd5f282af60049935b10c59212",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "activityDetail",
+					"pathName": "packageA/activityDetail/activityDetail",
+					"query": "aid=0d06a2fd5f282af60049935b10c59212",
 					"scene": null
 				}
 			]

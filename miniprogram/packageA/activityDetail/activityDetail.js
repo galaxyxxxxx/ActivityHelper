@@ -1,4 +1,4 @@
-wx.cloud.init({
+var util = require('../../utils/util.js');wx.cloud.init({
   env: "x1-vgiba",
 });
 const db = wx.cloud.database({
@@ -28,7 +28,7 @@ Page({
       }, 1000);
       return;
     }
-    this.getAllComments(aid);
+    this.getComments(aid);
     db.collection("activity")
       .where({
         _id: aid,
@@ -66,23 +66,23 @@ Page({
         },
       });
   },
+  // 报名检测
   checkRegister() {
     let query = {
-      _openid: this.data.openid,
-      activityID: this.data.activity_detail._id,
+      openid: this.data.openid,
+      aid: this.data.activity_detail._id,
     };
-    // console.log(query, 'wc')
     db.collection("register")
       .where(query)
       .get({
         success: (res) => {
-          // console.log(res)
           this.setData({
             alreadyTaken: !!res.data.length,
           });
         },
       });
   },
+  // 报名
   submit() {
     let today = new Date();
     today = `${today.getFullYear()}/${
@@ -103,8 +103,7 @@ Page({
     }
     db.collection("register").add({
       data: {
-        _openid: this.data._openid,
-        activityID: this.data.activity_detail._id,
+        aid: this.data.activity_detail._id,
       },
       success: (res) => {
         wx.showToast({
@@ -116,20 +115,24 @@ Page({
       },
     });
   },
-  getAllComments(_id) {
-    db.collection("userComment")
+  getComments(id) {
+    db.collection("comment")
       .where({
-        activityID: _id,
+        aid: id,
       })
+      .limit(5)
       .get({
         success: (res) => {
           this.setData({
             comments: res.data,
           });
+          console.log("获取评论成功",res.data)
         },
       });
   },
+  // 填写评论
   submitComment() {
+    // 空值检测
     if (!this.data.comment_input) {
       wx.showToast({
         title: "您还没有输入",
@@ -138,18 +141,11 @@ Page({
       return;
     }
     let data = {
-      activityID: this.data.activity_detail._id,
-      activityName: this.data.activity_detail.title,
+      aid: this.data.activity_detail._id,
       comment: this.data.comment_input,
-      commentTime:
-        new Date().getFullYear() +
-        "/" +
-        (new Date().getMonth() + 1) +
-        "/" +
-        new Date().getDate() +
-        "",
+      time: util.formatTime(new Date())
     };
-    db.collection("userComment").add({
+    db.collection("comment").add({
       data,
       success: (res) => {
         wx.showToast({

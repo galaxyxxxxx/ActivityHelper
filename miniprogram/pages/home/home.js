@@ -17,32 +17,9 @@ Page({
     isCollected: {},
 
     //今天的时间；需写一个函数，先调取当天日期，再转换格式进行setData，最后渲染到前端页面顶端的时间栏
-    year: 2020,
-    month: 'Aug',
-    day: 3,
-
-    //用于测试的静态数据
-    actingTest: [{
-      id: 0,
-      _id: 'b58263a25f2829950054151f2d77a647',
-      title: '全国大学生数学建模竞赛(国内)',
-      host: '数理学院',
-      lable: ['学习', '竞赛'],
-      addr: '本部 四教',
-      regNum: 233,
-      actTimeEnd: '2020/7/30',
-      collect: 0
-    }, {
-      id: 1,
-      _id: 'b58263a25f282c3d005445dc2cfd16b8',
-      title: '毕业季捐书活动',
-      host: '校学生会',
-      lable: ['公益'],
-      addr: '线上',
-      regNum: 53,
-      actTimeEnd: '2020/7/30',
-      collect: 0
-    }],
+    year: '',
+    month: '',
+    day: '',
 
     //活动集 | 正在进行的
     acting: [],
@@ -63,7 +40,6 @@ Page({
 
   onLoad: function (options) {},
 
-
   onShow: function () {
     // tabbar
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
@@ -71,6 +47,8 @@ Page({
         active: 0
       })
     }
+
+    this.showDate();
 
     let openid = this.data.openid
     let today = this.formatDate(new Date())
@@ -134,7 +112,6 @@ Page({
       })
     }
   },
-
   //点击查看更多(MORE)，跳转至活动详情页
   viewMore1(e) {
     console.log(e)
@@ -172,7 +149,7 @@ Page({
     var time = year + "/" + month + "/" + day;
     return time;
   },
-  showDate(date) {
+  showDate() {
     var timestamp = Date.parse(new Date());
     var today = new Date();
     var monthEnglish = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

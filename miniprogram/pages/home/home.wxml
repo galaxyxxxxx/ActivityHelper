@@ -23,7 +23,7 @@
       <!-- 2.1筛选按钮 -->
       <view class="selectLine">
         <view class="divideText">热门活动</view>
-        <view class="selectButton" bindtap="select">筛选 . </view>
+        <view class="selectButton" bindtap="select">筛选<van-icon name="filter-o" /></view>
       </view>
       <!-- 2.2列表渲染各活动 -->
       <view class="acts">

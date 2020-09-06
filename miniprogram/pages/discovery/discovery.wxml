@@ -14,32 +14,7 @@
 	<!-- 日历查询 -->
 	<van-tab title="CALENDAR">
 		<view class="calendar">
-
-			<!-- PART1. 头部搜索栏等 -->
-			<!-- <view class="header">
-				<van-row>
-					<van-col span="1">
-						<view class="return_button" bindtap="returnTab">
-							<van-icon name="arrow-left" size="35rpx" font-size="bord" />
-						</view>
-					</van-col>
-					<van-col span="4">
-						<view class="text" bindtap="returnTab">{{return_date}}</view>
-					</van-col>
-					<van-col span="1" offset="13">
-						<view class="detail_button">
-							<van-icon name="notes-o" size="40rpx" />
-						</view>
-					</van-col>
-					<van-col span="1" offset="2">
-						<view class="search_button">
-							<van-icon name="search" size="40rpx" />
-						</view>
-					</van-col>
-				</van-row>
-			</view> -->
-
-			<!-- PART2.日历及活动 主体 -->
+		<!-- PART1.日历及活动 主体 -->
 			<view class="body">
 				<!--星期标题 -->
 				<view class="week">
@@ -68,6 +43,8 @@
 							</view>
 						</view>
 					</block>
+					<view class="lastMonth" bindtap="lastMonth">last</view>
+					<view class="nextMonth" bindtap="nextMonth">next</view>
 				</view>
 				<!-- 活动事件 -->
 				<view class="activity">

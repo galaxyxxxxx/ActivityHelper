@@ -70,6 +70,23 @@ page{
   margin-bottom: 20rpx; 
 }
 
+.lastMonth{
+  z-index: 1000;
+  position: absolute;
+  top: 400rpx;
+  left: 0;
+  background-color: aqua;
+}
+
+
+.nextMonth{
+  z-index: 1000;
+  position: absolute;
+  top: 400rpx;
+  left: 90%;
+  background-color: aqua;
+}
+
 .activity{
   width: 100%;
   background-color: white;
