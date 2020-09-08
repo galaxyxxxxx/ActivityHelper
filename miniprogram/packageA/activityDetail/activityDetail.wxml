@@ -24,8 +24,8 @@
 </view>
 <!-- 评论输入框 -->
 <view class='comment-input'>
-	<van-field value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}" bind:change="onChange" />
-	<van-button type="info" size="small" bind:click="submitComment">评论</van-button>
+	<van-field value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}" type="textarea" autosize bind:change="onChange" />
+	<van-button slot="button" size="small" color="#80a0c0" bind:click="submitComment">评论</van-button>
 </view>
 </view>
 

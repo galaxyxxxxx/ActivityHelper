@@ -25,34 +25,37 @@ Page({
     acting: [],
 
     //以下为测试的静态数据
-    actMain: {
-      id: 0,
-      aid: '0d06a2fd5f282af60049935b10c59212',
-      title: '这是一行测试长度最大值的数据',
-      host: '新媒体',
-      lable: ['文艺', '社交', '竞赛'],
-      addr: '本部南操',
-      regNum: 233,
-      actTimeEnd: '2020/9/30',
-      collect: 0
-    },
+    actMain:{},
   },
 
   onLoad: function (options) {},
 
   onShow: function () {
-    // tabbar
+    // 控制tabbar
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
         active: 0
       })
     }
-
+    // 时间栏显示
     this.showDate();
-
+    // 本页需要常用的变量
     let openid = this.data.openid
     let today = this.formatDate(new Date())
 
+    // 加载主图
+    act.where({
+      _id: "0d06a2fd5f282af60049935b10c59212"
+    })
+    .get()
+    .then(
+      res => {
+        this.setData({
+          actMain : res.data[0]
+        })
+      }
+    )
+    // 加载列表
     act.where({
         actTimeEnd: _.gt(today)
       })
@@ -60,11 +63,11 @@ Page({
       .then(
         res => {
           this.setData({
-            acting: res.data
+            acting : res.data
           })
-        },
+        }
       )
-      .catch(console.error)
+
   },
 
   //点击收藏按钮的事件
@@ -113,26 +116,20 @@ Page({
     }
   },
   //点击查看更多(MORE)，跳转至活动详情页
-  viewMore1(e) {
+  viewMoreMain(e) {
     console.log(e)
     let that = this
-    let aid = that.data.actMain.aid
+    let aid = that.data.actMain._id
     console.log("当前点击的活动id为", aid)
     wx.navigateTo({
       url: '../../packageA/activityDetail/activityDetail?aid=' + aid,
     })
   },
   viewMore(e) {
+    console.log(e)
     if (e.mark.starMark !== "star") {
-      console.log(e)
-      let id = e.currentTarget.dataset.id
-      console.log(id)
-      // console.log(this.data.acting)
-      console.log("e", e)
-      // let _id = this.data.acting[index]._id
-      console.log("当前点击的活动id为", id)
       wx.navigateTo({
-        url: '../../packageA/activityDetail/activityDetail?aid=' + id,
+        url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
       })
     }
   },

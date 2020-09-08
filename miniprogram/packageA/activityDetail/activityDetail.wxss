@@ -60,7 +60,15 @@ page{
 }
 
 .comment-input {
-  display: flex;
+
+  margin-top: 50rpx;
+  /* display: flex; */
+  background-color: #80a0c0;
+  border: #868688 1px solid;
+}
+
+.submitCommet{
+  /* display: inline-block; */
 }
 
 .activity-time {

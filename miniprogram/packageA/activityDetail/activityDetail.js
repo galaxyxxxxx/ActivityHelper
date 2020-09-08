@@ -1,4 +1,5 @@
-var util = require('../../utils/util.js');wx.cloud.init({
+var util = require('../../utils/util.js');
+wx.cloud.init({
   env: "x1-vgiba",
 });
 const db = wx.cloud.database({
@@ -35,9 +36,15 @@ Page({
       })
       .get({
         success: (res) => {
-          console.log(res.data[0], "wccc");
+          var raw = res.data[0] || {}
+          if(raw != null){
+            console.log("rawdata",raw.actTimeBegin)
+            raw.actTimeBegin = util.showTime(raw.actTimeBegin)
+            raw.actTimeEnd = util.showTime(raw.actTimeEnd)
+            console.log("raw.actTimeBegin",raw.actTimeBegin)
+          }
           this.setData({
-            activity_detail: res.data[0] || {},
+            activity_detail: raw || {},
           });
           wx.cloud.callFunction({
             name: "getopid",
@@ -60,6 +67,7 @@ Page({
                     url: "/miniprogram/packageA/info/info",
                   });
               }, 1000);
+              
               this.checkRegister();
             },
           });
@@ -94,7 +102,6 @@ Page({
       this.data.activity_detail.actTimeBegin > today ||
       this.data.activity_detail.actTimeEnd < today
     ) {
-      console.log(today, this.data.activity_detail);
       wx.showToast({
         title: "不在报名时间",
         icon: "none",
