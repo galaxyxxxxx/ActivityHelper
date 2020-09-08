@@ -1,26 +1,31 @@
-<view style="position:relative">
-	<image src="{{activity_detail.cover}}" mode="widthFix" class="poster"></image>
-	<view class="title">{{activity_detail.title}}</view>
-</view>
-<view class="activity-time">
-	<view wx:for="{{[{key:'开始时间',_key:'actTimeBegin'},{key:'结束时间',_key:'actTimeEnd'},{key:'报名开始时间',_key:'regTimeBegin'},{key:'报名结束时间',_key:'regTimeEnd'},{key:'活动地点',_key:'addr'},{key:'主办方',_key:'host'}]}}" wx:key="key" class="time-item">
-		<view class="event">{{item.key}}</view>
-		<view class="time">{{activity_detail[item._key]}}</view>
-	</view>
-</view>
-<view class="detail">{{activity_detail.description}}</view>
-<view>
-  <text wx:if="{{time}}">{{time}}</text>
-</view>
+<!-- 封面图 -->
+<view><image src="{{activity_detail.cover}}" mode="widthFix" class="cover"></image></view>
+<view class="content">
+<!-- 活动时间 -->
+<view class="time">{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}</view>
+<!-- 标题 -->
+<view class="title">{{activity_detail.title}}</view>
+<!-- 报名&分享 按钮 -->
 <view class="registration">
-	<van-button type="info" size="large" disabled="{{alreadyTaken}}" bind:click="submit">
-		{{alreadyTaken?"已经报名":"报名"}}
-	</van-button>
+	<van-button color="#80a0c0" size="mini" round disabled="{{alreadyTaken}}" bind:click="submit">{{alreadyTaken?"已报名":"报名"}}</van-button>
+	<van-icon class="share" name="share" size="40rpx"/>
 </view>
-<view class="comments-box">
-	<view wx:for="{{comments}}" wx:key="index" class="comment-box">{{item.comment}}</view>
+<!-- 活动介绍 -->
+<view class="detail">{{activity_detail.description}}</view>
+
+<!-- 评论区 -->
+<view class="comments">
+<block wx:for="{{comments}}"  wx:key="index">
+	<view class="comment">
+		<view class="comment_time">{{comments[index].time}}</view>
+		<view class="comment_text">{{comments[index].comment}}</view>
+	</view>
+</block>
 </view>
+<!-- 评论输入框 -->
 <view class='comment-input'>
-	<van-field value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}" bind:change="onChange" />
-	<van-button type="info" size="small" bind:click="submitComment">评论</van-button>
+	<van-field value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}" type="textarea" autosize bind:change="onChange" />
+	<van-button slot="button" size="small" color="#80a0c0" bind:click="submitComment">评论</van-button>
 </view>
+</view>
+

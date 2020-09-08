@@ -79,14 +79,20 @@ van-icon {
   margin-bottom: 300rpx;
 }
 
-.mainPart .regNum {
-  display: inline;
+.mainPart .bottom {
+  margin-top: 100rpx;
+  display: inline-block;
 }
-
-.mainPart .moreButton {
-  margin-left: 51%;
-  /* 此处的居右显示仍需修改 用margin还是可能会有显示问题 */
-  font-weight: 700;
+.mainPart .bottom .regNum{
+  display: inline-block;
+}
+.mainPart .bottom .collect{
+  display: inline-block;
+  float: right;
+}
+.mainPart .bottom .moreButton{
+  display: inline-block;
+  float: right;
 }
 
 /* 活动集部分 */

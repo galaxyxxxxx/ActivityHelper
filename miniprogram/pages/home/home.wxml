@@ -1,55 +1,66 @@
 <view class="contain">
-  <view class="tabPart">
-    <!-- 1未来的恰饭版块 | 大图显示主活动  -->
-    <view class="mainPart" wx:if="{{actMain}}">
-      <!-- 1.1时间 -->
-      <view class="actTime">{{month}}.{{day}} · {{year}}</view>
-      <view class="cover" bindtap="linkToMe">
-        <open-data type="userAvatarUrl"></open-data>
-      </view>
-      <view class="todayTitle">TODAY</view>
-      <!-- 1.2图像块 -->
-      <view class="actSquare">
-        <view class="actLable">{{actMain.host}} | {{actMain.lable}}</view>
-        <view class="actTitle">{{actMain.title}}</view>
-        <view class="regNum">
-          <van-icon name="friends" color="white" size="30rpx" />{{actMain.regNum}}人已报名</view>
-        <van-button plain round size="small" class="moreButton" custom-style="color: #80a0c0" bindtap="viewMore1" id="{{actMain.id}}">MORE</van-button>
-      </view>
-    </view>
 
-    <!-- 2活动集 -->
-    <view class="actPart">
-      <!-- 2.1筛选按钮 -->
-      <view class="selectLine">
-        <view class="divideText">热门活动</view>
-        <view class="selectButton" bindtap="select">筛选 . </view>
-      </view>
-      <!-- 2.2列表渲染各活动 -->
-      <view class="acts">
-        <view class="act" wx:for="{{acting}}" wx:key="item" bindtap="viewMore" data-id="{{item._id}}">
-          <!-- 活动标签 -->
-          <view class="actLable">
-            <van-icon name="label-o" size="40rpx" color="#80a0c0" />{{item.lable}}
-          </view>
-          <!-- 活动地址 -->
-          <view class="actAddr">{{item.addr}}</view>
-          <!-- 活动名称 -->
-          <view class="actTitle">{{item.title}}</view>
-          <!-- 底行信息 | 报名人数 举办方 收藏按钮 -->
-          <view class="actIntro">
-            <view class="regNum">{{item.regNum}}人已报名</view>
-            <view class="actHost">
-              <text decode="{{true}}">| &ensp;&ensp;&ensp;&ensp;</text>{{item.host}}举办</view>
-            <view class="collect" bindtap="collect" mark:starMark="star" data-collectId="{{item._id}}">
-              <van-icon name="star-o" custom-style="color: #80a0c0" size="40rpx" wx:if="{{item.isCollected == true}}" />
-              <van-icon name="star" custom-style="color: gold" size="40rpx" wx:else="{{item.isCollected == true}}" />
-            </view>
-          </view>
-        </view>
-        <!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
-        <view class="null">— 滑到底啦 真的没有了qwq —</view>
-      </view>
-    </view>
-  </view>
+	<view class="tabPart">
+		<!-- 1未来的恰饭版块 | 大图显示主活动  -->
+		<view class="mainPart" wx:if="{{actMain}}">
+			<!-- 1.1时间 -->
+			<view class="actTime">{{month}}.{{day}} · {{year}}</view>
+			<view class="cover" bindtap="linkToMe">
+				<open-data type="userAvatarUrl"></open-data>
+			</view>
+			<view class="todayTitle">TODAY</view>
+			<!-- 1.2图像块 -->
+			<view class="actSquare">
+				<view class="actLable">{{actMain.host}} | {{actMain.lable}}</view>
+				<view class="actTitle">{{actMain.title}}</view>
+				<!-- 首图底部信息栏 报名人数 收藏 更多 -->
+				<view class="bottom">
+          <!-- 报名人数 -->
+					<view class="regNum"><van-icon name="friends" color="white" size="30rpx" />{{actMain.regNum}}人已报名</view>
+          <!-- 收藏按钮 -->
+					<view class="collect" bindtap="collect" mark:starMark="star" data-collectId="{{item._id}}">
+						<van-icon name="star-o" custom-style="color: #80a0c0" size="40rpx" wx:if="{{item.isCollected == true}}" />
+						<van-icon name="star" custom-style="color: gold" size="40rpx" wx:else="{{item.isCollected == true}}" />
+					</view>
+          <!-- 更多按钮 -->
+					<van-button plain round size="small" class="moreButton" custom-style="color: #80a0c0" bindtap="viewMoreMain" mark="register" id="{{actMain._id}}">MORE</van-button>
+				</view>
+			</view>
+		</view>
+		<!-- 2活动集 -->
+		<view class="actPart">
+			<!-- 2.1筛选按钮 -->
+			<view class="selectLine">
+				<view class="divideText">热门活动</view>
+				<view class="selectButton" bindtap="select">筛选
+					<van-icon name="filter-o" />
+				</view>
+			</view>
+			<!-- 2.2列表渲染各活动 -->
+			<view class="acts">
+				<view class="act" wx:for="{{acting}}" wx:key="item" bindtap="viewMore" data-id="{{item._id}}">
+					<!-- 活动标签 -->
+					<view class="actLable">
+						<van-icon name="label-o" size="40rpx" color="#80a0c0" />{{item.lable}}
+					</view>
+					<!-- 活动地址 -->
+					<view class="actAddr">{{item.addr}}</view>
+					<!-- 活动名称 -->
+					<view class="actTitle">{{item.title}}</view>
+					<!-- 底行信息 | 报名人数 举办方 收藏按钮 -->
+					<view class="actIntro">
+						<view class="regNum">{{item.regNum}}人已报名</view>
+						<view class="actHost">
+							<text decode="{{true}}">| &ensp;&ensp;&ensp;&ensp;</text>{{item.host}}举办</view>
+						<view class="collect" bindtap="collect" mark:starMark="star" data-collectId="{{item._id}}">
+							<van-icon name="star-o" custom-style="color: #80a0c0" size="40rpx" wx:if="{{item.isCollected == true}}" />
+							<van-icon name="star" custom-style="color: gold" size="40rpx" wx:else="{{item.isCollected == true}}" />
+						</view>
+					</view>
+				</view>
+				<!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
+				<view class="null">— 滑到底啦 真的没有了qwq —</view>
+			</view>
+		</view>
+	</view>
 </view>

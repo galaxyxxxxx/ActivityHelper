@@ -115,9 +115,8 @@ Page({
   },
   // 转至设置页
   setting(){
-    let openid = this.data.openid
     wx.navigateTo({
-      url: '../../packageB/setting/setting?openid=' + openid,
+      url: '../../packageB/setting/setting',
     })
   },
   newActivity(){

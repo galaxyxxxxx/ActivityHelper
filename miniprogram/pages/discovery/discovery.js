@@ -87,6 +87,7 @@ Page({
   //数据库里存储的和逻辑层均为便于比较的YYYYMMDD格式(eg 19990615)
   formatDate(date) {
     date = new Date(date);
+    console.log("date",date)
     var year = date.getFullYear();
     var month = (date.getMonth() + 1).toString().padStart(2, '0');
     var day = (date.getDate()).toString().padStart(2, '0');
