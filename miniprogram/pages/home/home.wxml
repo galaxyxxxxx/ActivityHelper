@@ -2,10 +2,10 @@
 
 	<view class="tabPart">
 		<!-- 1未来的恰饭版块 | 大图显示主活动  -->
-		<view class="mainPart" wx:if="{{actMain}}">
+		<view class="mainPart" wx:if="{{actMain}}" bindtap="viewMoreMain">
 			<!-- 1.1时间 -->
 			<view class="actTime">{{month}}.{{day}} · {{year}}</view>
-			<view class="cover" bindtap="linkToMe">
+			<view class="cover">
 				<open-data type="userAvatarUrl"></open-data>
 			</view>
 			<view class="todayTitle">TODAY</view>
@@ -23,7 +23,7 @@
 						<van-icon name="star" custom-style="color: gold" size="40rpx" wx:else="{{item.isCollected == true}}" />
 					</view>
           <!-- 更多按钮 -->
-					<van-button plain round size="small" class="moreButton" custom-style="color: #80a0c0" bindtap="viewMoreMain" mark="register" id="{{actMain._id}}">MORE</van-button>
+					<!-- <van-button plain round size="small" class="moreButton" custom-style="color: #80a0c0" bindtap="viewMoreMain" mark="register" id="{{actMain._id}}">MORE</van-button> -->
 				</view>
 			</view>
 		</view>

@@ -9,32 +9,32 @@ const user = db.collection('user')
 Page({
 
   data: {
-     tabbar: 2,
-     openid: '',
-     role  : 0,
+    tabbar: 2,
+    openid: '',
+    role: 0,
 
-     actCollected:[],
-     actRegistered:[],
-     actReleased:[],
+    actCollected: [],
+    actRegistered: [],
+    actReleased: [],
   },
 
-  getOpenid: function(){
+  getOpenid: function () {
     let that = this
     wx.cloud.callFunction({
       name: 'login',
-      data:{},
-      success:res=>{
+      data: {},
+      success: res => {
         let id = res.result.openid
         that.setData({
-          openid : id
+          openid: id
         })
       },
-      fail:err=>{
+      fail: err => {
         console.error(err)
       }
     })
   },
-  onShow: function(){
+  onShow: function () {
     // this.getTabBar().init();
     // tabbar
     if (typeof this.getTabBar === 'function' &&
@@ -51,44 +51,45 @@ Page({
 
     //加载参与历史
     db.collection('register').where({        //参与活动
-      openid: openid}).get({
-        success:res => {
-          res.data.map(active => {
-            db.collection('activity').where({
-              _id: active.aid
-            }).orderBy('actTimeBegin', 'desc')
-              .get({
-                success: res => {
-                  this.setData({
-                    actRegistered: [...this.data.actRegistered, ...res.data],
-                  })
-                },
-                fail(err) {
-                  console.log("参与历史加载失败", err)
-                }
-              })
-          })
-        },
-        fail(res) {
-          console.log("fail", res)
-        }
-      })
+      openid: openid
+    }).get({
+      success: res => {
+        res.data.map(active => {
+          db.collection('activity').where({
+            _id: active.aid
+          }).orderBy('actTimeBegin', 'desc')
+            .get({
+              success: res => {
+                this.setData({
+                  actRegistered: [...this.data.actRegistered, ...res.data],
+                })
+              },
+              fail(err) {
+                console.log("参与历史加载失败", err)
+              }
+            })
+        })
+      },
+      fail(res) {
+        console.log("fail", res)
+      }
+    })
 
 
     //加载发布历史
     db.collection('activity').where({           //发布活动
-      _openid:openid
+      _openid: openid
     }).orderBy('actTimeBegin', 'desc')
-    .get({
-        success(res){
-          console.log("成功加载发布历史",res)
+      .get({
+        success(res) {
+          console.log("成功加载发布历史", res)
           that.setData({
-            actReleased:res.data
+            actReleased: res.data
           })
-          console.log("加载后的发布历史",actReleased)
+          console.log("加载后的发布历史", actReleased)
         },
-        fail(err){
-          console.log("fail",err)
+        fail(err) {
+          console.log("fail", err)
         }
       })
 
@@ -96,10 +97,10 @@ Page({
   onLoad: function (options) {
     this.getOpenid();
     user.where({
-      _openid : this.data.openid
+      _openid: this.data.openid
     }).get({
-      success(res){
-        console.log("查到该用户啦",res)
+      success(res) {
+        console.log("查到该用户啦", res)
         this.setData({
           role: res.data[0].role
         })
@@ -107,30 +108,30 @@ Page({
     })
   },
   // 转至个人信息修改页
-  edit(){
+  edit() {
     let openid = this.data.openid
     wx.navigateTo({
       url: '../../packageA/info/info?openid=' + openid,
     })
   },
   // 转至设置页
-  setting(){
+  setting() {
     wx.navigateTo({
       url: '../../packageB/setting/setting',
     })
   },
-  newActivity(){
+  newActivity() {
     let openid = this.data.openid
-    console.log("openid",openid)
+    console.log("openid", openid)
     let role = this.data.role
-    console.log("角色",role)
-    if(role == 1){
+    console.log("角色", role)
+    if (role == 1) {
       wx.navigateTo({
         url: '../../packageB/newActivity/newActivity?openid=' + openid,
       })
     }
   },
-  viewMore(e){
+  viewMore(e) {
     console.log(e)
   }
 

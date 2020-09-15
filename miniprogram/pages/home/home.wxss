@@ -81,7 +81,7 @@ van-icon {
 
 .mainPart .bottom {
   margin-top: 100rpx;
-  display: inline-block;
+  /* display: inline-block; */
 }
 .mainPart .bottom .regNum{
   display: inline-block;

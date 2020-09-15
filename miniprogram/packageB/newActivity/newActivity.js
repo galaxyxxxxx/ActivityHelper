@@ -37,10 +37,7 @@ Page({
       cover: "",
     },
 
-    fileList: [{
-      url: '',
-      name: 'cover'
-    }],
+    fileList: [],
 
     showAddr: false,
     showType: false,
@@ -51,55 +48,83 @@ Page({
     showRegDate: false,
 
     address: [{
-        values: Object.keys(cite),
-        className: 'column1',
-      },
-      {
-        values: cite['线上'],
-        className: 'column2',
-        defalutIndex: 2,
-      }
-    ],
+      values: Object.keys(cite),
+      className: 'column1',
+    },
+    {
+      values: cite['线上'],
+      className: 'column2',
+      defalutIndex: 2,
+    }],
 
     actType: [{
-        values: Object.keys(types),
-        className: 'column1',
-      },
-      {
-        values: types['文娱类'],
-        className: 'column2',
-        defalutIndex: 2,
-      }
-    ],
-
-
+      values: Object.keys(types),
+      className: 'column1',
+    },
+    {
+      values: types['文娱类'],
+      className: 'column2',
+      defalutIndex: 2,
+    }]
   },
-
+  beforeRead(event) {
+    const { file, callback } = event.detail;
+    callback(file.type === 'image');
+  },
   //上传活动图片  需要更改
   afterRead(event) {
+    const file = event.detail.file
+    this.data.fileList.unshift(file)
+    var files = this.data.fileList
+    var path = 'cover/' + Math.random().toString()
+    this.setData({
+      fileList: files,
+      path: path
+    })
+  },
 
-    const {
-      file
-    } = event.detail;
-    // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
-    const {
-      fileList = []
-    } = this.data;
-    fileList.push({
-      ...file,
-      url: res.data
+  // 上传图片
+  uploadToCloud() {
+    const { fileList } = this.data;
+    if (!fileList.length) {
+      wx.showToast({ title: '请选择图片', icon: 'none' });
+    } else {
+      console.log('Before Upload', fileList)
+      const uploadTasks = fileList.map((file, index) => this.uploadFilePromise(`-${index}.jpg`, file));
+      Promise.all(uploadTasks)
+        .then(data => {
+          wx.showToast({ title: '上传成功', icon: 'none' });
+          const newFileList = data.map(item => ({ url: item.fileID }));
+          this.setData({
+            // cloudPath: data,
+            tempUrlArray: newFileList,
+            fileList: []
+          });
+        })
+        .catch(e => {
+          wx.showToast({ title: '上传失败', icon: 'none' });
+          console.log(e);
+        });
+    }
+  },
+
+  uploadFilePromise(fileName, chooseResult) {
+    return wx.cloud.uploadFile({
+      cloudPath: "activityCover/" + new Date().getTime() + fileName,
+      filePath: chooseResult.path
     });
+  },
+
+  delete(event) {
+    console.log(event)
+    let imgDelIndex = event.detail.index
+    let fileList = this.data.fileList
+    fileList.splice(imgDelIndex, 1)
+    console.log('删除图片的', fileList)
     this.setData({
       fileList
-    });
-
-    //更改form表单里的cover为图片url
-    let form = this.data.formData
-    form['cover'] = event.detail.file.path
-    this.setData({
-      formData: form
-    });
-
+    })
+    this.uploadImg(fileList)
   },
 
   // 活动地址选择
@@ -240,6 +265,7 @@ Page({
 
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {
+    console.log('onSubmit')
     let form = this.data.formData
     form[`${e.currentTarget.dataset.field}`] = e.detail
     if (form.title.length == 0 || form.title.length > 30) {
@@ -254,31 +280,34 @@ Page({
       this.setData({
         title: null
       })
-    } else if (form.host.length == 0 || form.addr.length == 0 || form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 || form.description.length == 0) {
-      wx.showToast({
-        title: '请完成所有必填项',
-        icon: 'none',
-        duration: 1500
-      })
-      setTimeout(function () {
-        wx.hideToast()
-      }, 2000)
-      this.setData({
-        title: null
-      })
-    } else if (!util.checkRate(form.numMax)) {
-      wx.showToast({
-        title: '若有人数限制应为正整数',
-        icon: 'none',
-        duration: 1500
-      })
-      setTimeout(function () {
-        wx.hideToast()
-      }, 2000)
-      this.setData({
-        numMax: null
-      })
+      // } else if (form.host.length == 0 || form.addr.length == 0 || form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 || form.description.length == 0) {
+      // wx.showToast({
+      //   title: '请完成所有必填项',
+      //   icon: 'none',
+      //   duration: 1500
+      // })
+      // setTimeout(function () {
+      //   wx.hideToast()
+      // }, 2000)
+      // this.setData({
+      //   title: null
+      // })
+      // } else if (!util.checkRate(form.numMax) | form.numMax != "" | form.numMax != 'undefined') {
+      //   console.log('onCheckRate: "', form.numMax, '"')
+      //   wx.showToast({
+      //     title: '若有人数限制应为正整数',
+      //     icon: 'none',
+      //     duration: 1500
+      //   })
+      //   setTimeout(function () {
+      //     wx.hideToast()
+      //   }, 2000)
+      //   this.setData({
+      //     numMax: null
+      //   })
     } else {
+      console.log('onFinal')
+      var that = this
       db.collection('activity').add({
         data: {
           title: form.title,
@@ -294,21 +323,24 @@ Page({
           cover: form.cover,
         },
         success: function (res) {
-          console.log(res)
+          console.log("add Res", res)
+          console.log("res id", res._id);          
+          wx.showLoading({
+            title: '提交中......',
+          })
+          
+          setTimeout(function () {
+            if (that.data.fileList.length) {
+              that.uploadToCloud()
+            }
+            wx.hideLoading()
+            wx.navigateTo({
+              url: `../../packageA/activityDetail/activityDetail?aid=${res._id}`,
+            })
+            console.log(that.data);
+          }, 5000)
         }
       })
-      wx.showToast({
-        title: '已添加成功',
-        icon: 'success',
-        duration: 1500
-      })
-      setTimeout(function () {
-        wx.hideToast()
-      }, 2000)
-      wx.navigateTo({
-        url: '/miniprogram/packageB/activityDetail/activityDetail?aid={{}}',
-      })
     }
-
   },
 })

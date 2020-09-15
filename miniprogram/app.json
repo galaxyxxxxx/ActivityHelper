@@ -2,7 +2,8 @@
   "pages": [
     "pages/home/home",
     "pages/discovery/discovery",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/test/test"
   ],
   "subpackages": [
     {

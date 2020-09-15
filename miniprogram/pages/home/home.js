@@ -1,4 +1,4 @@
-let util = require('../../utils/util.js');
+import util from '../../utils/util.js';
 wx.cloud.init({
   env: 'x1-vgiba'
 })
@@ -8,13 +8,13 @@ const db = wx.cloud.database({
 const act = db.collection('activity')
 const collect = db.collection('collect')
 const _ = db.command
+const app = getApp()
 
 Page({
   data: {
     openid: "",
     collectIcon: 'star-o', // 收藏按钮的默认设置
     collectColor: '#80a0c0',
-    isCollected: {},
 
     //今天的时间；需写一个函数，先调取当天日期，再转换格式进行setData，最后渲染到前端页面顶端的时间栏
     year: '',
@@ -25,12 +25,17 @@ Page({
     acting: [],
 
     //以下为测试的静态数据
-    actMain:{},
+    actMain: {},
   },
 
-  onLoad: function (options) {},
-
+  onLoad: function (options) {
+    this.getOpenid()
+    // app.getopenid().then(res => {
+    //   console.log('loadOpenId', res);
+    // })
+  },
   onShow: function () {
+    // let openid = app.globalData.openid
     // 控制tabbar
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
@@ -39,48 +44,62 @@ Page({
     }
     // 时间栏显示
     this.showDate();
-    // 本页需要常用的变量
-    let openid = this.data.openid
-    let today = this.formatDate(new Date())
-
     // 加载主图
     act.where({
       _id: "0d06a2fd5f282af60049935b10c59212"
+    })
+      .get()
+      .then(
+        res => {
+          this.setData({
+            actMain: res.data[0]
+          })
+        }
+      )
+      this.loadActivities()
+  },
+
+  loadActivities() {
+    let today = this.formatDate(new Date())
+    // 加载列表
+    act.where({
+      actTimeEnd: _.gt(today)
     })
     .get()
     .then(
       res => {
         this.setData({
-          actMain : res.data[0]
+          acting: res.data
+        })
+        console.log('acting', res.data)
+        this.data.acting.forEach(function (value, index, acting) {
+          collect.where({
+            aid: value._id,
+            _openid: this.data.openid
+          })
+          .get()
+          .then(
+            res => {
+              acting[index].isCollected = true
+              console.log(acting[index])
+            }
+          )
         })
       }
     )
-    // 加载列表
-    act.where({
-        actTimeEnd: _.gt(today)
-      })
-      .get()
-      .then(
-        res => {
-          this.setData({
-            acting : res.data
-          })
-        }
-      )
-
   },
 
   //点击收藏按钮的事件
   collect(e) {
     if (e.mark.starMark === "star") {
       console.log(e)
-      console.log(openid)
+      console.log(this.data.openid)
       console.log("Collecting")
       let that = this
       let aid = e.currentTarget.dataset.collectid
       // 先获取活动索引(是数组的index，而非_id噢；因为点击事件event只能捕捉到这是acting数组的第几个，所以通过index去数组里找该活动的_id信息) 
       collect.where({
-        _openid: openid,
+        _openid: this.data.openid,
         aid: aid
       }).get({
         success: function (res) {
@@ -145,6 +164,23 @@ Page({
     var day = (date.getDate()).toString().padStart(2, '0');
     var time = year + "/" + month + "/" + day;
     return time;
+  },
+  getOpenid: function () {
+    let that = this
+    wx.cloud.callFunction({
+      name: 'login',
+      data: {},
+      success: res => {
+        let id = res.result.openid
+        that.setData({
+          openid: id
+        })
+        return id
+      },
+      fail: err => {
+        console.error(err)
+      }
+    })
   },
   showDate() {
     var timestamp = Date.parse(new Date());

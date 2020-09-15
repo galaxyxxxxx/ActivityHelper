@@ -1,149 +1,170 @@
 {
-	"miniprogramRoot": "miniprogram/",
-	"cloudfunctionRoot": "cloudfunctions/",
-	"setting": {
-		"urlCheck": false,
-		"es6": true,
-		"enhance": true,
-		"postcss": true,
-		"preloadBackgroundData": false,
-		"minified": true,
-		"newFeature": true,
-		"coverView": true,
-		"nodeModules": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		}
-	},
-	"appid": "wx1f240f5ecbee02ea",
-	"projectname": "CAX",
-	"libVersion": "2.8.1",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
-	"compileType": "miniprogram",
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"list": []
-		},
-		"gamePlugin": {
-			"current": -1,
-			"list": []
-		},
-		"miniprogram": {
-			"current": 0,
-			"list": [
-				{
-					"id": -1,
-					"name": "db guide",
-					"pathName": "pages/databaseGuide/databaseGuide",
-					"query": ""
-				},
-				{
-					"id": 1,
-					"name": "canlendar",
-					"pathName": "packageA/calendar/canlendar",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 2,
-					"name": "newActivity",
-					"pathName": "packageB/newActivity/newActivity",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 3,
-					"name": "me",
-					"pathName": "pages/me/me",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "regDetails",
-					"pathName": "pages/regDetails/regDetails",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "editActivity",
-					"pathName": "pages/editActivity/editActivity",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 6,
-					"name": "home",
-					"pathName": "pages/home/home",
-					"query": "",
-					"scene": 1001
-				},
-				{
-					"id": -1,
-					"name": "info",
-					"pathName": "packageA/info/info",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "Discovery",
-					"pathName": "pages/discovery/discovery",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "setting",
-					"pathName": "packageB/setting/setting",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 10,
-					"name": "pages/test/test",
-					"pathName": "pages/test/test",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "activityDetail",
-					"pathName": "packageA/activityDetail/activityDetail",
-					"query": "0d06a2fd5f282af60049935b10c59212",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "activityDetail",
-					"pathName": "packageA/activityDetail/activityDetail",
-					"query": "aid=0d06a2fd5f282af60049935b10c59212",
-					"scene": null
-				}
-			]
-		}
-	}
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": true,
+    "uploadWithSourceMap": true,
+    "useMultiFrameRuntime": false,
+    "useApiHook": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "useIsolateContext": true,
+    "useCompilerModule": true,
+    "userConfirmedUseCompilerModuleSwitch": false,
+    "packNpmManually": false,
+    "packNpmRelationList": []
+  },
+  "appid": "wx1f240f5ecbee02ea",
+  "projectname": "CAX",
+  "libVersion": "2.8.1",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+  "compileType": "miniprogram",
+  "condition": {
+    "search": {
+      "current": -1,
+      "list": []
+    },
+    "conversation": {
+      "current": -1,
+      "list": []
+    },
+    "plugin": {
+      "current": -1,
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "current": -1,
+      "list": []
+    },
+    "miniprogram": {
+      "current": 0,
+      "list": [
+        {
+          "id": -1,
+          "name": "db guide",
+          "pathName": "pages/databaseGuide/databaseGuide",
+          "query": ""
+        },
+        {
+          "id": 1,
+          "name": "canlendar",
+          "pathName": "packageA/calendar/canlendar",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 2,
+          "name": "newActivity",
+          "pathName": "packageB/newActivity/newActivity",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 3,
+          "name": "me",
+          "pathName": "pages/me/me",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "regDetails",
+          "pathName": "pages/regDetails/regDetails",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 5,
+          "name": "editActivity",
+          "pathName": "packageB/editActivity/editActivity",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 6,
+          "name": "home",
+          "pathName": "pages/home/home",
+          "query": "",
+          "scene": 1001
+        },
+        {
+          "id": -1,
+          "name": "info",
+          "pathName": "packageA/info/info",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "Discovery",
+          "pathName": "pages/discovery/discovery",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "setting",
+          "pathName": "packageB/setting/setting",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 10,
+          "name": "pages/test/test",
+          "pathName": "pages/test/test",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "activityDetail",
+          "pathName": "packageA/activityDetail/activityDetail",
+          "query": "0d06a2fd5f282af60049935b10c59212",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "activityDetail",
+          "pathName": "packageA/activityDetail/activityDetail",
+          "query": "aid=0d06a2fd5f282af60049935b10c59212",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "packageA/activityDetail/activityDetail",
+          "pathName": "packageA/activityDetail/activityDetail",
+          "query": "aid=0d06a2fd5f282af60049935b10c59212",
+          "scene": null
+        },
+        {
+          "id": 14,
+          "name": "test",
+          "pathName": "pages/test/test",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

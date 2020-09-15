@@ -17,7 +17,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     let aid = options.aid;
     if (!aid) {
       wx.showToast({
@@ -37,11 +37,11 @@ Page({
       .get({
         success: (res) => {
           var raw = res.data[0] || {}
-          if(raw != null){
-            console.log("rawdata",raw.actTimeBegin)
+          if (raw != null) {
+            console.log("rawdata", raw.actTimeBegin)
             raw.actTimeBegin = util.showTime(raw.actTimeBegin)
             raw.actTimeEnd = util.showTime(raw.actTimeEnd)
-            console.log("raw.actTimeBegin",raw.actTimeBegin)
+            console.log("raw.actTimeBegin", raw.actTimeBegin)
           }
           this.setData({
             activity_detail: raw || {},
@@ -67,7 +67,7 @@ Page({
                     url: "/miniprogram/packageA/info/info",
                   });
               }, 1000);
-              
+
               this.checkRegister();
             },
           });
@@ -119,11 +119,11 @@ Page({
         this.setData({
           alreadyTaken: true,
         });
-      },
+      },  
     });
   },
   getComments(id) {
-    db.collection("comment")
+    db.collection('comment')
       .where({
         aid: id,
       })
@@ -133,7 +133,7 @@ Page({
           this.setData({
             comments: res.data,
           });
-          console.log("获取评论成功",res.data)
+          console.log("获取评论成功", res.data)
         },
       });
   },

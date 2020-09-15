@@ -15,3 +15,7 @@
 .button2 van-button{
   padding: 0.5rem;
 }
+.mlr {
+  margin-right: 1em;
+  margin-left: 1em;
+}
