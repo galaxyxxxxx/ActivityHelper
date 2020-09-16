@@ -34,7 +34,7 @@ Page({
       regTimeBegin: "",
       regTimeEnd: "",
       description: "",
-      cover: "",
+      coverUrl: "",
     },
 
     fileList: [],
@@ -76,10 +76,8 @@ Page({
     const file = event.detail.file
     this.data.fileList.unshift(file)
     var files = this.data.fileList
-    var path = 'cover/' + Math.random().toString()
     this.setData({
-      fileList: files,
-      path: path
+      fileList: files
     })
   },
 
@@ -90,28 +88,31 @@ Page({
       wx.showToast({ title: '请选择图片', icon: 'none' });
     } else {
       console.log('Before Upload', fileList)
-      const uploadTasks = fileList.map((file, index) => this.uploadFilePromise(`-${index}.jpg`, file));
+      var picRootPath = "activityCover/" + new Date().getTime()
+      const uploadTasks = fileList.map((file, index) => this.uploadFilePromise(picRootPath + `-${index}.jpg`, file));
       Promise.all(uploadTasks)
-        .then(data => {
+        .then(fileList => {
           wx.showToast({ title: '上传成功', icon: 'none' });
-          const newFileList = data.map(item => ({ url: item.fileID }));
-          this.setData({
-            // cloudPath: data,
-            tempUrlArray: newFileList,
-            fileList: []
-          });
         })
         .catch(e => {
           wx.showToast({ title: '上传失败', icon: 'none' });
           console.log(e);
         });
+      return picRootPath
     }
   },
 
   uploadFilePromise(fileName, chooseResult) {
     return wx.cloud.uploadFile({
-      cloudPath: "activityCover/" + new Date().getTime() + fileName,
-      filePath: chooseResult.path
+      cloudPath: fileName,
+      filePath: chooseResult.path,
+      success: res => {
+        let form = this.data.formData
+        form.coverUrl = res.fileID
+        this.setData({
+          formData: form
+        })
+      },
     });
   },
 
@@ -124,7 +125,6 @@ Page({
     this.setData({
       fileList
     })
-    this.uploadImg(fileList)
   },
 
   // 活动地址选择
@@ -263,11 +263,7 @@ Page({
     })
   },
 
-  //提交键 检查数据格式并上传至云数据库
-  submit: function (e) {
-    console.log('onSubmit')
-    let form = this.data.formData
-    form[`${e.currentTarget.dataset.field}`] = e.detail
+  checkForm(form) {
     if (form.title.length == 0 || form.title.length > 30) {
       wx.showToast({
         title: '标题应为1-30个字符',
@@ -280,66 +276,85 @@ Page({
       this.setData({
         title: null
       })
-      // } else if (form.host.length == 0 || form.addr.length == 0 || form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 || form.description.length == 0) {
-      // wx.showToast({
-      //   title: '请完成所有必填项',
-      //   icon: 'none',
-      //   duration: 1500
-      // })
-      // setTimeout(function () {
-      //   wx.hideToast()
-      // }, 2000)
-      // this.setData({
-      //   title: null
-      // })
-      // } else if (!util.checkRate(form.numMax) | form.numMax != "" | form.numMax != 'undefined') {
-      //   console.log('onCheckRate: "', form.numMax, '"')
-      //   wx.showToast({
-      //     title: '若有人数限制应为正整数',
-      //     icon: 'none',
-      //     duration: 1500
-      //   })
-      //   setTimeout(function () {
-      //     wx.hideToast()
-      //   }, 2000)
-      //   this.setData({
-      //     numMax: null
-      //   })
+    } else if (form.host.length == 0 || form.addr.length == 0 ||
+      form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
+      form.description.length == 0) {
+      wx.showToast({
+        title: '请完成所有必填项',
+        icon: 'none',
+        duration: 1500
+      })
+      setTimeout(function () {
+        wx.hideToast()
+      }, 2000)
+      this.setData({
+        title: null
+      })
+    } else if (!util.checkRate(form.numMax) && form.numMax.length != 0) {
+      console.log('onCheckRate: "', form.numMax, '"')
+      wx.showToast({
+        title: '人数限制应为正整数',
+        icon: 'none',
+        duration: 1500
+      })
+      setTimeout(function () {
+        wx.hideToast()
+      }, 2000)
+      this.setData({
+        numMax: null
+      })
     } else {
-      console.log('onFinal')
-      var that = this
-      db.collection('activity').add({
-        data: {
-          title: form.title,
-          host: form.host,
-          numMax: form.numMax,
-          addr: form.addr,
-          type: form.type,
-          actTimeBegin: form.actTimeBegin,
-          actTimeEnd: form.actTimeEnd,
-          regTimeBegin: form.regTimeBegin,
-          regTimeEnd: form.regTimeEnd,
-          description: form.description,
-          cover: form.cover,
-        },
-        success: function (res) {
-          console.log("add Res", res)
-          console.log("res id", res._id);          
-          wx.showLoading({
-            title: '提交中......',
-          })
-          
-          setTimeout(function () {
-            if (that.data.fileList.length) {
-              that.uploadToCloud()
-            }
-            wx.hideLoading()
-            wx.navigateTo({
-              url: `../../packageA/activityDetail/activityDetail?aid=${res._id}`,
-            })
-            console.log(that.data);
-          }, 5000)
+      return true
+    }
+    return false
+  },
+  //提交键 检查数据格式并上传至云数据库
+  submit: function (e) {
+    console.log('onSubmit')
+    let form = this.data.formData
+    form[`${e.currentTarget.dataset.field}`] = e.detail
+    console.log(form);
+    
+    // if (this.checkForm(form))
+    {
+      console.log('onFinal');
+      wx.showLoading({
+        title: '提交中......',
+      });
+      let aid = ''
+      new Promise((resolve, reject) => {
+        console.log("in Promise");
+        let coverPath = ''
+        if (this.data.fileList.length) {
+          coverPath = this.uploadToCloud()
+          console.log("finish upload", coverPath)
         }
+        coverPath = coverPath + '-0.jpg'
+        db.collection('activity').add({
+          data: {
+            title: form.title,
+            host: form.host,
+            numMax: form.numMax,
+            addr: form.addr,
+            type: form.type,
+            actTimeBegin: form.actTimeBegin,
+            actTimeEnd: form.actTimeEnd,
+            regTimeBegin: form.regTimeBegin,
+            regTimeEnd: form.regTimeEnd,
+            description: form.description,
+            cover: form.coverUrl,
+          },
+          success: function (res) {
+            console.log("finish add: ", res)
+            aid = res._id
+            resolve()
+          }
+        })
+      }).then(value => {
+        wx.hideLoading();
+        // wx.navigateTo({
+        //   url: `../../packageA/activityDetail/activityDetail?aid=${aid}`,
+        // });
       })
     }
   },

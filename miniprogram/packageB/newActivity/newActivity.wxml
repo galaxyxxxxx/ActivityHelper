@@ -46,14 +46,10 @@
 
 <!-- 活动详情链接 -->
 
-<!-- 上传活动图片 -->
-<van-cell-group>
-  <van-cell title="上传活动图片"/>
-  <view class="img_upload">
-    <!-- 之后可以尝试图片的多选 -->
-    <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:before-read="beforeRead"
-      bind:delete="delete" deletable="{{ true }}" multiple="{{false}}" />
-  </view>
-</van-cell-group>
+<!-- 上传活动封面图片 -->
+<van-cell title="上传活动封面图片">
+  <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:before-read="beforeRead"
+    bind:delete="delete" deletable="{{ true }}" multiple="{{false}}" max-count="1" />
+</van-cell>
 
-<van-button type="primary" round="{{true}}" bindtap="submit" block plain class="mlr">SUBMIT</van-button>
+<van-button type="primary" round="{{true}}" bindtap="submit" block plain class="m-margin">SUBMIT</van-button>

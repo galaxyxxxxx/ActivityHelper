@@ -2,10 +2,6 @@
   line-height: 5rem;
 }
 
-.img_upload{
-  padding-left: 25rpx;
-}
-
 .button2{
   margin-top: 1rem;
   margin-right: 1rem;
@@ -15,7 +11,6 @@
 .button2 van-button{
   padding: 0.5rem;
 }
-.mlr {
-  margin-right: 1em;
-  margin-left: 1em;
+.m-margin {
+  margin: 1em;
 }
