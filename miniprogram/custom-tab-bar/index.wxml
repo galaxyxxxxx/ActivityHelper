@@ -5,5 +5,7 @@
   bind:change="onChange"
   fixed="true"
   border="false">
-  <van-tabbar-item wx:for="{{ list }}" wx:key="index" icon="{{ item.icon }}">{{item.text}}</van-tabbar-item>
+  <van-tabbar-item wx:for="{{ list }}" wx:key="item" icon="{{ item.icon }}">
+    {{item.text}}
+  </van-tabbar-item>
 </van-tabbar>

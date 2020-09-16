@@ -1,41 +1,37 @@
-import util from '../../utils/util.js';
+let util = require('../../utils/util.js');
 wx.cloud.init({
   env: 'x1-vgiba'
 })
 const db = wx.cloud.database({
   env: 'x1-vgiba'
 })
+const app = getApp()
 const act = db.collection('activity')
 const collect = db.collection('collect')
 const _ = db.command
-const app = getApp()
 
 Page({
   data: {
+    a: 1,
     openid: "",
-    collectIcon: 'star-o', // 收藏按钮的默认设置
-    collectColor: '#80a0c0',
 
-    //今天的时间；需写一个函数，先调取当天日期，再转换格式进行setData，最后渲染到前端页面顶端的时间栏
+    // 顶部日期
     year: '',
     month: '',
     day: '',
 
+    //顶部主活动
+    actMain: {},
+
     //活动集 | 正在进行的
     acting: [],
-
-    //以下为测试的静态数据
-    actMain: {},
   },
 
   onLoad: function (options) {
-    this.getOpenid()
-    // app.getopenid().then(res => {
-    //   console.log('loadOpenId', res);
-    // })
-  },
-  onShow: function () {
-    // let openid = app.globalData.openid
+    //设置回调，防止小程序globalData拿到空数据
+    let that = this;
+    app.getopenid(that.cb);
+
     // 控制tabbar
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
@@ -44,10 +40,13 @@ Page({
     }
     // 时间栏显示
     this.showDate();
+    // 加载今日日期 用于筛选未到期的活动
+    let today = this.formatDate(new Date())
+
     // 加载主图
     act.where({
-      _id: "0d06a2fd5f282af60049935b10c59212"
-    })
+        _id: "0d06a2fd5f282af60049935b10c59212"
+      })
       .get()
       .then(
         res => {
@@ -56,76 +55,116 @@ Page({
           })
         }
       )
-      this.loadActivities()
-  },
 
-  loadActivities() {
-    let today = this.formatDate(new Date())
     // 加载列表
     act.where({
-      actTimeEnd: _.gt(today)
-    })
-    .get()
-    .then(
-      res => {
-        this.setData({
-          acting: res.data
-        })
-        console.log('acting', res.data)
-        this.data.acting.forEach(function (value, index, acting) {
-          collect.where({
-            aid: value._id,
-            _openid: this.data.openid
+        actTimeEnd: _.gt(today) //查找尚未到截止日期的活动
+      })
+      .get()
+      .then(
+        res => {
+          this.setData({
+            acting: res.data //获取到活动的raw数据 直接赋值给acting
           })
-          .get()
-          .then(
-            res => {
-              acting[index].isCollected = true
-              console.log(acting[index])
-            }
-          )
-        })
-      }
-    )
+          this.data.acting.forEach(function (currentValue, index, arr) { // 对获取到的活动集 一一添加是否收藏的属性   
+            collect.where({
+                openid: currentValue.openid,
+                aid: currentValue._id
+              })
+              .get()
+              .then(
+                res2 => {
+                  currentValue.isCollected = res2.data.length > 0 ? true : false
+                  var b = "arr[" + index + "]"
+                  that.setData({
+                    b: currentValue
+                  })
+                },
+              )
+          })
+        }
+      )
   },
+  // 一个用来获取openid的回调函数
+  cb: function (res) {
+    let that = this
+    that.setData({
+      openid: res
+    })
+  },
+  // 下拉刷新 (暂未改好)
+  onPullDownRefresh() {
+    // setTimeout(() => {
+    //   // 模拟请求数据，并渲染
+    //   var arr = self.data.dataList,
+    //     max = Math.max(...arr);
+    //   for (var i = max + 1; i <= max + 3; ++i) {
+    //     arr.unshift(i);
+    //   }
+    //   self.setData({
+    //     dataList: arr
+    //   });
+    //   // 数据成功后，停止下拉刷新
+    //   wx.stopPullDownRefresh();
+    // }, 1000);
+  },
+  // 触底刷新 (暂未改好)
+  onReachBottom() {
+    // var arr = this.data.dataList,
+    //   max = Math.max(...arr);
+    // if (this.data.count < 3) {
+    //   for (var i = max + 1; i <= max + 5; ++i) {
+    //     arr.push(i);
+    //   }
+    //   this.setData({
+    //     dataList: arr,
+    //     count: ++this.data.count
+    //   });
+    // } else {
+    //   wx.showToast({
+    //     title: '没有更多数据了！',
+    //   })
+    // }
+  },
+
+  onShow: function () {},
 
   //点击收藏按钮的事件
   collect(e) {
     if (e.mark.starMark === "star") {
-      console.log(e)
-      console.log(this.data.openid)
+      console.log("已点击收藏按钮", e)
       console.log("Collecting")
       let that = this
       let aid = e.currentTarget.dataset.collectid
-      // 先获取活动索引(是数组的index，而非_id噢；因为点击事件event只能捕捉到这是acting数组的第几个，所以通过index去数组里找该活动的_id信息) 
+      let openid = that.data.openid
       collect.where({
-        _openid: this.data.openid,
+        _openid: openid,
         aid: aid
       }).get({
         success: function (res) {
-          console.log(res)
+          console.log("收藏数据库查找成功", res)
           if (res.data.length == 0) { //如果未收藏，需要改为已收藏
             collect.add({
               data: {
                 aid: aid
               }
             })
-            that.data.isCollected[aid] = true
-          } else { //如果已收藏，需要改为未收藏
-            // this.setData({
-            //   pattern: 'star-o',
-            //   color: '#80a0c0',
-            // })
-            collect.where({ //再更新数据库的收藏表
-              _id: res.data._id,
-              openid: openid
-            }).remove({ //先查到该收藏记录的_id 再删除
+            wx.showToast({
+              title: '成功收藏',
+              icon: 'success',
+              duration: 1000
+            })
+            console.log("成功收藏")
+          } else {
+            console.log("已被收藏，即将取消收藏")
+            collect.doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
               success(res) {
                 console.log(res)
                 console.log('已成功取消该收藏');
-                that.data.isCollected[aid] = false
                 wx.showToast({
                   title: '已取消收藏',
+                  icon: 'success',
+                  duration: 1000
                 })
               }
             })
@@ -136,7 +175,7 @@ Page({
   },
   //点击查看更多(MORE)，跳转至活动详情页
   viewMoreMain(e) {
-    console.log(e)
+    console.log("已点击查看更多按钮 主图", e)
     let that = this
     let aid = that.data.actMain._id
     console.log("当前点击的活动id为", aid)
@@ -145,8 +184,8 @@ Page({
     })
   },
   viewMore(e) {
-    console.log(e)
     if (e.mark.starMark !== "star") {
+      console.log("已点击查看更多按钮 列表", e)
       wx.navigateTo({
         url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
       })
@@ -164,23 +203,6 @@ Page({
     var day = (date.getDate()).toString().padStart(2, '0');
     var time = year + "/" + month + "/" + day;
     return time;
-  },
-  getOpenid: function () {
-    let that = this
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        let id = res.result.openid
-        that.setData({
-          openid: id
-        })
-        return id
-      },
-      fail: err => {
-        console.error(err)
-      }
-    })
   },
   showDate() {
     var timestamp = Date.parse(new Date());

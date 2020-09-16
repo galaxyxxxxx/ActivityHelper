@@ -125,9 +125,9 @@ Page({
     console.log("openid", openid)
     let role = this.data.role
     console.log("角色", role)
-    if (role == 1) {
+    if (role == 0) {
       wx.navigateTo({
-        url: '../../packageB/newActivity/newActivity?openid=' + openid,
+        url: '../../packageB/newActivity/newActivity',
       })
     }
   },
