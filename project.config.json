@@ -1,6 +1,8 @@
 {
-  "miniprogramRoot": "miniprogram/",
-  "cloudfunctionRoot": "cloudfunctions/",
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": []
+  },
   "setting": {
     "urlCheck": false,
     "es6": true,
@@ -30,13 +32,20 @@
     "packNpmManually": false,
     "packNpmRelationList": []
   },
+  "compileType": "miniprogram",
+  "libVersion": "2.8.1",
   "appid": "wx1f240f5ecbee02ea",
   "projectname": "CAX",
-  "libVersion": "2.8.1",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
-  "compileType": "miniprogram",
+  "watchOptions": {
+    "ignore": []
+  },
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "scripts": {},
   "condition": {
     "search": {
       "current": -1,
@@ -58,7 +67,7 @@
       "list": []
     },
     "miniprogram": {
-      "current": -1,
+      "current": 3,
       "list": [
         {
           "id": -1,
@@ -95,9 +104,9 @@
           "scene": null
         },
         {
-          "id": 5,
+          "id": -1,
           "name": "editActivity",
-          "pathName": "packageB/editActivity/editActivity",
+          "pathName": "pages/editActivity/editActivity",
           "query": "",
           "scene": null
         },
@@ -137,24 +146,17 @@
           "scene": null
         },
         {
-          "id": 11,
+          "id": -1,
           "name": "activityDetail",
           "pathName": "packageA/activityDetail/activityDetail",
-          "query": "aid=d81cd5415f631d35000037c73bfe1cc4",
+          "query": "0d06a2fd5f282af60049935b10c59212",
           "scene": null
         },
         {
-          "id": 14,
-          "name": "test",
-          "pathName": "pages/test/test",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": 13,
-          "name": "list",
-          "pathName": "packageA/list/list",
-          "query": "type=a64f68025f630fb201ecc2506fba266c",
+          "id": -1,
+          "name": "activityDetail",
+          "pathName": "packageA/activityDetail/activityDetail",
+          "query": "aid=0d06a2fd5f282af60049935b10c59212",
           "scene": null
         }
       ]

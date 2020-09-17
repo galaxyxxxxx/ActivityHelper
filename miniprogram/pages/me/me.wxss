@@ -51,18 +51,22 @@ van-icon {
 }
 
 .actInfo{
-  margin: 30rpx 20rpx 30rpx 20rpx;
-  display: flex;
+  margin: 30rpx 40rpx 30rpx 40rpx;
+  /* background-color: aquamarine; */
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
 }
 .actTime{
-  display: inline-block;
+  /* display: inline-block; */
+  /* background-color: blue; */
   color: #868688;
   font-size: 20rpx;
+  margin-top: 10rpx;
 }
 .actName{
-  display: inline-block;
+  /* display: inline-block; */
+  /* background-color: blueviolet; */
   color: #80a0c0;
   font-size:25rpx;
 }

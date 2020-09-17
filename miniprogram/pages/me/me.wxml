@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <view class="contain">
 
 	<!-- 个人资料部分 -->
@@ -43,4 +44,65 @@
 		<van-icon name="add" color="#80a0c0" size="90rpx" />
 	</view>
 
+=======
+<view class="contain">
+
+	<!-- 个人资料部分 -->
+	<view class="intro">
+		<view class="cover" bindtap="edit">
+			<open-data type="userAvatarUrl"></open-data>
+		</view>
+		<view class="edit_setting">
+			<van-button class="edit" custom-style="width:180rpx" size="small" round="{{true}}" bindtap="edit" color="#80a0c0" plain>编辑资料</van-button>
+			<view class="setting" bindtap="setting">
+				<van-icon name="setting-o" color="#80a0c0" size="50rpx" />
+			</view>
+		</view>
+	</view>
+
+	<!-- 活动参与部分 -->
+	<view class="act" wx:if="{{list}}">
+		<van-tabs active="{{ tabbar }}" animated swipeable color="#80a0c0" border="false" line-height="1px" sticky="{{true}}" bind:change="changeTab">
+			<!-- 收藏列表 -->
+			<van-tab title="收藏列表">
+				<view wx:for="{{actCollected}}" wx:key="index" >
+					<navigator url="../../packageA/activityDetail/activityDetail?aid={{item.aid}}">
+						<view class="actInfo">
+							<view class="actName">{{item.title}}</view>
+							<view class="actTime">{{item.actTimeBegin}}-{{item.actTimeEnd}}</view>
+						</view>
+					</navigator>
+				</view>
+			</van-tab>
+			<!-- 参与历史 -->
+			<van-tab title="参与历史">
+				<view wx:for="{{actRegistered}}" wx:key="index" >
+					<navigator url="../../packageA/activityDetail/activityDetail?aid={{item.aid}}">
+						<view class="actInfo">
+							<view class="actName">{{item.title}}</view>
+							<view class="actTime">{{item.actTimeBegin}}-{{item.actTimeEnd}}</view>
+						</view>
+					</navigator>
+				</view>
+			</van-tab>
+			<!-- 发布历史 -->
+			<van-tab title="发布历史" wx:if="{{role == 1}}">
+				<view wx:for="{{actReleased}}" wx:key="index" >
+					<navigator url="../../packageA/activityDetail/activityDetail?aid={{item.aid}}">
+						<view class="actInfo">
+							<view class="actName">{{item.title}}</view>
+							<view class="actTime">{{item.actTimeBegin}}-{{item.actTimeEnd}}</view>
+						</view>
+					</navigator>
+				</view>
+			</van-tab>
+		</van-tabs>
+	</view>
+
+	<!-- 因为该按钮的定位我一直放不好 所以放在外层view了 但是也是通过wxif检验得到的 且其z-index置最大值 -->
+	<view wx:if="{{role == 0 && tabbar == 2}}" class="newAct" bindtap="newActivity">
+		<van-icon name="add" color="#80a0c0" size="70rpx" />
+	</view>
+
+>>>>>>> Stashed changes
 </view>
