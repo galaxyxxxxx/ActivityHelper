@@ -12,6 +12,7 @@ Page({
     comments: [],
     alreadyTaken: false,
     activity_detail: {},
+    defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg'
   },
 
   /**

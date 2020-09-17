@@ -36,7 +36,6 @@
 				</view>
 			</van-tab>
 		</van-tabs>
-
 	</view>
 
 	<!-- 因为该按钮的定位我一直放不好 所以放在外层view了 但是也是通过wxif检验得到的 且其z-index置最大值 -->

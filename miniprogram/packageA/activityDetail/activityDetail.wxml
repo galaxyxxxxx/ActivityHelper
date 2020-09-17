@@ -1,5 +1,5 @@
 <!-- 封面图 -->
-<view><image src="{{activity_detail.cover}}" mode="widthFix" class="cover"></image></view>
+<view><image src="{{activity_detail.cover==''? defaultPic: activity_detail.cover}}" mode="widthFix" class="cover"></image></view>
 <view class="content">
 <!-- 活动时间 -->
 <view class="time">{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}</view>

@@ -21,7 +21,6 @@ Component({
   },
 
   methods: {
-
     // tabbar初始化
     init() {
       const page = getCurrentPages().pop();

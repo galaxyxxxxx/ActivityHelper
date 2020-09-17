@@ -1,20 +1,21 @@
-<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="#80a0c0" border="false" line-height="1px" sticky="{{true}}">
+<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="#80a0c0" border="false"
+	line-height="1px" sticky="{{true}}">
 
 	<!-- 类型分区 -->
 	<van-tab title="TYPE">
 		<view class="type">
-			<view wx:for="{{5}}" wx:key="index">
-				<van-grid clickable column-num="3" border="false">
-					<van-grid-item icon="smile-o" link-type="navigateTo" url="/miniprogram/packageA/list/list?type={{item.type}}" text="学习" wx:for="{{3}}" wx:key="index2" />
-				</van-grid>
-			</view>
+			<van-grid clickable column-num="3" border="{{true}}" square>
+				<van-grid-item link-type="navigateTo" wx:for="{{actType}}" wx:key="item"
+				icon="{{item.type_icon}}" url="../../packageA/list/list?type={{item._id}}" 
+				text="{{item.type_name}}" badge="{{item.type_count}}" />
+			</van-grid>
 		</view>
 	</van-tab>
 
 	<!-- 日历查询 -->
 	<van-tab title="CALENDAR">
 		<view class="calendar">
-		<!-- PART1.日历及活动 主体 -->
+			<!-- PART1.日历及活动 主体 -->
 			<view class="body">
 				<!--星期标题 -->
 				<view class="week">
@@ -34,7 +35,8 @@
 							<!-- <van-divider wx:if="{{index >= 7}}" customStyle="border-color: #dbdbdb; margin: 0; padding:10rpx 0;" /> 从第二行开始每行顶部有一行水平线 -->
 							<view class='{{isToday == item.isToday ? "nowDay" : "{{item}}"}}'>
 								<!-- 检测是否为当天 并为当天增加样式 -->
-								<view class='date-head' bindtap='showAct' data-year='{{year}}' data-month='{{month}}' data-datenum='{{item.dateNum}}'>
+								<view class='date-head' bindtap='showAct' data-year='{{year}}' data-month='{{month}}'
+									data-datenum='{{item.dateNum}}'>
 									<view class='{{(index+1)%7 <= 1 ? "weekend" : "{{item}}"}}'>
 										<!-- 将周末的日子变灰色-->
 										<view>{{item.dateNum}}</view>
@@ -50,7 +52,8 @@
 				<view class="activity">
 					<scroll-view bind:scroll="onScroll" scroll-y id="scroller" style="height: 400px;">
 						<block wx:key="index" wx:for="{{actLine}}">
-							<van-cell title="{{item.title}}" value="{{item.host}}" icon="bullhorn-o" is-link link-type="navigateTo" url="../activityDetail/index?act_id={{item.id}}" />
+							<van-cell title="{{item.title}}" value="{{item.host}}" icon="bullhorn-o" is-link link-type="navigateTo"
+								url="../../packageA/activityDetail/activityDetail?aid={{item.id}}" />
 						</block>
 						<view class="noEvents" wx:if="{{actLine.length == 0 }}">No Events</view>
 					</scroll-view>

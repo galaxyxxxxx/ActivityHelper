@@ -1,3 +1,7 @@
+
+<!-- 上传活动封面图片 -->
+<van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:before-read="beforeRead"
+    bind:delete="delete" deletable="{{ true }}" multiple="{{false}}" max-count="1" preview-size="320px" image-fit="widthFix" upload-text="上传活动封面图片" style="text-align: center;"/>
 <van-cell-group>
   <!-- 活动名称 -->
   <van-field value="{{ title }}" data-field="title" label="活动名称" placeholder="请输入活动名称" bind:change="onFormChange"
@@ -5,6 +9,7 @@
   <!-- 举办部门 -->
   <van-field value="{{ host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange"
     required />
+  
   <!-- 人数上限 -->
   <van-field value="{{ numMax }}" data-field="numMax" label="人数上限" placeholder="若无人数要求 可不填"
     bind:change="onFormChange" />
@@ -18,11 +23,10 @@
 </van-popup>
 
 <!-- 活动类别 -->
-<van-cell title="活动类别" value="{{type}}" data-field="type" is-link bind:click="showPopupType" bind:change="onFormChange"
-  required />
+<van-cell title="活动类别" value="{{type}}" data-field="type" is-link bind:click="showPopupType" bind:change="onFormChange" required />
 
 <van-popup show="{{ showType }}" position="bottom" bind:close="onCloseType" round>
-  <van-picker columns="{{ actType }}" bind:change="onChangeType" />
+  <van-picker columns="{{ typeCollection }}" bind:change="onChangeType" />
 </van-popup>
 
 <!-- 活动起止时间 -->
@@ -45,11 +49,5 @@
 </van-cell-group>
 
 <!-- 活动详情链接 -->
-
-<!-- 上传活动封面图片 -->
-<van-cell title="上传活动封面图片">
-  <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:before-read="beforeRead"
-    bind:delete="delete" deletable="{{ true }}" multiple="{{false}}" max-count="1" />
-</van-cell>
 
 <van-button type="primary" round="{{true}}" bindtap="submit" block plain class="m-margin">SUBMIT</van-button>

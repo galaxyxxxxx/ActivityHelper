@@ -140,7 +140,7 @@
           "id": 11,
           "name": "activityDetail",
           "pathName": "packageA/activityDetail/activityDetail",
-          "query": "aid=55aebe8c5f620f80001438527c6af07b",
+          "query": "aid=d81cd5415f631d35000037c73bfe1cc4",
           "scene": null
         },
         {
@@ -148,6 +148,13 @@
           "name": "test",
           "pathName": "pages/test/test",
           "query": "",
+          "scene": null
+        },
+        {
+          "id": 13,
+          "name": "list",
+          "pathName": "packageA/list/list",
+          "query": "type=a64f68025f630fb201ecc2506fba266c",
           "scene": null
         }
       ]

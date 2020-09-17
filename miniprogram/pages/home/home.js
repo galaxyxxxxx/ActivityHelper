@@ -32,12 +32,6 @@ Page({
     let that = this;
     app.getopenid(that.cb);
 
-    // 控制tabbar
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({
-        active: 0
-      })
-    }
     // 时间栏显示
     this.showDate();
     // 加载今日日期 用于筛选未到期的活动
@@ -45,8 +39,8 @@ Page({
 
     // 加载主图
     act.where({
-        _id: "0d06a2fd5f282af60049935b10c59212"
-      })
+      _id: "0d06a2fd5f282af60049935b10c59212"
+    })
       .get()
       .then(
         res => {
@@ -58,19 +52,19 @@ Page({
 
     // 加载列表
     act.where({
-        actTimeEnd: _.gt(today) //查找尚未到截止日期的活动
-      })
+      actTimeEnd: _.gt(today) //查找尚未到截止日期的活动
+    })
       .get()
       .then(
         res => {
           this.setData({
             acting: res.data //获取到活动的raw数据 直接赋值给acting
           })
-          this.data.acting.forEach(function (currentValue, index, arr) { // 对获取到的活动集 一一添加是否收藏的属性   
+          this.data.acting.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
             collect.where({
-                openid: currentValue.openid,
-                aid: currentValue._id
-              })
+              openid: currentValue.openid,
+              aid: currentValue._id
+            })
               .get()
               .then(
                 res2 => {
@@ -127,7 +121,14 @@ Page({
     // }
   },
 
-  onShow: function () {},
+  onShow: function () {
+    // 控制tabbar
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        active: 0
+      })
+    }
+  },
 
   //点击收藏按钮的事件
   collect(e) {

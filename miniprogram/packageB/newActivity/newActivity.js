@@ -57,21 +57,29 @@ Page({
       defalutIndex: 2,
     }],
 
-    actType: [{
-      values: Object.keys(types),
-      className: 'column1',
-    },
-    {
-      values: types['文娱类'],
-      className: 'column2',
-      defalutIndex: 2,
-    }]
+    actType: []
   },
+
+  onLoad: function () {
+    db.collection('type').get().then(
+      res => {
+        console.log('types', res.data)
+        var typeCollection = res.data
+        typeCollection = typeCollection.map(values => values.type_name)
+        console.log(typeCollection);
+        this.setData({
+          actType: res.data,
+          typeCollection: typeCollection
+        })
+      }
+    )
+  },
+
   beforeRead(event) {
     const { file, callback } = event.detail;
     callback(file.type === 'image');
   },
-  //上传活动图片  需要更改
+  //上传活动图片
   afterRead(event) {
     const file = event.detail.file
     this.data.fileList.unshift(file)
@@ -79,6 +87,7 @@ Page({
     this.setData({
       fileList: files
     })
+    this.uploadToCloud()
   },
 
   // 上传图片
@@ -89,16 +98,25 @@ Page({
     } else {
       console.log('Before Upload', fileList)
       var picRootPath = "activityCover/" + new Date().getTime()
-      const uploadTasks = fileList.map((file, index) => this.uploadFilePromise(picRootPath + `-${index}.jpg`, file));
-      Promise.all(uploadTasks)
-        .then(fileList => {
-          wx.showToast({ title: '上传成功', icon: 'none' });
-        })
-        .catch(e => {
-          wx.showToast({ title: '上传失败', icon: 'none' });
-          console.log(e);
+      let fileName = picRootPath + `.jpg`;
+      let chooseResult = fileList[0]
+      var fileID = ''
+      new Promise((resolve, reject) => {
+        wx.cloud.uploadFile({
+          cloudPath: fileName,
+          filePath: chooseResult.path,
+          success: res => {
+            let form = this.data.formData
+            form.coverUrl = res.fileID
+            resolve(form);
+          },
         });
-      return picRootPath
+      }).then(value => {
+        this.setData({
+          formData: value
+        })
+        return value.coverUrl
+      })
     }
   },
 
@@ -123,7 +141,7 @@ Page({
     fileList.splice(imgDelIndex, 1)
     console.log('删除图片的', fileList)
     this.setData({
-      fileList
+      fileList: []
     })
   },
 
@@ -163,18 +181,14 @@ Page({
     });
   },
   onChangeType(e) {
-    const {
-      picker,
-      value,
-      index
-    } = e.detail
-    picker.setColumnValues(1, types[value[0]]);
+    console.log('event', e.detail.value);
     console.log(e);
     this.setData({
-      type: e.detail.value[0] + e.detail.value[1]
+      type: e.detail.value
     })
+    let index = e.detail.index
     let form = this.data.formData
-    form['type'] = e.detail.value[0] + e.detail.value[1]
+    form['type'] = this.data.actType[index]._id
     this.setData({
       formData: form
     })
@@ -310,26 +324,26 @@ Page({
   },
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {
+    let aid = ''
     console.log('onSubmit')
     let form = this.data.formData
-    form[`${e.currentTarget.dataset.field}`] = e.detail
     console.log(form);
-    
-    // if (this.checkForm(form))
-    {
-      console.log('onFinal');
-      wx.showLoading({
-        title: '提交中......',
-      });
-      let aid = ''
-      new Promise((resolve, reject) => {
+    new Promise((resolve, reject) => {
+      let checkResult = this.checkForm(form);
+      if (checkResult) {
+        console.log('onFinal');
+        wx.showLoading({
+          title: '提交中......',
+        });
+        resolve();
+      } else {
+        reject();
+      }
+    }).then(() => {
+      new Promise((resolve1, reject1) => {
         console.log("in Promise");
-        let coverPath = ''
-        if (this.data.fileList.length) {
-          coverPath = this.uploadToCloud()
-          console.log("finish upload", coverPath)
-        }
-        coverPath = coverPath + '-0.jpg'
+        form.coverUrl = this.data.formData.coverUrl
+        console.log(form.coverUrl);
         db.collection('activity').add({
           data: {
             title: form.title,
@@ -347,15 +361,15 @@ Page({
           success: function (res) {
             console.log("finish add: ", res)
             aid = res._id
-            resolve()
+            resolve1()
           }
         })
-      }).then(value => {
+      }).then(() => {
         wx.hideLoading();
-        // wx.navigateTo({
-        //   url: `../../packageA/activityDetail/activityDetail?aid=${aid}`,
-        // });
+        wx.navigateTo({
+          url: `../../packageA/activityDetail/activityDetail?aid=${aid}`,
+        });
       })
-    }
+    })
   },
 })

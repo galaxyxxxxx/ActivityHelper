@@ -13,45 +13,48 @@ Page({
     tabbar: 0,
 
     //类型分区
-    types:[{
-      type:'学习',
-      icon:'smile-o',
-    },{
-      type:'',
-      icon:'',
+    types: [{
+      type: '学习',
+      icon: 'smile-o',
+    }, {
+      type: '',
+      icon: '',
     }],
 
+    // 有id的type
+    actType: [],
+    // 无id的type
+    typeCollection: [],
 
     //日历分区
     return_date: 'Jul 2020',  //头部返回栏的时间标注 不同状态显示格式不同
-    year : '',  //当前年份
-    month : '', //当前月份
-    weekArr: ['S','M','T','W','T','F','S'],
+    year: '',  //当前年份
+    month: '', //当前月份
+    weekArr: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
     dateArr: [],
     isToday: 0,
     isTodayWeek: false,
     todayIndex: 0,
 
-    day : '',   //当前天
-    week : '',  //当前周几
-    week1 : '', 
-    monthDay : '',
+    day: '',   //当前天
+    week: '',  //当前周几
+    week1: '',
+    monthDay: '',
 
     actLine: [],
     actLine1: [{
-      title : "test1",
-      host : "host1"
-    },{
-      title : "test2",
-      host : "host2"
-    },{
-      title : "test3",
-      host : "host3"
+      title: "test1",
+      host: "host1"
+    }, {
+      title: "test2",
+      host: "host2"
+    }, {
+      title: "test3",
+      host: "host3"
     }]
   },
 
-  onLoad: function(){
-    
+  onLoad: function () {
     //日历部分
     let now = new Date();
     let year = now.getFullYear();
@@ -62,8 +65,42 @@ Page({
       month: month,
       isToday: '' + year + month.toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0')
     })
+    this.getTypes();
     this.actInit();
-  },  
+  },
+  getTypes() {
+    db.collection('type').get().then(
+      res => {
+        console.log('types', res.data)
+        var actType = res.data
+        var typeCollection = actType.map(values => values.type_name)
+        console.log(typeCollection);
+        // this.addCount(actType);
+        this.setData({
+          actType: actType,
+          typeCollection: typeCollection
+        })
+      }
+    )
+  },
+  addCount(actType) {
+    actType.forEach(function(current, index, arr) {
+      console.log(current);
+      current['type_count'] = this.getActCount(current._id)
+      arr[index] = current
+    })
+    this.setData({
+      actType: actType,
+    })
+  },
+  getActCount(type_id) {
+    console.log(type_id);    
+    let result = act.where({
+      type: type_id
+    }).count();
+    let count = result.total
+    return count
+  },
   onShow: function () {
     // tabbar
     if (typeof this.getTabBar === 'function' &&
@@ -87,7 +124,7 @@ Page({
   //数据库里存储的和逻辑层均为便于比较的YYYYMMDD格式(eg 19990615)
   formatDate(date) {
     date = new Date(date);
-    console.log("date",date)
+    console.log("date", date)
     var year = date.getFullYear();
     var month = (date.getMonth() + 1).toString().padStart(2, '0');
     var day = (date.getDate()).toString().padStart(2, '0');
@@ -147,39 +184,39 @@ Page({
       })
     }
   },
-  showAct(e){
+  showAct(e) {
     let a = e.currentTarget.dataset
     this.actInit(a.year, a.month, a.datenum)
   },
-  actInit: function(setYear, setMonth, setDay){
+  actInit: function (setYear, setMonth, setDay) {
     var that = this
     let actLine = that.data.actLine
     var obj = {}
     let now = new Date()
-    console.log(typeof(setYear))
+    console.log(typeof (setYear))
     var date = ''
-    if(setYear != null){
+    if (setYear != null) {
       let dateSet = setYear + "/" + setMonth.toString().padStart(2, '0') + "/" + setDay.toString().padStart(2, '0')
       date = dateSet
-    }else{
+    } else {
       date = this.formatDate(now)
     }
     console.log(date)
     act.where({
-      actTimeBegin : date
+      actTimeBegin: date
     }).get({
-      success(res){
-        if(res.data.length != 0){   //查询成功时
-          for(let i = 0; i < res.data.length; i++){
+      success(res) {
+        if (res.data.length != 0) {   //查询成功时
+          for (let i = 0; i < res.data.length; i++) {
             obj.id = res.data[i]._id
-            obj.title =  res.data[i].title
-            obj.host =  res.data[i].host
-            actLine.push(Object.assign({}, obj)) 
+            obj.title = res.data[i].title
+            obj.host = res.data[i].host
+            actLine.push(Object.assign({}, obj))
           }
-        }else{                      //查询失败时
-            console.log("无查询结果")
+        } else {                      //查询失败时
+          console.log("无查询结果")
         }
-        that.setData({actLine : actLine})
+        that.setData({ actLine: actLine })
       }
     })
   },
@@ -209,20 +246,20 @@ Page({
     })
     this.dateInit(year, month);
   },
-  onChangeTabbar(e){
+  onChangeTabbar(e) {
     console.log(e.detail)
-    this.setData({activeTab : e.detail});
+    this.setData({ activeTab: e.detail });
   },
-  returnTab(){
+  returnTab() {
     wx.redirectTo({
       url: '/miniprogram/pages/home/home',
     })
   },
   //转换tab时 更改其tabbar值
-  changeTab(e){
-    console.log("tab2 打印转换tab事件值",e)
+  changeTab(e) {
+    console.log("tab2 打印转换tab事件值", e)
     this.setData({
-      tabbar : e.detail.name
+      tabbar: e.detail.name
     })
   },
 });
