@@ -1,74 +1,46 @@
-<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="#80a0c0" border="false"
+<view class="contain">
+
+	<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="#80a0c0" border="false"
 	line-height="1px" sticky="{{true}}">
 
 	<!-- 类型分区 -->
 	<van-tab title="TYPE">
 		<view class="type">
 			<van-grid clickable column-num="3" border="{{true}}" square>
-				<van-grid-item link-type="navigateTo" wx:for="{{actType}}" wx:key="item"
-				icon="{{item.type_icon}}" url="../../packageA/list/list?type={{item._id}}" 
-				text="{{item.type_name}}" badge="{{item.type_count}}" />
+				<van-grid-item link-type="navigateTo" wx:for="{{actType}}" wx:key="item" icon="{{item.type_icon}}"
+					url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" badge="{{item.type_count}}" />
 			</van-grid>
 		</view>
 	</van-tab>
 
 	<!-- 日历查询 -->
 	<van-tab title="CALENDAR">
-		<view class="calendar">
-			<!-- PART1.日历及活动 主体 -->
-			<view class="body">
-				<!--星期标题 -->
-				<view class="week">
-					<block wx:key="index" wx:for="{{weekArr}}">
-						<view class='{{item == "S" ? "weekend" : "{{item}}"}}'>
-							<view class="weekMark">
-								<view>{{item}}</view>
-							</view>
-						</view>
+		<!-- PART1.日历及活动 主体 -->
+		<view class="body">
+			<!-- 日历 -->
+			<van-calendar show-title="{{false}}" show-subtitle="{{false}}" type="single" poppable="{{ false }}"
+				row-height="45" show-confirm="{{ false }}" class="calendar" bind:select="onSelect" />
+			<!-- 活动事件 -->
+			<view class="activity">
+				<scroll-view bind:scroll="onScroll" scroll-y id="scroller">
+					<block wx:key="index" wx:for="{{actLine}}">
+						<van-cell title="{{item.title}}" value="{{item.host}}" icon="bullhorn-o" is-link link-type="navigateTo"
+							url="../../packageA/activityDetail/activityDetail?aid={{item.id}}" />
 					</block>
-				</view>
-				<!-- 日期 -->
-				<view class="calender">
-					<block wx:key="index" wx:for='{{dateArr}}'>
-						<view class='{{item.activity == 1 ? "actDay" : "{{item}}" }}'>
-							<!-- 检测当天是否有活动 并活动的日期增加样式 -->
-							<!-- <van-divider wx:if="{{index >= 7}}" customStyle="border-color: #dbdbdb; margin: 0; padding:10rpx 0;" /> 从第二行开始每行顶部有一行水平线 -->
-							<view class='{{isToday == item.isToday ? "nowDay" : "{{item}}"}}'>
-								<!-- 检测是否为当天 并为当天增加样式 -->
-								<view class='date-head' bindtap='showAct' data-year='{{year}}' data-month='{{month}}'
-									data-datenum='{{item.dateNum}}'>
-									<view class='{{(index+1)%7 <= 1 ? "weekend" : "{{item}}"}}'>
-										<!-- 将周末的日子变灰色-->
-										<view>{{item.dateNum}}</view>
-									</view>
-								</view>
-							</view>
-						</view>
-					</block>
-					<view class="lastMonth" bindtap="lastMonth">last</view>
-					<view class="nextMonth" bindtap="nextMonth">next</view>
-				</view>
-				<!-- 活动事件 -->
-				<view class="activity">
-					<scroll-view bind:scroll="onScroll" scroll-y id="scroller" style="height: 400px;">
-						<block wx:key="index" wx:for="{{actLine}}">
-							<van-cell title="{{item.title}}" value="{{item.host}}" icon="bullhorn-o" is-link link-type="navigateTo"
-								url="../../packageA/activityDetail/activityDetail?aid={{item.id}}" />
-						</block>
-						<view class="noEvents" wx:if="{{actLine.length == 0 }}">No Events</view>
-					</scroll-view>
-				</view>
+					<view class="noEvents" wx:if="{{actLine.length == 0 }}">No Events</view>
+				</scroll-view>
 			</view>
-
-			<!-- PART3.底部选项 -->
-			<!-- <view class="footer">
-				<van-divider custom-style="color: red" />
-				<view>Today</view>
-				<view>Selector</view>
-				<view>Inbox</view>
-			</view> -->
-
 		</view>
+
+		<!-- PART3.底部选项 -->
+		<!-- <view class="footer">
+			<van-divider custom-style="color: red" />
+			<view>Today</view>
+			<view>Selector</view>
+			<view>Inbox</view>
+		</view> -->
+
 	</van-tab>
 
 </van-tabs>
+</view>
