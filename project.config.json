@@ -46,6 +46,8 @@
     "hidedInDevtools": []
   },
   "scripts": {},
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
   "condition": {
     "search": {
       "current": -1,
@@ -104,10 +106,10 @@
           "scene": null
         },
         {
-          "id": -1,
+          "id": 5,
           "name": "editActivity",
-          "pathName": "pages/editActivity/editActivity",
-          "query": "",
+          "pathName": "packageB/editActivity/editActivity",
+          "query": "aid=0d06a2fd5f282af60049935b10c59212",
           "scene": null
         },
         {

@@ -1,4 +1,8 @@
 var appInstence = getApp()
+const db = wx.cloud.database({
+  env: 'x1-vgiba'
+})
+const act = db.collection('activity')
 // miniprogram/pages/test/test.js
 Page({
   /**
@@ -12,19 +16,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
-    wx.showLoading({
-      title: '加载中......',
+    var date = new Date();
+    act.add({
+      data: {
+        actTimeBegin: date
+      }
     })
-    setTimeout(function () {
-      var openid = appInstence.globalData.openid
-      that.setData({
-        openid: openid
-      })
-      console.log(openid)
-      wx.hideLoading()
-    }, 1000)
-    console.log("openid", this.data.openid)
   },
 
   /**

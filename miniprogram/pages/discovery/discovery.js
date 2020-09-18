@@ -6,6 +6,7 @@ const db = wx.cloud.database({
   env: 'x1-vgiba'
 })
 const act = db.collection('activity')
+const _ = db.command
 
 Page({
   data: {
@@ -109,22 +110,23 @@ Page({
         active: 1
       })
     }
+    this.onSelect({detail: new Date()})
   },
   //切换顶部tab
   onChangeTab(event) {
     console.log(event)
-    wx.showToast({
-      title: `切换到 ${event.detail.title}`,
-      icon: 'none',
-      duration: 500
-    });
+    // wx.showToast({
+    //   title: `切换到 ${event.detail.title}`,
+    //   icon: 'none',
+    //   duration: 500
+    // });
   },
   //日历部分的函数
   //关于日期的显示：视图层显示的是带斜杠的(eg 1999/8/15)
   //数据库里存储的和逻辑层均为便于比较的YYYYMMDD格式(eg 19990615)
   formatDate(date) {
-    date = new Date(date);
-    console.log("date", date)
+    // date = new Date(date);
+    // console.log("date", date)
     var year = date.getFullYear();
     var month = (date.getMonth() + 1).toString().padStart(2, '0');
     var day = (date.getDate()).toString().padStart(2, '0');
@@ -223,29 +225,29 @@ Page({
   /**
    * 上月切换
    */
-  lastMonth: function () {
-    //全部时间的月份都是按0~11基准，显示月份才+1
-    let year = this.data.month - 2 < 0 ? this.data.year - 1 : this.data.year;
-    let month = this.data.month - 2 < 0 ? 11 : this.data.month - 2;
-    this.setData({
-      year: year,
-      month: (month + 1)
-    })
-    this.dateInit(year, month);
-  },
+  // lastMonth: function () {
+  //   //全部时间的月份都是按0~11基准，显示月份才+1
+  //   let year = this.data.month - 2 < 0 ? this.data.year - 1 : this.data.year;
+  //   let month = this.data.month - 2 < 0 ? 11 : this.data.month - 2;
+  //   this.setData({
+  //     year: year,
+  //     month: (month + 1)
+  //   })
+  //   this.dateInit(year, month);
+  // },
   /**
    * 下月切换
    */
-  nextMonth: function () {
-    //全部时间的月份都是按0~11基准，显示月份才+1
-    let year = this.data.month > 11 ? this.data.year + 1 : this.data.year;
-    let month = this.data.month > 11 ? 0 : this.data.month;
-    this.setData({
-      year: year,
-      month: (month + 1)
-    })
-    this.dateInit(year, month);
-  },
+  // nextMonth: function () {
+  //   //全部时间的月份都是按0~11基准，显示月份才+1
+  //   let year = this.data.month > 11 ? this.data.year + 1 : this.data.year;
+  //   let month = this.data.month > 11 ? 0 : this.data.month;
+  //   this.setData({
+  //     year: year,
+  //     month: (month + 1)
+  //   })
+  //   this.dateInit(year, month);
+  // },
   onChangeTabbar(e) {
     console.log(e.detail)
     this.setData({ activeTab: e.detail });
@@ -262,4 +264,35 @@ Page({
       tabbar: e.detail.name
     })
   },
+  onSelect(e) {
+    this.setData({
+      actLine: []
+    })
+    console.log(e.detail)
+    var that = this
+    let actLine = that.data.actLine
+    var obj = {}
+    var date = this.formatDate(e.detail)
+    act.where({
+      actTimeBegin: _.lte(date),
+      actTimeEnd: _.gte(date)
+    }).get({
+      success(res) {
+        console.log(res)
+        if (res.data.length != 0) {   //查询成功时
+          for (let i = 0; i < res.data.length; i++) {
+            obj.id = res.data[i]._id
+            obj.title = res.data[i].title
+            obj.host = res.data[i].host
+            actLine.push(Object.assign({}, obj))
+          }
+        } else {                      //查询失败时
+          console.log("无查询结果")
+        }
+        that.setData({ actLine: actLine })
+      }
+    })
+  }, 
+  onScroll() {
+  }
 });

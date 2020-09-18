@@ -10,6 +10,9 @@
   position: relative;
   left: 30%;
 }
-.button2 van-button{
+#submit van-button{
   padding: 0.5rem;
+}
+.m-margin {
+  margin: 1em;
 }

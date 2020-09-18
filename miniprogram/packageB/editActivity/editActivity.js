@@ -27,22 +27,27 @@ Page({
       host: "",
       numMax: "",
       addr: "",
-      type: "",
+      type_name: "",
+      type_id: "",
       actTimeBegin: "",
       actTimeEnd: "",
       regTimeBegin: "",
       regTimeEnd: "",
       description: "",
-      cover: "",
+      coverUrl: "",
     },
-
+    type_index: -1,
     showAddr: false,
     showType: false,
 
+    actType: [],
+    typeCollection: [],
     actDate: '',
     showActDate: false,
     regDate: '',
     showRegDate: false,
+    actDate: '',
+    regDate: '',
 
     address: [{
         values: Object.keys(cite),
@@ -55,51 +60,87 @@ Page({
       }
     ],
 
-    actType: [{
-        values: Object.keys(types),
-        className: 'column1',
-      },
-      {
-        values: types['文娱类'],
-        className: 'column2',
-        defalutIndex: 2,
-      }
-    ],
+    actType: [],
 
     fileList: [{
       url: 'http://iph.href.lu/60x60?text=default',
-      name: '图片2',
       isImage: true,
       deletable: true,
     }]
   },
 
   onLoad: function (options) {
-    let form = this.data.formData
-    this.setData({
-      'formData.id' : options.act_id || 'a7d38b365f07298300029c667b921d19'
-    })
-    
+    let aid = options.aid
+    var form = this.data.formData
+    form.id = aid
     var that = this;
-    act.where({
-      _id: form['id']
-    }).get({
-      success(res) {
-        that.setData({
-          'formData.title': res.data[0].title,
-          'formData.host': res.data[0].host,
-          'formData.numMax': res.data[0].numMax,
-          'formData.addr': res.data[0].addr,
-          'formData.type': res.data[0].type,
-          'formData.actTimeBegin': res.data[0].actTimeBegin,
-          'formData.actTimeEnd': res.data[0].actTimeEnd,
-          'formData.regTimeBegin': res.data[0].regTimeBegin,
-          'formData.regTimeEnd': res.data[0].regTimeEnd,
-          'formData.description': res.data[0].description,
-          'formData.cover': res.data[0].cover,
+    var typeCollection = []
+    db.collection('type').get().then(
+      res => {
+        console.log('types', res.data)
+        var actType = res.data
+        typeCollection = actType.map(values => values.type_name)
+        console.log(typeCollection);
+        this.setData({
+          actType: actType,
+          typeCollection: typeCollection
         })
       }
-    })
+    );
+    act.where({
+      _id: form.id
+    }).get({
+      success(res) {
+        form.title = res.data[0].title
+        form.host = res.data[0].host
+        form.numMax = res.data[0].numMax
+        form.addr = res.data[0].addr
+        form.type_id = res.data[0].type.trim()
+        form.actTimeBegin = res.data[0].actTimeBegin
+        form.actTimeEnd = res.data[0].actTimeEnd
+        form.regTimeBegin = res.data[0].regTimeBegin
+        form.regTimeEnd = res.data[0].regTimeEnd
+        form.description = res.data[0].description
+        form.coverUrl = res.data[0].cover
+        that.setData({
+          formData: form,
+          regDate: `${form.regTimeBegin} - ${form.regTimeEnd}`,
+          regArr: [new Date(form.regTimeBegin), new Date(form.regTimeEnd)],
+          actDate: `${form.actTimeBegin} - ${form.actTimeEnd}`,
+          actArr: [new Date(form.actTimeBegin), new Date(form.actTimeEnd)]
+        })
+      }
+    });
+    setTimeout(() => {
+      console.log(form);
+      db.collection('type').where({
+        _id: form.type_id
+      }).get().then(res => {
+        console.log("timeout Res", res);
+        form.type_name = res.data[0].type_name;
+        this.setData({
+          formData: form
+        })
+      });
+      let picList = [{
+        url: form.coverUrl,
+        isImage: true, 
+        deletable: true
+      }]
+      this.setData({
+        fileList: picList,
+        type_index: this.getIndex(typeCollection, form.type_name)
+      })
+    }, 500);
+  },
+  // default的值还没有成功
+  getIndex(arr, target) {
+    for (var i = 1; i <= arr.length; i++) {
+      if (target === arr[i]) {
+        return i
+      }
+    }
+    return -1
   },
 
   // 活动地址选择
@@ -137,17 +178,14 @@ Page({
     });
   },
   onChangeType(e) {
-    const {
-      picker,
-      value,
-      index
-    } = e.detail
-    picker.setColumnValues(1, types[value[0]]);
+    console.log('event', e.detail.value);
+    console.log(e);
     this.setData({
-      type: e.detail.value[0] + e.detail.value[1]
+      type: e.detail.value
     })
+    let index = e.detail.index
     let form = this.data.formData
-    form['type'] = e.detail.value[0] + e.detail.value[1]
+    form['type'] = this.data.actType[index]._id
     this.setData({
       formData: form
     })
@@ -283,6 +321,51 @@ Page({
     })
   },
 
+  checkForm(form) {
+    if (form.title.length == 0 || form.title.length > 30) {
+      wx.showToast({
+        title: '标题应为1-30个字符',
+        icon: 'none',
+        duration: 1500
+      })
+      setTimeout(function () {
+        wx.hideToast()
+      }, 2000)
+      this.setData({
+        title: null
+      })
+    } else if (form.host.length == 0 || form.addr.length == 0 ||
+      form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
+      form.description.length == 0) {
+      wx.showToast({
+        title: '请完成所有必填项',
+        icon: 'none',
+        duration: 1500
+      })
+      setTimeout(function () {
+        wx.hideToast()
+      }, 2000)
+      this.setData({
+        title: null
+      })
+    } else if (!util.checkRate(form.numMax) && form.numMax.length != 0) {
+      console.log('onCheckRate: "', form.numMax, '"')
+      wx.showToast({
+        title: '人数限制应为正整数',
+        icon: 'none',
+        duration: 1500
+      })
+      setTimeout(function () {
+        wx.hideToast()
+      }, 2000)
+      this.setData({
+        numMax: null
+      })
+    } else {
+      return true
+    }
+    return false
+  },
 
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {

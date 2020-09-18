@@ -1,4 +1,3 @@
-
 <!-- 上传活动封面图片 -->
 <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:before-read="beforeRead"
     bind:delete="delete" deletable="{{ true }}" multiple="{{false}}" max-count="1" preview-size="320px" image-fit="widthFix" upload-text="上传活动封面图片" style="text-align: center;"/>
@@ -30,13 +29,13 @@
 </van-popup>
 
 <!-- 活动起止时间 -->
-<van-cell title="活动起始时间" value="{{actDate}}" data-field="actDate" bind:click="onDisplayActDate"
+<van-cell title="活动起止时间" value="{{actDate}}" data-field="actDate" bind:click="onDisplayActDate"
   bind:change="onFormChange" is-link required />
 <van-calendar show="{{ showActDate }}" type="range" bind:close="onCloseActDate" bind:confirm="onConfirmActDate"
   allow-same-day="{{ true }}" />
 
 <!-- 报名起止时间 -->
-<van-cell title="报名起始时间" value="{{regDate}}" data-field="actDate" bind:click="onDisplayRegDate"
+<van-cell title="报名起止时间" value="{{regDate}}" data-field="actDate" bind:click="onDisplayRegDate"
   bind:change="onFormChange" is-link required />
 <van-calendar show="{{ showRegDate }}" type="range" bind:close="onCloseRegDate" bind:confirm="onConfirmRegDate"
   allow-same-day="{{ true }}" />

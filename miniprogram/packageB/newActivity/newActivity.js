@@ -349,6 +349,7 @@ Page({
             title: form.title,
             host: form.host,
             numMax: form.numMax,
+            regNum: 0,
             addr: form.addr,
             type: form.type,
             actTimeBegin: form.actTimeBegin,
