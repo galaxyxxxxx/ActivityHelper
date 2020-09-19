@@ -23,7 +23,7 @@ Page({
 
   onLoad: function (options) {
     var that = this
-    let actID = options.act_id
+    let actID = options.aid
     //加载报名人数 和列表
     register.where({ 
       activityID: actID

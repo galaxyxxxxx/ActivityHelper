@@ -99,10 +99,10 @@
           "scene": null
         },
         {
-          "id": -1,
+          "id": 4,
           "name": "regDetails",
-          "pathName": "pages/regDetails/regDetails",
-          "query": "",
+          "pathName": "packageB/regDetails/regDetails",
+          "query": "aid=0d06a2fd5f282af60049935b10c59212",
           "scene": null
         },
         {

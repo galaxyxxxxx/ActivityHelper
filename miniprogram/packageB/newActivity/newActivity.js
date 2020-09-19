@@ -23,6 +23,7 @@ const types = {
 
 Page({
   data: {
+    openid: '',
     formData: {
       title: "",
       host: "",
@@ -61,6 +62,16 @@ Page({
   },
 
   onLoad: function () {
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'login', 
+      success: function(res) {
+        console.log(res);
+        that.setData({
+          openid: res.result.openid
+        })
+      }
+    })
     db.collection('type').get().then(
       res => {
         console.log('types', res.data)
@@ -120,24 +131,14 @@ Page({
     }
   },
 
-  uploadFilePromise(fileName, chooseResult) {
-    return wx.cloud.uploadFile({
-      cloudPath: fileName,
-      filePath: chooseResult.path,
-      success: res => {
-        let form = this.data.formData
-        form.coverUrl = res.fileID
-        this.setData({
-          formData: form
-        })
-      },
-    });
-  },
-
   delete(event) {
     console.log(event)
     let imgDelIndex = event.detail.index
     let fileList = this.data.fileList
+    let form = this.data.formData
+    wx.cloud.deleteFile({
+      fileList: [form.coverUrl],
+    })
     fileList.splice(imgDelIndex, 1)
     console.log('删除图片的', fileList)
     this.setData({
