@@ -160,6 +160,13 @@
           "pathName": "packageA/activityDetail/activityDetail",
           "query": "aid=0d06a2fd5f282af60049935b10c59212",
           "scene": null
+        },
+        {
+          "id": 13,
+          "name": "list",
+          "pathName": "packageA/list/list",
+          "query": "type=a64f68025f630fb201ecc251636ec86e",
+          "scene": null
         }
       ]
     }

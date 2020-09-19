@@ -21,6 +21,7 @@ const types = {
 
 Page({
   data: {
+    openid: '',
     formData: {
       id: "",
       title: "",
@@ -51,8 +52,6 @@ Page({
     showActDate: false,
     regDate: '',
     showRegDate: false,
-    actDate: '',
-    regDate: '',
 
     address: [{
       values: Object.keys(cite),
@@ -71,21 +70,23 @@ Page({
       url: 'http://iph.href.lu/300x300?text=default',
       isImage: true,
       deletable: true,
-    }],
-    // Editor
-    formats: {},
-    readOnly: false,
-    placeholder: '开始输入...',
-    editorHeight: 300,
-    keyboardHeight: 0,
-    isIOS: false,
+    }]
   },
 
   onLoad: function (options) {
+    var that = this;
+    wx.cloud.callFunction({
+      name: 'login', 
+      success: function(res) {
+        console.log(res);
+        that.setData({
+          openid: res.result.openid
+        })
+      }
+    })
     let aid = options.aid
     var form = this.data.formData
     form.id = aid
-    var that = this;
     var typeCollection = []
     var address = this.data.address
     db.collection('type').get().then(
@@ -143,7 +144,7 @@ Page({
       let addr1_index = this.getIndex(Object.keys(cite), form.addr1)
       address[0].defaultIndex = addr1_index
       address[1].values = cite[form.addr1]
-      let addr2_index = this.getIndex(cite[form.addr1], form.addr2);
+      let addr2_index = this.getIndex(cite[form.addr1], form.addr2);      
       address[1].defaultIndex = addr2_index
       this.setData({
         addr1_index: addr1_index,
@@ -161,10 +162,10 @@ Page({
           fileList: picList,
           type_index: this.getIndex(typeCollection, form.type)
         })
-      }, 500)
-    }, 500);
+      }, 1000)
+    }, 1000);
   },
-  // 获取数组中某元素的下标
+
   getIndex(arr, target) {
     console.log("getIndex", arr, target);
     for (var i = 1; i <= arr.length; i++) {
@@ -367,6 +368,21 @@ Page({
       url: '../../pages/me/me',
     })
   },
+  
+  deletePic(event) {
+    console.log(event)
+    let imgDelIndex = event.detail.index
+    let fileList = this.data.fileList
+    let form = this.data.formData
+    wx.cloud.deleteFile({
+      fileList: [form.coverUrl],
+    })
+    fileList.splice(imgDelIndex, 1)
+    console.log('删除图片的', fileList)
+    this.setData({
+      fileList: []
+    })
+  },
 
   checkForm(form) {
     if (form.title.length == 0 || form.title.length > 30) {
@@ -417,6 +433,8 @@ Page({
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {
     var aid = ''
+    var that = this
+    var openid = this.data.openid
     console.log('onSubmit')
     let form = this.data.formData
     console.log(form);
@@ -434,28 +452,48 @@ Page({
     }).then(() => {
       new Promise((resolve1, reject1) => {
         console.log("in Promise");
-        form.coverUrl = this.data.formData.coverUrl
+        form.coverUrl = that.data.formData.coverUrl
         console.log(form.coverUrl);
-        db.collection('activity').doc(form.id).set({
+        wx.cloud.callFunction({
+          name: 'updateActivity', 
           data: {
-            title: form.title,
-            host: form.host,
-            numMax: form.numMax,
-            regNum: form.regNum,
-            addr: form.addr,
-            type: form.type,
-            actTimeBegin: form.actTimeBegin,
-            actTimeEnd: form.actTimeEnd,
-            regTimeBegin: form.regTimeBegin,
-            regTimeEnd: form.regTimeEnd,
-            description: form.description,
-            cover: form.coverUrl,
+            form: form
           },
           success: function (res) {
             console.log("finish add: ", res)
             resolve1();
+          }, 
+          fail: function (err) {
+            console.error(err);
+            
+            reject1("fail update");
           }
         })
+        // db.collection('activity').doc(form.id).set({
+        //   data: {
+        //     title: form.title,
+        //     host: form.host,
+        //     numMax: form.numMax,
+        //     regNum: form.regNum,
+        //     addr: form.addr,
+        //     type: form.type,
+        //     actTimeBegin: form.actTimeBegin,
+        //     actTimeEnd: form.actTimeEnd,
+        //     regTimeBegin: form.regTimeBegin,
+        //     regTimeEnd: form.regTimeEnd,
+        //     description: form.description,
+        //     cover: form.coverUrl,
+        //   },
+        //   success: function (res) {
+        //     console.log("finish add: ", res)
+        //     resolve1();
+        //   }, 
+        //   fail: function (err) {
+        //     console.error(err);
+            
+        //     reject1("fail update");
+        //   }
+        // })
       }).then(() => {
         wx.hideLoading();
         wx.navigateTo({

@@ -5,17 +5,16 @@
 
 		<!-- 类型分区 -->
 		<van-tab title="TYPE">
-			<view class="type">
+			<!-- <view class="type">
 				<view wx:for="{{actType}}" wx:key="item" class="act">
 					<van-icon name="{{item.type_icon}}"></van-icon>
 					<text>{{item.type_name}}</text>
-			</view>
-			<!-- <van-grid clickable column-num="1" border="{{true}}" >
-						<van-grid-item link-type="navigateTo" wx:for="{{actType}}" wx:key="item" icon="{{item.type_icon}}"
-							url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" />
-
-						</van-grid> -->
 				</view>
+			</view> -->
+			<van-grid clickable column-num="1" border="{{true}}">
+				<van-grid-item link-type="navigateTo" wx:for="{{actType}}" wx:key="item" icon="{{item.type_icon}}"
+					url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" />
+			</van-grid>
 		</van-tab>
 
 		<!-- 日历查询 -->
@@ -46,6 +45,5 @@
 		</view> -->
 
 		</van-tab>
-
 	</van-tabs>
 </view>

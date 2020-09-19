@@ -17,6 +17,7 @@ page{
 #submit van-button{
   margin: 0 50rpx 0 50rpx;
 }
+
 .m-margin {
   margin: 1rem 0em;
   text-align: center;
