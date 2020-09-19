@@ -42,11 +42,9 @@
 
 <!-- 活动概要 -->
 <van-cell-group class="intro">
-  <van-field v-model="message" value="{{ description }}" data-field="description" label="活动概要介绍" type="textarea"
-    placeholder="请输入200字以内的活动概要" rows="4" maxlength="200" bind:change="onFormChange" autosize show-word-limit
-    required />
+  <van-cell title="活动概要介绍" required border="{{false}}"/>
+  <van-field value="{{ description }}" data-field="description"  title-size="0px" type="textarea" placeholder="请输入500字以内的活动概要" rows="10" maxlength="500" bind:change="onFormChange" autosize show-word-limit>
+  </van-field>
 </van-cell-group>
 
-<!-- 活动详情链接 -->
-
-<van-button type="primary" round="{{true}}" bindtap="submit" block plain class="m-margin">SUBMIT</van-button>
+<van-button color="#80a0c0" round="{{true}}" bindtap="submit" block class="m-margin">确认发布</van-button>

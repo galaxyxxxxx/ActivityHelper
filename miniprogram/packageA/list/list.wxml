@@ -6,7 +6,7 @@
       <view class="divideText">{{type_name}}</view>
     </view>
     <!-- 2.2列表渲染各活动 -->
-    <view class="acts">
+    <view class="acts" wx:if="{{acting.length}}" >
       <view class="act" wx:for="{{acting}}" wx:key="item" bindtap="viewMore" data-id="{{item._id}}">
         <!-- 活动标签 -->
         <view class="actLable">
@@ -29,5 +29,6 @@
       <!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
       <view class="null" wx:if="{{acting.length != 0}}">— 滑到底啦 真的没有了qwq —</view>
     </view>
+    <van-empty wx:if="{{acting.length == 0}}" description="暂无内容"></van-empty>
   </view>
 </view>

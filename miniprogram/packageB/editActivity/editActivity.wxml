@@ -1,46 +1,61 @@
 <!-- 上传活动封面图片 -->
-<van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:before-read="beforeRead"
-    bind:delete="delete" deletable="{{ true }}" multiple="{{false}}" max-count="1" preview-size="320px" image-fit="widthFix" upload-text="上传活动封面图片" style="text-align: center;" />
+<van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" bind:before-read="beforeRead" bind:delete="deletePic"
+  deletable="{{ true }}" multiple="{{false}}" max-count="1" preview-size="320px" image-fit="widthFix"
+  upload-text="上传活动封面图片" style="text-align: center;" />
 <van-cell-group>
   <!-- 活动名称 -->
-  <van-field model:value="{{ formData.title }}" data-field="title" label="活动名称" placeholder="请输入活动名称" bind:change="onFormChange" 
-    required />
+  <van-field value="{{ formData.title }}" data-field="title" label="活动名称" placeholder="请输入活动名称"
+    bind:change="onFormChange" required />
+
   <!-- 举办部门 -->
-  <van-field model:value="{{ formData.host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange"
+  <van-field value="{{ formData.host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange"
     required />
-  
+
   <!-- 人数上限 -->
-  <van-field model:value="{{ formData.numMax }}" data-field="numMax" label="人数上限" placeholder="若无人数要求 可不填"
+  <van-field value="{{ formData.numMax }}" data-field="numMax" label="人数上限" placeholder="若无人数要求 可不填"
     bind:change="onFormChange" />
+
+  <!-- 报名人数 -->
+  <van-field value="{{ formData.regNum }}" data-field="regNum" label="报名人数" placeholder="报名人数"
+    bind:change="onFormChange" disabled />
 </van-cell-group>
 
 <!-- 活动地址 -->
-<van-cell title="活动地址" model:value="{{formData.addr}}" data-field="addr" is-link bind:click="showPopupAddr" bind:change="onFormChange" required />
+<van-cell title="活动地址" value="{{formData.addr1+formData.addr2}}" data-field="addr" is-link bind:click="showPopupAddr"
+  bind:change="onFormChange" required />
 <van-popup show="{{ showAddr }}" position="bottom" bind:close="onCloseAddr" round>
-  <van-picker default-index="{{}}" columns="{{ address }}" bind:change="onChangeAddr" />
+  <van-picker columns="{{ address }}" bind:change="onChangeAddr" />
 </van-popup>
 
 <!-- 活动类别 -->
-<van-cell title="活动类别" model:value="{{formData.type_name}}" data-field="type" is-link bind:click="showPopupType" bind:change="onFormChange" required />
+<van-cell title="活动类别" model:value="{{formData.type}}" data-field="type" is-link bind:click="showPopupType"
+  bind:change="onFormChange" required />
 <van-popup show="{{ showType }}" position="bottom" bind:close="onCloseType" round>
   <van-picker default-index="{{type_index}}" columns="{{ typeCollection }}" bind:change="onChangeType" />
 </van-popup>
 
 <!-- 活动起止时间 -->
-<van-cell title="活动起止时间" model:value="{{actDate}}" data-field="actDate" bind:click="onDisplayActDate" bind:change="onFormChange" is-link required />
-<van-calendar show="{{ showActDate }}" type="range" bind:close="onCloseActDate" bind:confirm="onConfirmActDate" allow-same-day="{{ true }}" default-date="{{actArr}}" />
+<van-cell title="活动起止时间" value="{{actDate}}" data-field="actDate" bind:click="onDisplayActDate"
+  bind:change="onFormChange" is-link required center title-width="25%" />
+<van-calendar show="{{ showActDate }}" type="range" bind:close="onCloseActDate" bind:confirm="onConfirmActDate"
+  allow-same-day="{{ true }}" default-date="{{actArr}}" />
 
 <!-- 报名起止时间 -->
-<van-cell title="报名起止时间" model:value="{{regDate}}" data-field="regDate" bind:click="onDisplayRegDate" bind:change="onFormChange" is-link required />
-<van-calendar show="{{ showRegDate }}" type="range" bind:close="onCloseRegDate" bind:confirm="onConfirmRegDate" allow-same-day="{{ true }}" default-date="{{regArr}}" />
+<van-cell title="报名起止时间" value="{{regDate}}" data-field="regDate" bind:click="onDisplayRegDate"
+  bind:change="onFormChange" is-link required center title-width="25%" />
+<van-calendar show="{{ showRegDate }}" type="range" bind:close="onCloseRegDate" bind:confirm="onConfirmRegDate"
+  allow-same-day="{{ true }}" default-date="{{regArr}}" />
 
 <!-- 活动概要 -->
 <van-cell-group class="intro">
-  <van-field v-model="message" model:value="{{ formData.description }}" data-field="description" label="活动概要介绍" type="textarea" placeholder="请输入200字以内的活动概要" rows="4" maxlength="200" bind:change="onFormChange" autosize show-word-limit required />
+  <van-cell title="活动概要介绍" required border="{{false}}" />
+  <van-field value="{{ formData.description }}" data-field="description" title-size="0px" type="textarea"
+    placeholder="请输入500字以内的活动概要" rows="4" maxlength="500" bind:change="onFormChange" autosize show-word-limit>
+  </van-field>
 </van-cell-group>
 
-<!-- 活动详情链接 -->
-<view class="m-margin" id="submit"> 
-  <van-button type="primary" round = "{{true}}" bindtap="submit" block >确认修改</van-button>
-  <van-button type="danger" round = "{{true}}" bindtap="delete" block>撤销活动</van-button>
+<!-- Submit -->
+<view class="m-margin" id="submit">
+  <van-button color="#80a0c0" round="{{true}}" bindtap="delete" plain>撤销活动</van-button>
+  <van-button color="#80a0c0" round="{{true}}" bindtap="submit">确认修改</van-button>
 </view>

@@ -99,10 +99,10 @@
           "scene": null
         },
         {
-          "id": -1,
+          "id": 4,
           "name": "regDetails",
-          "pathName": "pages/regDetails/regDetails",
-          "query": "",
+          "pathName": "packageB/regDetails/regDetails",
+          "query": "aid=0d06a2fd5f282af60049935b10c59212",
           "scene": null
         },
         {
@@ -159,6 +159,13 @@
           "name": "activityDetail",
           "pathName": "packageA/activityDetail/activityDetail",
           "query": "aid=0d06a2fd5f282af60049935b10c59212",
+          "scene": null
+        },
+        {
+          "id": 13,
+          "name": "list",
+          "pathName": "packageA/list/list",
+          "query": "type=a64f68025f630fb201ecc251636ec86e",
           "scene": null
         }
       ]
