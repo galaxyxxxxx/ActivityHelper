@@ -1,10 +1,11 @@
 <view class="contain">
-
 	<!-- 个人资料部分 -->
 	<view class="intro">
 		<view class="cover" bindtap="edit">
 			<open-data type="userAvatarUrl"></open-data>
 		</view>
+
+
 		<view class="edit_setting">
 			<van-button class="edit" custom-style="width:180rpx" size="small" round="{{true}}" bindtap="edit" color="#80a0c0" plain>编辑资料</van-button>
 			<view class="setting" bindtap="setting">
@@ -14,7 +15,7 @@
 	</view>
 
 	<!-- 活动参与部分 -->
-	<view class="act" wx:if="{{list}}">
+	<view class="act" wx:if="{{role == 0 || role == 1}}">
 		<van-tabs active="{{ tabbar }}" animated swipeable color="#80a0c0" border="false" line-height="1px" sticky="{{true}}" bind:change="changeTab">
 			<!-- 收藏列表 -->
 			<van-tab title="收藏列表">
@@ -53,8 +54,8 @@
 	</view>
 
 	<!-- 因为该按钮的定位我一直放不好 所以放在外层view了 但是也是通过wxif检验得到的 且其z-index置最大值 -->
-	<view wx:if="{{role == 0 && tabbar == 2}}" class="newAct" bindtap="newActivity">
-		<van-icon name="add" color="#80a0c0" size="70rpx" />
+	<view wx:if="{{role == 1 && tabbar == 2}}" class="newAct" bindtap="newActivity">
+		<van-icon name="add" color="#80a0c0" size="90rpx" />
 	</view>
 
 </view>

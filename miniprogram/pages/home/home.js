@@ -174,6 +174,20 @@ Page({
       })
     }
   },
+  // 下拉刷新
+  onPullDownRefresh:function()
+  {
+    wx.showNavigationBarLoading() //在标题栏中显示加载
+    var that = this
+    setTimeout(function()
+    {
+      // complete
+      wx.hideNavigationBarLoading() //完成停止加载
+      wx.stopPullDownRefresh() //停止下拉刷新
+    },1500);
+    var tin = that.data.reloadinfo
+    that.onLoad(tin) 
+  },
   //点击查看更多(MORE)，跳转至活动详情页
   viewMoreMain(e) {
     console.log("已点击查看更多按钮 主图", e)

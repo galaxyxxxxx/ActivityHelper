@@ -27,7 +27,7 @@
         </view>
       </view>
       <!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
-      <view class="null">— 滑到底啦 真的没有了qwq —</view>
+      <view class="null" wx:if="{{acting.length != 0}}">— 滑到底啦 真的没有了qwq —</view>
     </view>
   </view>
 </view>

@@ -59,16 +59,24 @@ page{
   font-size: 25rpx;
 }
 
-.comment-input {
-
+.commentShell {
   margin-top: 50rpx;
-  /* display: flex; */
-  background-color: #80a0c0;
-  border: #868688 1px solid;
+  height: 30rpx;
 }
 
-.submitCommet{
-  /* display: inline-block; */
+.inputComment{
+  display: inline-block;
+  border: #80a0c0 1px solid;
+  border-radius: 20rpx;
+  overflow: hidden;
+  width: 80%;
+}
+
+/* 评论按钮 */
+.submitComment{
+  align-items : center;
+  display: flex;
+  float: right;
 }
 
 .activity-time {

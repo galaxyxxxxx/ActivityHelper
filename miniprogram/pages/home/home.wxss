@@ -6,7 +6,7 @@
 }
 
 van-icon {
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 .headerTab {

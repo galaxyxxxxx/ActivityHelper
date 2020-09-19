@@ -11,6 +11,7 @@ Page({
     comment_input: "",
     comments: [],
     alreadyTaken: false,
+    actRaw:[],
     activity_detail: {},
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg'
   },
@@ -18,7 +19,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     let aid = options.aid;
     if (!aid) {
       wx.showToast({
@@ -37,12 +38,14 @@ Page({
       })
       .get({
         success: (res) => {
+          console.log("Ttttt",res.data[0])
+          this.setData({
+            actRaw : res.data[0]
+          })
           var raw = res.data[0] || {}
           if (raw != null) {
-            console.log("rawdata", raw.actTimeBegin)
             raw.actTimeBegin = util.showTime(raw.actTimeBegin)
             raw.actTimeEnd = util.showTime(raw.actTimeEnd)
-            console.log("raw.actTimeBegin", raw.actTimeBegin)
           }
           this.setData({
             activity_detail: raw || {},
@@ -94,15 +97,9 @@ Page({
   // 报名
   submit() {
     let today = new Date();
-    today = `${today.getFullYear()}/${
-      today.getMonth() + 1 < 10
-        ? "0" + (today.getMonth() + 1)
-        : today.getMonth() + 1
-    }/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
-    if (
-      this.data.activity_detail.actTimeBegin > today ||
-      this.data.activity_detail.actTimeEnd < today
-    ) {
+    today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1 }/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
+    console.log("today",today,this.data.actRaw)
+    if (this.data.actRaw.actTimeBegin > today || this.data.actRaw.actTimeEnd < today ) {
       wx.showToast({
         title: "不在报名时间",
         icon: "none",
@@ -120,9 +117,10 @@ Page({
         this.setData({
           alreadyTaken: true,
         });
-      },  
+      },
     });
   },
+  //获取评论
   getComments(id) {
     db.collection('comment')
       .where({
@@ -131,10 +129,18 @@ Page({
       .limit(5)
       .get({
         success: (res) => {
-          this.setData({
-            comments: res.data,
-          });
-          console.log("获取评论成功", res.data)
+          // console.log("获取评论成功", res.data)
+          var that = this
+          var comments = that.data.comments
+          res.data.map(active => {
+            let raw2 = active
+            raw2.time = util.showTime(raw2.time)
+            console.log("test3", raw2)
+            console.log("test11", comments)
+            that.setData({
+              comments: [...comments, ...raw2]
+            })
+          })
         },
       });
   },

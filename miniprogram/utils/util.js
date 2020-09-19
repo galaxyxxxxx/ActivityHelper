@@ -13,7 +13,10 @@ const formatNumber = n => {
 }
 // 时间显示 一周以内的时间以周几显示 大于一周的以mm/dd显示 不在本年度的以yyyy/mm/dd显示
 function showTime(str) {
-  const date = new Date(Date.parse(str.replace(/-/g,"/")));  //时间戳格式的日期
+  let str2 = str.substr(0,10)
+  console.log(str2)
+  var date = new Date(Date.parse(str2.replace(/-/g,"/")));  //时间戳格式的日期
+  console.log("geshihua",date)
   const week = date.getDay(); //当前周几 一周以内显示这个
   // 当前几月几号 一年之内显示这个
   const month = date.getMonth() + 1;
