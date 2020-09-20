@@ -7,16 +7,16 @@ ____
  	|  -----  |    	    --------      |    									--------							 |
    | 主页   |  pages/home/home		  |活动展示 (采用卡片布局 力争简洁清晰) 								   |
    | 发现页  |  pages/discovery/discovery|提供类别和时间两个筛选方式 ;有类别 和 日历 两个顶部tab   |
-   | 个人页  |  pages/me/me			  |分为"活动收藏""参与历史""发布历史(仅管理者)"模块	;						 |  
+   | 个人页  |  pages/me/me			  |分为"活动收藏""参与历史""发布管理(仅管理者)"模块	;						 |  
   
 * ### 二级页面
 	|   		| 		文件路径	   					      | 	入口页面/事件    |							|
  	|  --------	 | 	    --------      					     |    --------		   |   		 --------       |
    | 活动详情页 |	packageA/activityDetail/activityDetail    |	每个活动版块都可以通过点击跳转至详情页|列举活动各项信息;提供报名按钮;可评论(暂不设置回复功能)
    | 个人信息页 | 	packageA/info/info						   |个人页右上角的编辑信息按钮 ;首页右上角的头像|可编辑个人信息;可通过点击身份认证按钮,申请认证活动管理者
-   | 新建活动页 | 	packageB/newActivity/newActivity			|个人页的发布历史模块里的加号按钮+||
-   | 删改活动页 |	packageB/editActivity/editActivity			|个人页的发布历史模块里 点击某一活动后出现弹出框 选择删改活动||
-   | 报名统计页 |	packageB/regDetail/regDetail				|个人页的发布历史模块里 点击某一活动后出现弹出框 选择查看报名||
+   | 新建活动页 | 	packageB/newActivity/newActivity			|个人页的发布管理模块里的加号按钮+||
+   | 删改活动页 |	packageB/editActivity/editActivity			|个人页的发布管理模块里 点击某一活动后出现弹出框 选择删改活动||
+   | 报名统计页 |	packageB/regDetail/regDetail				|个人页的发布管理模块里 点击某一活动后出现弹出框 选择查看报名||
    | 设置反馈页 | 	packageB/setting/setting					|个人页右上角的设置按钮|可注销帐号;对小程序进行bug反馈;显示小程序的版本信息等
    
 注:该小程序采用分包加载(便于提高加载速度),一级页面放在主包里;二级页面放在两个分包packageA和packageB里

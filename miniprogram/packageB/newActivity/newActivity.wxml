@@ -30,13 +30,13 @@
 
 <!-- 活动起止时间 -->
 <van-cell title="活动起止时间" value="{{actDate}}" data-field="actDate" bind:click="onDisplayActDate"
-  bind:change="onFormChange" is-link required />
+  bind:change="onFormChange" is-link required title-width="25%"/>
 <van-calendar show="{{ showActDate }}" type="range" bind:close="onCloseActDate" bind:confirm="onConfirmActDate"
   allow-same-day="{{ true }}" />
 
 <!-- 报名起止时间 -->
 <van-cell title="报名起止时间" value="{{regDate}}" data-field="actDate" bind:click="onDisplayRegDate"
-  bind:change="onFormChange" is-link required />
+  bind:change="onFormChange" is-link required title-width="25%"/>
 <van-calendar show="{{ showRegDate }}" type="range" bind:close="onCloseRegDate" bind:confirm="onConfirmRegDate"
   allow-same-day="{{ true }}" />
 

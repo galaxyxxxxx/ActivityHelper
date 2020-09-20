@@ -14,7 +14,6 @@ Page({
 
     activeNames:['1'],
 
-    loading: true,
     reg_number: '',
     max_number: '',
     regStu: [],
@@ -26,7 +25,7 @@ Page({
     let actID = options.aid
     //加载报名人数 和列表
     register.where({ 
-      activityID: actID
+      aid: actID
     }).get({
       success: res => {
         that.setData({
@@ -34,7 +33,7 @@ Page({
         })
         res.data.map(active => {
           console.log(active._openid)
-          db.collection('User').where({
+          db.collection('user').where({
               _openid: active._openid
             })
             .get({
@@ -69,24 +68,25 @@ Page({
     })
   },
 
-  excel(){
-    wx.redirectTo({
-      url: '../excel/index',
-    })
-  },
 
   onChangeUser(event) {
+    console.log("twet",event)
     this.setData({
       activeNames: event.detail,
     });
   },
 
-  onChange(e) {
+  onChange(event) {
     this.setData({
-      searchValue: e.detail
-    })
+      activeNames: event.detail,
+    });
   },
-
+  onOpen(event) {
+    Toast(`展开: ${event.detail}`);
+  },
+  onClose(event) {
+    Toast(`关闭: ${event.detail}`);
+  },
   onSearch(){
     console.log(1)
   },

@@ -43,7 +43,7 @@ van-icon {
 }
 
 .newAct{
-  z-index: 500;
+  z-index: 5;
   position: absolute;
   top: 80%;
   left: 79%;

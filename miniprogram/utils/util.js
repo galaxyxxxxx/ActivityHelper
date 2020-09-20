@@ -43,7 +43,7 @@ function sameWeek(str){
   const day = date2.getDay() || 7;
   const monday = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate() + 1 - day); //计算出星期一    
   const sunday = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate() + 7 - day); //计算出星期天
-  if (date1 < monday || date1 > sunday) {
+  if (date1 <= monday || date1 >= sunday) {
     return false; //不在同一个星期内    
   } else {
     return true; //在同一个星期内    

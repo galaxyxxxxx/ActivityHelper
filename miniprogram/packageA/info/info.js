@@ -260,6 +260,7 @@ Page({
           user.add({
             data: {
               name: name,
+              openid:openid,
               uid: uid,
               tel: tel,
               email: email,

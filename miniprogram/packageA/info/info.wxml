@@ -4,7 +4,7 @@
 		<van-cell-group>
 			<van-field label="姓名" data-field="name" value="{{ name }}" placeholder="请输入姓名" border="{{ false }}" bind:change="onChangeName" />
 			<van-field label="学号" data-field="uid" value="{{ uid }}" placeholder="请输入学号" border="{{ false }}" type="number" bind:change="onChangeUid" />
-			<van-field label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" bind:change="onChangeTel" />
+			<van-field label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" bind:change="onChangeTel"/>
 			<van-field label="邮箱" data-field="email" value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}" bind:change="onChangeEmail" />
 
     <!-- 院系选择器 -->

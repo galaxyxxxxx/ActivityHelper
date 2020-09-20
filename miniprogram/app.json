@@ -2,8 +2,7 @@
   "pages": [
     "pages/home/home",
     "pages/discovery/discovery",
-    "pages/me/me",
-    "pages/test/test"
+    "pages/me/me"
   ],
   "subpackages": [
     {
@@ -55,6 +54,7 @@
   },
   "sitemapLocation": "sitemap.json",
   "usingComponents": {
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
     "van-tabbar": "@vant/weapp/tabbar/index",
     "van-tabbar-item": "@vant/weapp/tabbar-item/index",
     "van-tab": "@vant/weapp/tab/index",

@@ -102,7 +102,7 @@
           "id": 4,
           "name": "regDetails",
           "pathName": "packageB/regDetails/regDetails",
-          "query": "aid=0d06a2fd5f282af60049935b10c59212",
+          "query": "aid=8e5be7055f670211002c6f6c55974c70",
           "scene": null
         },
         {
@@ -151,7 +151,7 @@
           "id": 11,
           "name": "activityDetail",
           "pathName": "packageA/activityDetail/activityDetail",
-          "query": "aid=0d06a2fd5f282af60049935b10c59212",
+          "query": "aid=8e5be7055f670211002c6f6c55974c70",
           "scene": null
         },
         {
