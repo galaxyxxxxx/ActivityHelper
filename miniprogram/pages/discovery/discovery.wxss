@@ -40,7 +40,7 @@ page{
 }
 
 .calendar {
-  --calendar-height: 250px;
+  --calendar-height: 300px;
 }
 
 .date-head{

@@ -8,10 +8,8 @@
     {
       "root": "packageA",
       "pages": [
-        "index/index",
         "list/list",
         "info/info",
-        "calendar/canlendar",
         "activityDetail/activityDetail"
       ]
     },
@@ -25,11 +23,22 @@
       ]
     }
   ],
+  "preloadRule": {
+    "pages/home/home": {
+      "packages": ["packageA"]
+    },
+    "pages/discovery/discovery": {
+      "packages": ["packageA"]
+    },
+    "pages/me/me": {
+      "packages": ["packageA", "packageB"]
+    }
+  },
   "window": {
     "backgroundColor": "#f7f7f7",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#f7f7f7",
-    "navigationBarTitleText": "BJUT活动助手",
+    "navigationBarTitleText": "校园活动助手",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

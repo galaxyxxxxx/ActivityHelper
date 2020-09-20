@@ -52,6 +52,20 @@ Page({
           this.setData({
             actMain: res.data[0]
           })
+          collect.where({
+            _openid: res.data[0]._openid,
+            aid: res.data[0]._id
+          })
+          .get()
+          .then(
+            res2 => {
+              console.log("main",res2)
+              that.setData({
+                '${actMain.isCollected}' : res2.data.length == 1 ? true : false
+              })
+              actMain.isCollected = res2.data.length == 1 ? true : false
+            },
+          )
         }
       )
 
@@ -81,6 +95,17 @@ Page({
                   currentValue.isCollected = res2.data.length == 1 ? true : false
                 },
               )
+
+              db.collection('register').where({
+                aid: currentValue._id
+              })
+              .get()
+              .then(
+                res3 => {
+                  currentValue.regNum = res3.data.length 
+                },
+              )
+
           })
           setTimeout(() => {
             this.setData({
@@ -107,7 +132,7 @@ Page({
         actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
       })
       .orderBy('actTimeEnd', 'desc')
-      .skip(5 * this.data.pageId)
+      .skip(1 + 5 * this.data.pageId)
       .limit(5)
       .get()
       .then(
@@ -237,7 +262,7 @@ Page({
   viewMore(e) {
     if (e.mark.starMark !== "star") {
       console.log("已点击查看更多按钮 列表", e)
-      wx.navigateTo({
+      wx.redirectTo({
         url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
       })
     }
@@ -267,7 +292,7 @@ Page({
   },
   linkToMe() {
     wx.navigateTo({
-      url: '../../packageA/info/info',
+      url: '../../packageA/info/info?openid=' + this.data.openid,
     })
   }
 })

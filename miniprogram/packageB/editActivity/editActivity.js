@@ -9,8 +9,8 @@ const act = db.collection('activity')
 
 const cite = {
   线上: [''],
-  本部: ['', '一教', '二教', '三教', '四教', '南操', '北操'],
-  通州: ['', '一报', '二报', '三报', '四报']
+  本部: ['', '一教', '二教', '三教', '四教', '南操', '北操', '礼堂', '奥运'],
+  通州: ['', '一报', '二报', '三报', '四报', '操场', '一教', '二教', '三教', '四教']
 };
 const types = {
   文娱类: [' ', '歌赛', '演讲比赛'],
@@ -110,7 +110,7 @@ Page({
         form.numMax = res.data[0].numMax
         form.regNum = res.data[0].regNum
         form.addr1 = res.data[0].addr[0] + res.data[0].addr[1]
-        form.addr2 = res.data[0].addr[2] + res.data[0].addr[3]
+        form.addr2 = (res.data[0].addr[2] + res.data[0].addr[3]) || ""
         form.addr = res.data[0].addr
         form.type_id = res.data[0].type.trim()
         form.actTimeBegin = res.data[0].actTimeBegin
@@ -469,34 +469,9 @@ Page({
             reject1("fail update");
           }
         })
-        // db.collection('activity').doc(form.id).set({
-        //   data: {
-        //     title: form.title,
-        //     host: form.host,
-        //     numMax: form.numMax,
-        //     regNum: form.regNum,
-        //     addr: form.addr,
-        //     type: form.type,
-        //     actTimeBegin: form.actTimeBegin,
-        //     actTimeEnd: form.actTimeEnd,
-        //     regTimeBegin: form.regTimeBegin,
-        //     regTimeEnd: form.regTimeEnd,
-        //     description: form.description,
-        //     cover: form.coverUrl,
-        //   },
-        //   success: function (res) {
-        //     console.log("finish add: ", res)
-        //     resolve1();
-        //   }, 
-        //   fail: function (err) {
-        //     console.error(err);
-            
-        //     reject1("fail update");
-        //   }
-        // })
       }).then(() => {
         wx.hideLoading();
-        wx.navigateTo({
+        wx.redirectTo({
           url: `../../packageA/activityDetail/activityDetail?aid=${form.id}`,
         });
       })

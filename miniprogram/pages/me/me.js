@@ -102,7 +102,7 @@ Page({
                   })
                 },
                 fail(err) {
-                  console.log("参与历史加载失败", err)
+                  console.log("报名列表加载失败", err)
                 }
               })
           })
@@ -131,7 +131,7 @@ Page({
                   })
                 },
                 fail(err) {
-                  console.log("参与历史加载失败", err)
+                  console.log("报名列表加载失败", err)
                 }
               })
           })
@@ -230,7 +230,7 @@ Page({
                   })
                 },
                 fail(err) {
-                  console.log("参与历史加载失败", err)
+                  console.log("报名列表加载失败", err)
                 }
               })
           })
@@ -241,7 +241,7 @@ Page({
       })
   },
 
-  //加载参与历史
+  //加载报名列表
   loadRegister() {
     let openid = this.data.openid
     db.collection('register').where({ //参与活动
@@ -262,7 +262,7 @@ Page({
                   })
                 },
                 fail(err) {
-                  console.log("参与历史加载失败", err)
+                  console.log("报名列表加载失败", err)
                 }
               })
           })

@@ -43,7 +43,7 @@
 <!-- 活动概要 -->
 <van-cell-group class="intro">
   <van-cell title="活动概要介绍" required border="{{false}}"/>
-  <van-field value="{{ description }}" data-field="description"  title-size="0px" type="textarea" placeholder="请输入500字以内的活动概要" rows="10" maxlength="500" bind:change="onFormChange" autosize show-word-limit>
+  <van-field value="{{ description }}" data-field="description"  title-size="0px" type="textarea" placeholder="请输入500字以内的活动概要" rows="10" maxlength="500" bind:change="onFormChange" autosize show-word-limit z-index="1" >
   </van-field>
 </van-cell-group>
 

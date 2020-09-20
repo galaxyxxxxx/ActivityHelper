@@ -1,9 +1,5 @@
 <!-- 整体统计 -->
-<view class="top">
-	<van-row>
-		<van-col span="10">报名人数 {{reg_number}}/{{max_number}}</van-col>
-		<!-- <van-col span="8" offset="6"><button type="primary" size="mini" plain="true" bindtap="excel">数据导出</button></van-col> -->
-	</van-row>
+<view class="top">报名人数：{{reg_number}}{{max_number!=''?'/':''}}{{max_number}}
 </view>
 
 <!-- 搜索栏 -->
@@ -19,3 +15,5 @@
 		</van-collapse-item>
 	</view>
 </van-collapse>
+
+<van-empty wx:if="{{regStu.length == 0}}" description="暂无内容"></van-empty>

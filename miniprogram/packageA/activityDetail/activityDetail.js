@@ -6,6 +6,7 @@ const db = wx.cloud.database({
   env: "x1-vgiba",
 });
 const app = getApp()
+const _ = db.command
 Page({
   data: {
     openid: "",
@@ -44,60 +45,29 @@ Page({
       .get({
         success: (res) => {
           var raw = res.data[0] || {}
-          // if (raw != null) {
-          //   raw.actTimeBegin = util.showTime(raw.actTimeBegin)
-          //   raw.actTimeEnd = util.showTime(raw.actTimeEnd)
-          // }
           this.setData({
             activity_detail: raw || {},
-          });
-
-          wx.cloud.callFunction({
-            name: "getopid",
-            success: (res) => {
-              let openid = "";
-              try {
-                openid = res.result.openid;
-              } catch (error) {}
-              openid ||
-                wx.showToast({
-                  title: "未登录",
-                  icon: "none",
-                });
-              this.setData({
-                openid: openid,
-              });
-              setTimeout(() => {
-                openid ||
-                  wx.navigateTo({
-                    url: "/miniprogram/packageA/info/info",
-                  });
-              }, 1000);
-
-              this.checkRegister();
-            },
           });
         },
       });
 
     // 查询报名情况
-    setTimeout(() => {
-      db.collection("register").where({
-          aid: this.data.activity_detail._id,
-          openid: this.data.openid
-        })
-        .get()
-        .then(
-          res => {
-            console.log("tset", res)
-            if (res.data.length > 0) { //数据大于零 说明被报名过了
-              this.setData({
-                alreadyTaken: true
-              })
-            }
+    console.log(aid)
+    db.collection("register").where({
+      aid: aid,
+      openid: this.data.openid
+    })
+      .get()
+      .then(
+        res => {
+          console.log("tset", res)
+          if (res.data.length > 0) { //数据大于零 说明被报名过了
+            this.setData({
+              alreadyTaken: true
+            })
           }
-        )
-    }, 800);
+        }
+      )
   },
   // 一个用来获取openid的回调函数
   cb: function (res) {
@@ -106,24 +76,29 @@ Page({
       openid: res
     })
   },
-  // 报名检测
-  checkRegister() {
-    let query = {
-      openid: this.data.openid,
-      aid: this.data.activity_detail._id,
-    };
-    db.collection("register")
-      .where(query)
-      .get({
-        success: (res) => {
-          this.setData({
-            alreadyTaken: !!res.data.length,
-          });
-        },
-      });
-  },
+
   // 报名
   submit() {
+    // 查询user表
+    db.collection('user').where({
+      openid: this.data.openid
+    }).get().then(
+      res => {
+        if (!res.data.length) {
+          wx.showToast({
+            title: '请先完善个人信息',
+            time: 1500
+          })
+          setTimeout(() => {
+            wx.hideToast()
+            wx.navigateTo({
+              url: `../info/info?openid=${this.data.openid}`,
+            });
+          }, 1500);
+        }
+      }
+    )
+    // 检测是否已报名
     if (this.data.alreadyTaken == true) {
       wx.showToast({
         title: "已报名",
@@ -133,7 +108,7 @@ Page({
     }
 
     let today = new Date();
-    today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1 }/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
+    today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
     console.log("today", today, this.data.activity_detail)
     if (this.data.activity_detail.actTimeBegin > today || this.data.activity_detail.actTimeEnd < today) {
       wx.showToast({
@@ -142,52 +117,33 @@ Page({
       });
       return;
     }
-
     db.collection("register").add({
       data: {
         aid: this.data.activity_detail._id,
         openid: this.data.openid
       },
       success: (res) => {
+        setTimeout(() => {
+          this.updateRegNum();
+        }, 1000)
         wx.showToast({
           title: "报名成功",
         });
         this.setData({
           alreadyTaken: true,
         });
-        updateRegNum();
       },
     });
   },
   // 更新报名人数
-  updateRegNum() {
-    db.collection("activity").doc(this.data.activity_detail._id).set({
-      data: {
-        title: this.data.activity_detail.title,
-        host: this.data.activity_detail.host,
-        numMax: this.data.activity_detail.numMax,
-        regNum: this.data.activity_detail.regNum + 1,
-        addr: this.data.activity_detail.addr,
-        type: this.data.activity_detail.type,
-        actTimeBegin: this.data.activity_detail.actTimeBegin,
-        actTimeEnd: this.data.activity_detail.actTimeEnd,
-        regTimeBegin: this.data.activity_detail.regTimeBegin,
-        regTimeEnd: this.data.activity_detail.regTimeEnd,
-        description: this.data.activity_detail.description,
-        cover: this.data.activity_detail.coverUrl,
-      },
-      success: function(res){
-        console.log("报名人数增加一个",res)
-      }
-    })
-  },
+  
   // 分享按钮
   onShareAppMessage(options) {
     var that = this;
     var form = this.data.activity_detail
     return {
-      title: this.data.activity_detail.title,
-      imageUrl: this.data.activity_detail.coverUrl,
+      title: form.title,
+      imageUrl: form.coverUrl,
       success: function (res) {
         // 转发成功
         that.shareClick();
@@ -257,4 +213,20 @@ Page({
       comment_input: e.detail,
     });
   },
+  // 右上角分享
+  onShareAppMessage(options) {
+    var that = this;
+    var form = this.data.activity_detail
+    return {
+      title: form.title,
+      imageUrl: form.coverUrl,
+      success: function (res) {
+        // 转发成功
+        that.shareClick();
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  }
 });

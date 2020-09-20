@@ -1,4 +1,3 @@
-
 <!-- 封面图 -->
 <view>
 	<image src="{{activity_detail.cover==''? defaultPic: activity_detail.cover}}" mode="widthFix" class="cover"></image>
@@ -10,9 +9,12 @@
 	<view class="title">{{activity_detail.title}}</view>
 	<!-- 报名&分享 按钮 -->
 	<view class="registration">
-		<van-button color="#80a0c0" size="mini" round disabled="{{alreadyTaken}}" bind:click="submit">
-			{{alreadyTaken?"已报名":"报名"}}</van-button>
-		<van-icon class="share" name="share" size="40rpx" />
+		<van-button color="#80a0c0" size="small" round disabled="{{alreadyTaken}}" bind:click="submit">
+			{{alreadyTaken?"已报名":"报名"}}
+		</van-button>
+		<van-button open-type="share" bind:click="onShareAppMessage" custom-style="border: 1px transparent;height:60rpx;padding:0">
+			<van-icon name="share" size="50rpx" style="vertical-align: middle;height:20rpx;color:#80a0c0"/>
+		</van-button>
 	</view>
 	<!-- 活动介绍 -->
 	<view class="detail">{{activity_detail.description}}</view>
@@ -36,5 +38,4 @@
 			<van-button color="#80a0c0" size="small" round bind:click="submitComment">评论</van-button>
 		</view>
 	</view>
-
 </view>

@@ -1,12 +1,31 @@
-# 云开发 quickstart
+# 活动助手Activity Helper
 
-这是云开发的快速启动指引，其中演示了如何上手使用云开发的三大基础能力：
+微信小程序云开发挑战赛参赛作品
 
-- 数据库：一个既可在小程序前端操作，也能在云函数中读写的 JSON 文档型数据库
-- 文件存储：在小程序前端直接上传/下载云端文件，在云开发控制台可视化管理
-- 云函数：在云端运行的代码，微信私有协议天然鉴权，开发者只需编写业务逻辑代码
+参赛团队：工大小分队
 
-## 参考文档
+## 项目名称
 
-- [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
+活动助手Activity Helper
 
+## 项目介绍
+
+一个集活动信息发布、浏览、收藏、报名等功能于一体的活动信息汇总平台。
+
+## 项目效果截图
+
+
+
+## 项目体验小程序二维码
+
+
+
+后台内容管理系统：https://x1-vgiba-1302076395.tcloudbaseapp.com/tcb-cms/
+
+## 部署教程
+
+部署方式及后端相关服务说明见[deployment.md](./deployment.md)。
+
+## 开源许可
+
+《活动助手Activity Helper》源代码基于 `GPL-3.0` 协议开源，可用于商业用途。点击 [LICENSE](./LICENSE) 查看许可协议。

@@ -1,9 +1,10 @@
 .top{
   text-align: center;
-  color: darkcyan;
+  color: #80a0c0;
   font-size: 14px;
   line-height: 2rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .userDetail{

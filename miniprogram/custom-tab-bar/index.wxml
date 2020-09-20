@@ -2,10 +2,7 @@
   active="{{ active }}"
   active-color="#43596e"
   inactive-color="#80a0c0" 
-  bind:change="onChange">
-  <!-- <van-tabbar-item wx:for="{{ list }}" wx:key="item" icon="{{ item.icon }}">
-    {{item.text}}
-  </van-tabbar-item> -->
+  bind:change="onChange" style="position: fixed">
   
   <van-tabbar-item icon="wap-home"></van-tabbar-item>
   <van-tabbar-item icon="weapp-nav"></van-tabbar-item>

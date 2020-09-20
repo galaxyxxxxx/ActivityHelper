@@ -78,9 +78,8 @@ Page({
   },
   //切换顶部tab
   onChangeTab(event) {
-    console.log(event)
     this.setData({
-      tabbar: e.detail.name
+      tabbar: event.detail.name
     })
   },
 

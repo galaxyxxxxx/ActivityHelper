@@ -16,6 +16,7 @@
     "autoAudits": false,
     "showShadowRootInWxmlPanel": true,
     "scopeDataCheck": false,
+    "uglifyFileName": false,
     "checkInvalidKey": true,
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
@@ -109,7 +110,7 @@
           "id": 5,
           "name": "editActivity",
           "pathName": "packageB/editActivity/editActivity",
-          "query": "aid=0d06a2fd5f282af60049935b10c59212",
+          "query": "aid=b8df3bd65f6705720022e202586fde9c",
           "scene": null
         },
         {
@@ -141,13 +142,6 @@
           "scene": null
         },
         {
-          "id": 10,
-          "name": "pages/test/test",
-          "pathName": "pages/test/test",
-          "query": "",
-          "scene": null
-        },
-        {
           "id": 11,
           "name": "activityDetail",
           "pathName": "packageA/activityDetail/activityDetail",
@@ -162,7 +156,7 @@
           "scene": null
         },
         {
-          "id": 13,
+          "id": 12,
           "name": "list",
           "pathName": "packageA/list/list",
           "query": "type=a64f68025f630fb201ecc251636ec86e",

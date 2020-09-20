@@ -1,6 +1,9 @@
 page{
   background-color: white;
 }
+van-icon {
+  vertical-align: middle;
+}
 /* 封面 */
 .cover {
   display: flex;
@@ -31,9 +34,7 @@ page{
   display: flex;
   float: right;
 }
-.share{
-  margin-left: 10rpx;
-}
+
 /* 活动详情 */
 .detail {
   display: block;
@@ -42,6 +43,7 @@ page{
   font-size: 26rpx;
   line-height: 45rpx;
   width: 100%;
+  text-align: justify;
 }
 
 .comment{
@@ -57,11 +59,13 @@ page{
 
 .comment_text{
   font-size: 25rpx;
+  color: #454547;
 }
 
 .commentShell {
   margin-top: 50rpx;
   height: 30rpx;
+  margin-bottom: 100rpx;
 }
 
 .inputComment{

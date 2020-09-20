@@ -13,7 +13,6 @@ exports.main = async (event, context) => {
         title: form.title,
         host: form.host,
         numMax: form.numMax,
-        regNum: form.regNum,
         addr: form.addr,
         type: form.type_id,
         actTimeBegin: form.actTimeBegin,

@@ -10,8 +10,8 @@ const act = db.collection('activity')
 
 const cite = {
   线上: [''],
-  本部: ['', '一教', '二教', '三教', '四教', '南操', '北操'],
-  通州: ['', '一报', '二报', '三报', '四报']
+  本部: ['', '一教', '二教', '三教', '四教', '南操', '北操', '礼堂', '奥运'],
+  通州: ['', '一报', '二报', '三报', '四报', '操场', '一教', '二教', '三教', '四教']
 };
 const types = {
   文娱类: ['', '歌赛', '演讲比赛'],
@@ -19,7 +19,6 @@ const types = {
   学习类: ['', '竞赛类', '考前模考'],
   社交类: ['', '舞会', '学院联谊']
 };
-
 
 Page({
   data: {
@@ -51,6 +50,7 @@ Page({
     address: [{
       values: Object.keys(cite),
       className: 'column1',
+      defalutIndex: 0,
     },
     {
       values: cite['线上'],
@@ -344,9 +344,11 @@ Page({
       new Promise((resolve1, reject1) => {
         console.log("in Promise");
         form.coverUrl = this.data.formData.coverUrl
+        let openid = this.data.openid
         console.log(form.coverUrl);
         db.collection('activity').add({
           data: {
+            openid: openid,
             title: form.title,
             host: form.host,
             numMax: form.numMax,
@@ -368,7 +370,7 @@ Page({
         })
       }).then(() => {
         wx.hideLoading();
-        wx.navigateTo({
+        wx.redirectTo({
           url: `../../packageA/activityDetail/activityDetail?aid=${aid}`,
         });
       })

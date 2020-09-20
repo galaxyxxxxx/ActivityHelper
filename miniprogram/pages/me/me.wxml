@@ -4,8 +4,6 @@
 		<view class="cover" bindtap="edit">
 			<open-data type="userAvatarUrl"></open-data>
 		</view>
-
-
 		<view class="edit_setting">
 			<van-button class="edit" custom-style="width:180rpx" size="small" round="{{true}}" bindtap="edit" color="#80a0c0" plain>编辑资料</van-button>
 			<view class="setting" bindtap="setting">
@@ -20,7 +18,7 @@
 			<!-- 收藏列表 -->
 			<van-tab title="收藏列表">
 				<view wx:for="{{actCollected}}" wx:key="index" >
-					<navigator url="../../packageA/activityDetail/activityDetail?aid={{item.aid}}">
+					<navigator url="../../packageA/activityDetail/activityDetail?aid={{item._id}}">
 						<view class="actInfo">
 							<view class="actName">{{item.title}}</view>
 							<view class="actTime">{{item.actTimeBegin}}-{{item.actTimeEnd}}</view>
@@ -28,10 +26,10 @@
 					</navigator>
 				</view>
 			</van-tab>
-			<!-- 参与历史 -->
-			<van-tab title="参与历史">
+			<!-- 报名列表 -->
+			<van-tab title="报名列表">
 				<view wx:for="{{actRegistered}}" wx:key="index" >
-					<navigator url="../../packageA/activityDetail/activityDetail?aid={{item.aid}}">
+					<navigator url="../../packageA/activityDetail/activityDetail?aid={{item._id}}">
 						<view class="actInfo">
 							<view class="actName">{{item.title}}</view>
 							<view class="actTime">{{item.actTimeBegin}}-{{item.actTimeEnd}}</view>
