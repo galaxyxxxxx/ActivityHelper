@@ -23,9 +23,9 @@
 
 ![5](./images/5.png)
 
-![be1](C:\Users\lbyto\OneDrive\Code\ActivityHelper\images\be1.png)
+![be1](./images/be1.png)
 
-![be2](C:\Users\lbyto\OneDrive\Code\ActivityHelper\images\be2.png)
+![be2](./images/be2.png)
 
 ## 项目体验小程序二维码
 
