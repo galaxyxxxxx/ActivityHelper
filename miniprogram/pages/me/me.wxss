@@ -44,7 +44,7 @@ van-icon {
 
 .newAct{
   z-index: 5;
-  position: absolute;
+  position: fixed;
   top: 80%;
   left: 79%;
   opacity: 0.4;

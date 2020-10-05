@@ -19,6 +19,8 @@ Page({
     month: '',
     day: '',
 
+    loading:false,
+
     //顶部主活动
     actMain: {},
 
@@ -40,6 +42,7 @@ Page({
     let today = this.formatDate(new Date())
 
     var openid = this.data.openid
+    var obj = {}
     // 加载主图
     act.where({
       actTimeEnd: _.gte(today)
@@ -49,21 +52,17 @@ Page({
       .get()
       .then(
         res => {
-          this.setData({
-            actMain: res.data[0]
-          })
-          collect.where({
-            _openid: res.data[0]._openid,
-            aid: res.data[0]._id
+          obj = res.data[0]
+          db.collection('register').where({
+            aid: res.data._id
           })
           .get()
           .then(
-            res2 => {
-              console.log("main",res2)
-              that.setData({
-                '${actMain.isCollected}' : res2.data.length == 1 ? true : false
+            res3 => {
+              obj.regNum = res.data.length
+              this.setData({
+                actMain: obj
               })
-              actMain.isCollected = res2.data.length == 1 ? true : false
             },
           )
         }
@@ -72,7 +71,9 @@ Page({
     // 加载列表
     setTimeout(() => {
       console.log("openid ttt", that.data.openid)
-
+      this.setData({
+        loading:true
+      })
       act.where({
         actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
       })
@@ -105,16 +106,15 @@ Page({
                   currentValue.regNum = res3.data.length 
                 },
               )
-
           })
           setTimeout(() => {
             this.setData({
               acting: res.data //获取到活动的raw数据 直接赋值给acting
             })
-          }, 1000);
+          }, 300);
         }
       )
-    }, 800);
+    }, 200);
   },
   // 一个用来获取openid的回调函数
   cb: function (res) {

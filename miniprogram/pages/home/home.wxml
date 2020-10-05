@@ -1,7 +1,8 @@
 <view class="contain">
-	<view class="tabPart">
+	<!-- 使用acting是否加载完成 来进行大图活动的显示控制 | 原因是为了拖延一下时间 使得内容加载完后再渲染前端 -->
+	<view class="tabPart" wx:if="{{loading}}"> 
 		<!-- 1未来的恰饭版块 | 大图显示主活动  -->
-		<view class="mainPart" wx:if="{{actMain}}">
+		<view class="mainPart" >
 			<!-- 1.1时间 -->
 			<view class="actTime">{{month}}.{{day}} · {{year}}</view>
 			<view class="cover" bindtap="linkToMe">

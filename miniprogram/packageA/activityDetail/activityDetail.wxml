@@ -39,3 +39,21 @@
 		</view>
 	</view>
 </view>
+<view>
+	<van-goods-action>
+  <van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickIcon" />
+  <van-goods-action-button
+		color="#80a0c0"
+    text="收藏"
+    type="warning"
+		plain
+    bind:click="onClickButton"
+  />
+	<van-goods-action-button
+		color="#80a0c0"
+    text="立即报名"
+    type="warning"
+    bind:click="onClickButton"
+  />
+</van-goods-action>
+</view>

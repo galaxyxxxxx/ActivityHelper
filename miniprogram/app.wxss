@@ -18,6 +18,13 @@ button::after{
   border: none;
 }
 
+.null{
+  background-color: transparent;
+  height: 150rpx;
+  width: 100%;
+  color: #cfcfcf;
+  text-align: center;
+}
 
 page {
   background-color: #f7f7f7;

@@ -4,8 +4,7 @@
     "pages/discovery/discovery",
     "pages/me/me"
   ],
-  "subpackages": [
-    {
+  "subpackages": [{
       "root": "packageA",
       "pages": [
         "list/list",
@@ -46,8 +45,7 @@
     "color": "#000000",
     "selectedColor": "#000000",
     "backgroundColor": "#f7f7f7",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/home/home",
         "text": "HOME"
       },
@@ -90,7 +88,10 @@
     "van-collapse": "@vant/weapp/collapse/index",
     "van-collapse-item": "@vant/weapp/collapse-item/index",
     "van-grid": "@vant/weapp/grid/index",
-    "van-grid-item": "@vant/weapp/grid-item/index", 
-    "van-empty": "@vant/weapp/empty/index"
+    "van-grid-item": "@vant/weapp/grid-item/index",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-goods-action": "@vant/weapp/goods-action/index",
+    "van-goods-action-icon": "@vant/weapp/goods-action-icon/index",
+    "van-goods-action-button": "@vant/weapp/goods-action-button/index"
   }
 }

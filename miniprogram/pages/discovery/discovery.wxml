@@ -9,6 +9,8 @@
 				<van-grid-item link-type="navigateTo" wx:for="{{actType}}" wx:key="item" icon="{{item.type_icon}}"
 					url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" />
 			</van-grid>
+			<!-- 由于tabbar的bug而加的空白框 -->
+			<view class="null" wx:if="{{acting.length != 0}}"></view>
 		</van-tab>
 
 		<!-- 日历查询 -->
@@ -27,6 +29,8 @@
 						</block>
 						<view class="noEvents" wx:if="{{actLine.length == 0 }}">No Events</view>
 					</scroll-view>
+					<!-- 由于tabbar的bug而加的空白框 -->
+					<view class="null" wx:if="{{actLine != 0}}"></view>
 				</view>
 			</view>
 

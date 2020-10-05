@@ -82,10 +82,10 @@ Page({
               this.setData({
                 acting: res.data //获取到活动的raw数据 直接赋值给acting
               })
-            }, 700);
+            }, 50);
           }
         )
-    }, 800);
+    }, 100);
 
 
   },

@@ -83,6 +83,7 @@ Page({
   // 滚动触底加载
   onReachBottom() {
     let openid = this.data.openid
+    this.data.pageId = this.data.pageId + 1
     db.collection('collect').where({ //参与活动
         _openid: openid
       })
