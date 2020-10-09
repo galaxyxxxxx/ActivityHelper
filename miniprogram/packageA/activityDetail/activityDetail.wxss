@@ -69,18 +69,20 @@ van-icon {
 }
 
 .inputComment{
-  display: inline-block;
+  /* display: inline-block; */
+  background-color: aqua;
   border: #80a0c0 1px solid;
   border-radius: 20rpx;
   overflow: hidden;
-  width: 80%;
+  width: 95%;
 }
 
 /* 评论按钮 */
 .submitComment{
-  align-items : center;
-  display: flex;
-  float: right;
+  display: inline-block;
+  /* align-items : center; */
+  /* display: flex; */
+  /* float: right; */ 
 }
 
 .activity-time {
@@ -89,3 +91,10 @@ van-icon {
   justify-content: space-around;
 }
 
+.null{
+  background-color: transparent;
+  height: 150rpx;
+  width: 100%;
+  color: #cfcfcf;
+  text-align: center;
+}

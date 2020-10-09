@@ -29,17 +29,28 @@
 		</block>
 	</view>
 	<!-- 评论输入框 -->
-	<view class='commentShell'>
-		<view class="inputComment">
+	<view class="commentShell">
+	<van-row>
+		<!-- 评论输入框 -->
+		<van-col span="19">
+			<view class="inputComment">
 			<van-field custom-style="widthFix" value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}"
 				type="textarea" autosize fixed="true" bind:change="onChange" />
-		</view>
+			</view>
+		</van-col>
+		<!-- 评论按钮 -->
+		<van-col span="5">
 		<view class="submitComment">
 			<van-button color="#80a0c0" size="small" round bind:click="submitComment">评论</van-button>
 		</view>
+		</van-col>
+	</van-row>
 	</view>
+	<!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
+	<view class="null" wx:if="{{acting.length != 0}}"></view>
+
 </view>
-<view>
+<view style="z-index:5">
 	<van-goods-action>
   <van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickIcon" />
   <van-goods-action-button
