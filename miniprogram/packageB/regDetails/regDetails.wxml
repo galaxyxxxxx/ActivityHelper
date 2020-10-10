@@ -1,5 +1,9 @@
 <!-- 整体统计 -->
-<view class="top">报名人数：{{reg_number}}{{max_number!=''?'/':''}}{{max_number}}
+<view class="top-holder">
+	<view class="top">
+		报名人数：{{reg_number}}{{max_number!=''?'/':''}}{{max_number}}
+	</view>
+	<van-button type="primary" size="small" round="{{true}}" bindtap="onClickGenExcel" color="#80a0c0" plain class="button2">导出为Excel</van-button>
 </view>
 
 <!-- 搜索栏 -->

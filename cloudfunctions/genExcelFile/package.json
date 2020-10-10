@@ -1,5 +1,5 @@
 {
-  "name": "updateActivity",
+  "name": "genExcelFile",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,6 +9,7 @@
   "author": "Li Boyan <lbytony@126.com>",
   "license": "ISC",
   "dependencies": {
+    "node-xlsx": "^0.15.0",
     "wx-server-sdk": "^2.3.0"
   }
 }
