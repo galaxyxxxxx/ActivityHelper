@@ -1,5 +1,7 @@
 var util = require('../../utils/util.js')
 
+import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
+
 wx.cloud.init({
   env: 'x1-vgiba'
 })
@@ -89,12 +91,21 @@ Page({
     console.log(1)
   },
   onClickGenExcel() {
-    wx.showLoading({
-      title: '正在导出...',
+    Dialog.confirm({
+      title: '生成Excel文件链接',
+      message: '小程序暂不支持打开外部链接，可点击复制链接后在浏览器中粘贴查看。',
+      confirmButtonText: "复制链接"
+    }).then(() => {
+      // on confirm
+      wx.showLoading({
+        title: '正在导出...',
+      });
+      console.log(this.data.regStu);
+      let that = this;
+      that.saveExcel();
+    }).catch(() => {
+      // on cancel
     });
-    console.log(this.data.regStu);
-    let that = this;
-    that.saveExcel();
   },
   saveExcel() {
     let that = this

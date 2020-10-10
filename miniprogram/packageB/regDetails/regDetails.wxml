@@ -1,4 +1,5 @@
 <!-- 整体统计 -->
+<van-dialog id="van-dialog" />
 <view class="top-holder">
 	<view class="top">
 		报名人数：{{reg_number}}{{max_number!=''?'/':''}}{{max_number}}
