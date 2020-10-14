@@ -11,7 +11,7 @@
       <view class="act" wx:for="{{acting}}" wx:key="item" bindtap="viewMore" data-id="{{item._id}}">
         <!-- 活动标签 -->
         <view class="actLable">
-          <van-icon name="label-o" size="40rpx" color="#80a0c0" />{{item.actTimeBegin}} - {{item.actTimeEnd}}
+          <van-icon name="label-o" size="40rpx" color="var(--color-theme)" />{{item.actTimeBegin}} - {{item.actTimeEnd}}
         </view>
         <!-- 活动地址 -->
         <view class="actAddr">{{item.addr}}</view>
@@ -24,8 +24,8 @@
             <text decode="{{true}}">| &ensp;&ensp;&ensp;&ensp;</text>{{item.host}}举办</view>
             <view class="collect" bindtap="collect" mark:starMark="star" data-collectId="{{item._id}}"
 							data-index="{{index}}">
-							<van-icon name="star" custom-style="color: gold" size="40rpx" wx:if="{{item.isCollected}}" />
-							<van-icon name="star-o" custom-style="color: gold" size="40rpx" wx:if="{{!item.isCollected}}" />
+							<van-icon name="star" custom-style="color: gold" size="50rpx" wx:if="{{item.isCollected}}" />
+							<van-icon name="star-o" custom-style="color: gold" size="50rpx" wx:if="{{!item.isCollected}}" />
 						</view>
         </view>
       </view>

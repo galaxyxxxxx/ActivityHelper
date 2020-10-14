@@ -1,20 +1,18 @@
 # 开发BJUT活动助手时遇到的技术性问题
 ____
 
-`[toc]`
-
-##  :fa-cog spin:  IOS正常但Android有问题时 
+##    IOS正常但Android有问题时 
 * 考虑是不是用了`ES6`特性的问题
 * 可以使用`babel`进行转换
 
-## :fa-cog spin: Content-type
+##  Content-type
 * 官网示例代码中content-type设置为'application/json'
 但微信开发工具升级后(目前是0.12),请求的header的Content-type写法变了,要改成:
 ```
 header: { content-type: 'json' }
 ```
 
-## :fa-cog spin: 关键词 this & that
+##  关键词 this & that
 * this是相对于当前函数而言的。
 * 如果在onLoad里定义了一个函数,并且需要调用根部数据
 则可以在onLoad里先定义一个变量that,将this赋值给that
@@ -48,7 +46,7 @@ onLoad : function(options){
      })
 }
 ```
-## :fa-cog spin: 关键词 var & let & const
+##  关键词 var & let & const
 
 * #### var声明的变量会挂在window上,let和const不会
 * #### var声明的变量存在变量提升,即书写代码时使用该变量的位置位于声明前时 不会报错 会得到undefined的该变量,let和const不会
@@ -83,7 +81,7 @@ if(1){
 }
  console.log(a); // 100
  console.log(c)  // 报错:c is not defined  ===> 找不到c这个变量
- ```
+```
 * #### 同一作用域下let和const不能生命同名变量,var可以
 ```
 var a = 100;
@@ -124,10 +122,10 @@ obj.name = 'apple';
 obj.a = 10000;
 console.log(obj);  // {a:10000,name:'apple'}
 ```
-## :fa-cog spin: setData
+##  setData
 * #### 对单个元素进行赋值
 	直接this.setData({`ele` : `ele`})
-    
+  
 * #### 对数组赋值
 	先拼接字符串
 eg:对Stu: ['Li' , 'Yang' , 'Wang']进行某一索引值
@@ -144,8 +142,8 @@ this.setData({
    然后创造obj   ` let obj = {}`
    对obj赋值——类似于数组赋值,在拼接字符串时,后面加上`.属性`即可
    最后用arr.push(obj)
-   
-## :fa-cog spin: 数组push时被覆盖
+  
+##  数组push时被覆盖
 * 问题描述
 这是一个数据库读取事件,actLine被加值后,在下次开启加值时,会将之前加的值替换,但对原本的值无影响,即几次push后,所有push的值都会变成最后一次push的值
 ```
@@ -173,7 +171,7 @@ if(res.data.length != 0){   //查询成功时
 Object.assign() : 将所有可枚举的自有属性的值从一个或多个源对象复制到目标对象,返回目标对象。
 
 
-## :fa-cog spin:  icon与文字对不齐
+##   icon与文字对不齐
 * 问题描述
 使用vant组件库图标时,将icon与文字放在一个view标签里。显示情况,总是icon偏上一些,无论怎样调节字号都无效。
 ```
@@ -189,7 +187,7 @@ van-icon {
 }
 ```
 
-## :fa-cog spin: icon 换行与连续空格
+##  icon 换行与连续空格
 * 换行
 wxml里的`/n`或者`br`都不会被识别;
 通过后台中传入的富文本换行,富文本中的\n会被当作字符串处理;
@@ -228,7 +226,7 @@ nbsp:根据字体设置
 </view>
 ```
 
-## :fa-cog spin: icon 真机调试时超2mb无法调试
+##  icon 真机调试时超2mb无法调试
 * 问题描述
 在微信开发工具里点击真机调试时,显示超过2048kb而无法加载
 * 解决方法
@@ -260,8 +258,8 @@ nbsp:根据字体设置
     }
   ]
  }
- ```
-  
+```
+
 ## 正则表达式
 * [数据来源](https://c.runoob.com/front-end/854)
 * 常用数字校验

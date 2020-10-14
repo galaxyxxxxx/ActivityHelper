@@ -127,10 +127,13 @@ function isNumber(val) {
 
 // 表单验证时用  检验是否为正整数
 function checkRate(number) {
-  const re = /^[0-9]+.?[0-9]*/; //判断正整数/[1−9]+[0−9]∗]∗/   
+  const re = /^[1-9]\d*/; //判断正整数/[1−9]+[0−9]∗]∗/   
+  console.log("正整数校验 开始",number)
   if (!re.test(number) || number == 0) {
+    console.log("正整数校验 失败")
     return false;
   }
+  console.log("正整数校验 成功")
   return true;
 }
 

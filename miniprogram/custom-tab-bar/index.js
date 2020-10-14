@@ -4,18 +4,18 @@ Component({
     list:[
       {
         "url": "/pages/home/home",
-        "icon": 'wap-home',
-        // "text": "HOME"
+        "icon": '../images/icon/homeSelect.svg',
+        "text": "首页"
       },
       {
         "url": "/pages/discovery/discovery",
-        "icon": 'weapp-nav',
-        // "text": "DISCOVERY"
+        "icon": '../images/icon/discoverySelect.svg',
+        "text": "发现"
       },
       {
         "url": "/pages/me/me",
-        "icon": 'manager',
-        // "text": "ME"
+        "icon": '../images/icon/meSelect.svg',
+        "text": "我的"
       }
     ]
   },

@@ -9,11 +9,11 @@
 	<view class="title">{{activity_detail.title}}</view>
 	<!-- 报名&分享 按钮 -->
 	<view class="registration">
-		<van-button color="#80a0c0" size="small" round disabled="{{alreadyTaken}}" bind:click="submit">
+		<van-button color="var(--color-theme)" size="small" round disabled="{{alreadyTaken}}" bind:click="submit">
 			{{alreadyTaken?"已报名":"报名"}}
 		</van-button>
 		<van-button open-type="share" bind:click="onShareAppMessage" custom-style="border: 1px transparent;height:60rpx;padding:0">
-			<van-icon name="share" size="50rpx" style="vertical-align: middle;height:20rpx;color:#80a0c0"/>
+			<van-icon name="share" size="50rpx" style="vertical-align: middle;height:var(--font-size-S);color:var(--color-theme)"/>
 		</van-button>
 	</view>
 	<!-- 活动介绍 -->
@@ -41,7 +41,7 @@
 		<!-- 评论按钮 -->
 		<van-col span="5">
 		<view class="submitComment">
-			<van-button color="#80a0c0" size="small" round bind:click="submitComment">评论</van-button>
+			<van-button color="var(--color-theme)" size="small" round bind:click="submitComment">评论</van-button>
 		</view>
 		</van-col>
 	</van-row>
@@ -54,14 +54,14 @@
 	<van-goods-action>
   <van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickIcon" />
   <van-goods-action-button
-		color="#80a0c0"
+		color="var(--color-theme)"
     text="收藏"
     type="warning"
 		plain
     bind:click="onClickButton"
   />
 	<van-goods-action-button
-		color="#80a0c0"
+		color="var(--color-theme)"
     text="立即报名"
     type="warning"
     bind:click="onClickButton"

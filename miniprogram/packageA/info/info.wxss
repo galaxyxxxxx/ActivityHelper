@@ -1,11 +1,11 @@
 page{
-  background-color: #80a0c07a;
+  background-color: var(--color-theme-background);
 }
 .contain{
   margin-top: 20%;
   width: 100%;
   height: 100%;
-  font-size: 30rpx;
+  font-size: var(--font-size-M);
 }
 .formGroup{
   padding: 7%;
@@ -17,17 +17,17 @@ page{
 }
 .btn-area{
   margin-top: 70rpx;
-  margin-bottom: 30rpx;
+  margin-bottom: var(--font-size-M);
   position: relative;
   left: 5%;
 }
 van-button{
   width: 30%;
-  font-size: 30rpx;
+  font-size: var(--font-size-M);
   margin-left: 50rpx;
 }
 .identify{
-  font-size: 20rpx;
+  font-size: var(--font-size-S);
   line-height: 50rpx;
 }
 .department{

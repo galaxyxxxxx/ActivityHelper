@@ -1,10 +1,53 @@
 <van-tabbar 
   active="{{ active }}"
-  active-color="#43596e"
-  inactive-color="#80a0c0" 
+  active-color="#70a6dc"
+  inactive-color="#707070" 
   bind:change="onChange" style="position: fixed">
   
-  <van-tabbar-item icon="wap-home"></van-tabbar-item>
-  <van-tabbar-item icon="weapp-nav"></van-tabbar-item>
-  <van-tabbar-item icon="manager"></van-tabbar-item>
+  <van-tabbar-item icon="wap-home">
+    <image
+      slot="icon"
+      src="../images/icon/home.svg"
+      mode="aspectFit"
+      style="width: 30px; height: 18px;"
+    />
+    <image
+      slot="icon-active"
+      src="../images/icon/homeSelect.svg"
+      mode="aspectFit"
+      style="width: 30px; height: 18px;"
+    />
+    首页
+  </van-tabbar-item>
+
+  <van-tabbar-item>
+    <image
+      slot="icon"
+      src="../images/icon/discoveryFull.svg"
+      mode="aspectFit"
+      style="width: 30px; height: 18px;"
+    />
+    <image
+      slot="icon-active"
+      src="../images/icon/discoveryFullSelect.svg"
+      mode="aspectFit"
+      style="width: 30px; height: 18px;"
+    />
+    发现
+  </van-tabbar-item>
+
+  <van-tabbar-item icon="manager">
+    <image
+      slot="icon"
+      src="../images/icon/me.svg"
+      mode="aspectFit"
+      style="width: 30px; height: 18px;"
+    />
+    <image
+      slot="icon-active"
+      src="../images/icon/meSelect.svg"
+      mode="aspectFit"
+      style="width: 30px; height: 18px;"
+    />
+    我的</van-tabbar-item>
 </van-tabbar>

@@ -11,12 +11,12 @@ van-icon {
 }
 /* 文字部分 */
 .content{
-  padding: 30rpx;
-  font-size: 20rpx;
+  padding: var(--font-size-M);
+  font-size: var(--font-size-S);
 }
 /* 活动时间 */
 .time{
-  color: #80a0c0;
+  color: var(--color-theme);
   letter-spacing: 2px;
   margin-bottom: 10rpx;
 }
@@ -39,7 +39,7 @@ van-icon {
 .detail {
   display: block;
   color: #868688;
-  margin-top: 30rpx;
+  margin-top: var(--font-size-M);
   font-size: 26rpx;
   line-height: 45rpx;
   width: 100%;
@@ -48,9 +48,9 @@ van-icon {
 
 .comment{
   background-color: #F2F1F6;
-  margin-top: 30rpx;
-  padding: 20rpx;
-  border-radius: 20rpx;
+  margin-top: var(--font-size-M);
+  padding: var(--font-size-S);
+  border-radius: var(--font-size-S);
 }
 
 .comment_time{
@@ -64,15 +64,15 @@ van-icon {
 
 .commentShell {
   margin-top: 50rpx;
-  height: 30rpx;
+  height: var(--font-size-M);
   margin-bottom: 100rpx;
 }
 
 .inputComment{
   /* display: inline-block; */
   background-color: aqua;
-  border: #80a0c0 1px solid;
-  border-radius: 20rpx;
+  border: var(--color-theme) 1px solid;
+  border-radius: var(--font-size-S);
   overflow: hidden;
   width: 95%;
 }

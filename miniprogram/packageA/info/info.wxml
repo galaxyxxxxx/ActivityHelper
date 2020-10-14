@@ -18,9 +18,9 @@
     <!-- 按钮 -->
 		<view class="btn-area">
 			<!-- 认证功能尚未完成 -->
-			<van-button type="primary" size="small" round="{{true}}" bindtap="identify" color="#80a0c0" plain custom-style="width:180rpx">社团认证</van-button>
+			<van-button type="primary" size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx">社团认证</van-button>
 			<van-dialog id="van-dialog"/>
-			<van-button type="primary" formType="submit" size="small" round="{{true}}" bindtap="submit" color="#80a0c0" plain custom-style="width:180rpx">修改信息</van-button>
+			<van-button type="primary" formType="submit" size="small" round="{{true}}" bindtap="submit" color="var(--color-theme)" plain custom-style="width:180rpx">修改信息</van-button>
 		</view>
 
 	</view>

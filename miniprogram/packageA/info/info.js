@@ -141,14 +141,13 @@ Page({
 
   //社团身份认证
   identify(e){
-
     Dialog.confirm({
       context: this,
       // className: 'identify',
-      customStyle : "font-size: 20rpx;line-height: 50rpx;",
+      customStyle : "font-size: var(--font-size-S);line-height: 50rpx;",
       closeOnClickOverlay:"true",
       messageAlign:"left",
-      customStyle:"font-size:20rpx",
+      customStyle:"font-size:var(--font-size-S)",
       confirmButtonText:"申请认证",
       cancelButtonText:"暂不申请",
       message: '认证社团身份后可代表社团发布活动\n\n认证方法\n1 点击申请认证按钮\n2 填写当前页面信息\n\n若信息真实有效\n我们会在48h内完成您的身份认证\n感谢您的加入:D',

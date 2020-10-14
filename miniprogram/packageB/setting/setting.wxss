@@ -1,5 +1,5 @@
 page{
-  background-color: #80a0c07a;
+  background-color: var(--color-theme-background);
   font-size: 25rpx;
   color: #868688;
 }
@@ -21,13 +21,13 @@ page{
 }
 
 .intro{
-  margin-bottom: 30rpx;
+  margin-bottom: var(--font-size-M);
 }
 
 .feedback{
-  margin-bottom: 30rpx;
+  margin-bottom: var(--font-size-M);
 }
 
 .version{
-  margin-bottom:30rpx
+  margin-bottom:var(--font-size-M)
 }

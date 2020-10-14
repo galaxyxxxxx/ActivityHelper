@@ -1,5 +1,5 @@
 var util = require('../../utils/util.js')
-
+import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
 wx.cloud.init({
   env: 'x1-vgiba'
 })
@@ -14,10 +14,10 @@ const cite = {
   通州: ['', '一报', '二报', '三报', '四报', '操场', '一教', '二教', '三教', '四教']
 };
 const types = {
-  文娱类: ['', '歌赛', '演讲比赛'],
-  体育类: ['', '篮球赛', '足球赛', '乒乓球赛'],
-  学习类: ['', '竞赛类', '考前模考'],
-  社交类: ['', '舞会', '学院联谊']
+  演出: ['', '歌赛', '演讲比赛'],
+  体育: ['', '篮球赛', '足球赛', '乒乓球赛'],
+  学习: ['', '竞赛类', '考前模考'],
+  社交: ['', '舞会', '学院联谊']
 };
 
 Page({
@@ -48,24 +48,25 @@ Page({
     showRegDate: false,
 
     address: [{
-      values: Object.keys(cite),
-      className: 'column1',
-      defalutIndex: 0,
-    },
-    {
-      values: cite['线上'],
-      className: 'column2',
-      defalutIndex: 2,
-    }],
+        values: Object.keys(cite),
+        className: 'column1',
+        defalutIndex: 0,
+      },
+      {
+        values: cite['线上'],
+        className: 'column2',
+        defalutIndex: 2,
+      }
+    ],
 
-    actType: []
+    actType: [],
   },
 
   onLoad: function () {
     var that = this;
     wx.cloud.callFunction({
-      name: 'login', 
-      success: function(res) {
+      name: 'login',
+      success: function (res) {
         console.log(res);
         that.setData({
           openid: res.result.openid
@@ -87,7 +88,10 @@ Page({
   },
 
   beforeRead(event) {
-    const { file, callback } = event.detail;
+    const {
+      file,
+      callback
+    } = event.detail;
     callback(file.type === 'image');
   },
   //上传活动图片
@@ -103,9 +107,14 @@ Page({
 
   // 上传图片
   uploadToCloud() {
-    const { fileList } = this.data;
+    const {
+      fileList
+    } = this.data;
     if (!fileList.length) {
-      wx.showToast({ title: '请选择图片', icon: 'none' });
+      wx.showToast({
+        title: '请选择图片',
+        icon: 'none'
+      });
     } else {
       console.log('Before Upload', fileList)
       var picRootPath = "activityCover/" + new Date().getTime()
@@ -169,6 +178,12 @@ Page({
       formData: form
     })
   },
+  onCancelAddr(e) {
+    this.setData({
+      addr : null,
+      showAddr: false,
+    });
+  },
   onCloseAddr() {
     this.setData({
       showAddr: false,
@@ -193,6 +208,12 @@ Page({
     this.setData({
       formData: form
     })
+  },
+  onCancelType(){
+    this.setData({
+      type : null,
+      showType: false,
+    });
   },
   onCloseType() {
     this.setData({
@@ -279,57 +300,84 @@ Page({
   },
 
   checkForm(form) {
-    if (form.title.length == 0 || form.title.length > 30) {
-      wx.showToast({
-        title: '标题应为1-30个字符',
-        icon: 'none',
-        duration: 1500
-      })
-      setTimeout(function () {
-        wx.hideToast()
-      }, 2000)
-      this.setData({
-        title: null
-      })
-    } else if (form.host.length == 0 || form.addr.length == 0 ||
-      form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
-      form.description.length == 0) {
-      wx.showToast({
-        title: '请完成所有必填项',
-        icon: 'none',
-        duration: 1500
-      })
-      setTimeout(function () {
-        wx.hideToast()
-      }, 2000)
-      this.setData({
-        title: null
-      })
-    } else if (!util.checkRate(form.numMax) && form.numMax.length != 0) {
-      console.log('onCheckRate: "', form.numMax, '"')
-      wx.showToast({
-        title: '人数限制应为正整数',
-        icon: 'none',
-        duration: 1500
-      })
-      setTimeout(function () {
-        wx.hideToast()
-      }, 2000)
-      this.setData({
-        numMax: null
-      })
-    } else {
-      return true
-    }
-    return false
+    console.log("进入校验")
+    let res = true;
+    const promise1 = new Promise((resolve, reject) => {
+      console.log("进入校验1")
+      if (form.title.length == 0 || form.title.length > 30) {
+        console.log("校验1 出错")
+        res = false;
+        wx.showToast({
+          title: '标题应为1-30个字符',
+          icon: 'none',
+          duration: 1500
+        })
+        setTimeout(function () {
+          wx.hideToast()
+        }, 2000)
+        this.setData({
+          title: null
+        })
+      }
+    })
+
+    const promise2 = new Promise((resolve, reject) => {
+      // 必填项检查 
+      console.log("进入校验2")
+      if (form.host.length == 0 || form.addr.length == 0 ||
+        form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
+        form.description.length == 0) {
+          console.log("校验2 出错")
+        res = false;
+        wx.showToast({
+          title: '请完成所有必填项',
+          icon: 'none',
+          duration: 1500
+        })
+        setTimeout(function () {
+          wx.hideToast()
+        }, 2000)
+      }
+    })
+
+    const promise3 = new Promise((resolve, reject) => {
+      // 数据可靠性检验
+      console.log("进入校验3")
+      if (form.numMax != "" && !util.checkRate(form.numMax)) {
+        console.log("校验3 出错")
+        res = false;
+        wx.showToast({
+          title: '人数限制应为正整数',
+          icon: 'none',
+          duration: 1500
+        })
+        setTimeout(function () {
+          wx.hideToast()
+        }, 2000)
+        this.setData({
+          numMax: null
+        })
+      }
+    })
+
+    Promise.all([promise1,promise2,promise3])
+    .then((value) => {
+      console.log("最终校验结果",res)
+      // return res;
+    })
+
   },
+
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {
+    console.log("点击提交",e)
+ 
     let aid = ''
-    console.log('onSubmit')
     let form = this.data.formData
-    console.log(form);
+    console.log(form)
     new Promise((resolve, reject) => {
+      // 数据校验
+      console.log("提交promise")
       let checkResult = this.checkForm(form);
       if (checkResult) {
         console.log('onFinal');
@@ -370,9 +418,15 @@ Page({
         })
       }).then(() => {
         wx.hideLoading();
+        wx.showToast({
+          title: '已成功发布',
+          icon: 'success',
+          duration: 1000
+        })
         wx.redirectTo({
           url: `../../packageA/activityDetail/activityDetail?aid=${aid}`,
         });
+        
       })
     })
   },

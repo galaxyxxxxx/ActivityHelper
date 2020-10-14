@@ -19,7 +19,7 @@ Page({
     month: '',
     day: '',
 
-    loading:false,
+    loading: false,
 
     //顶部主活动
     actMain: {},
@@ -45,26 +45,26 @@ Page({
     var obj = {}
     // 加载主图
     act.where({
-      actTimeEnd: _.gte(today)
+        actTimeEnd: _.gte(today)
       })
-      .orderBy('actTimeEnd', 'desc')
+      .orderBy('actTimeBegin', 'desc')
       .limit(1)
       .get()
       .then(
         res => {
           obj = res.data[0]
           db.collection('register').where({
-            aid: res.data._id
-          })
-          .get()
-          .then(
-            res3 => {
-              obj.regNum = res.data.length
-              this.setData({
-                actMain: obj
-              })
-            },
-          )
+              aid: res.data._id
+            })
+            .get()
+            .then(
+              res3 => {
+                obj.regNum = res.data.length
+                this.setData({
+                  actMain: obj
+                })
+              },
+            )
         }
       )
 
@@ -72,48 +72,49 @@ Page({
     setTimeout(() => {
       console.log("openid ttt", that.data.openid)
       this.setData({
-        loading:true
+        loading: true
       })
       act.where({
-        actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
-      })
-      .orderBy('actTimeEnd', 'desc')
-      .skip(1)
-      .limit(5)
-      .get()
-      .then(
-        res => {
-          res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
-            // let that = this
-            collect.where({
-                _openid: that.data.openid,
-                aid: currentValue._id
-              })
-              .get()
-              .then(
-                res2 => {
-                  console.log("tttttt",currentValue,res2.data.length)
-                  currentValue.isCollected = res2.data.length == 1 ? true : false
-                },
-              )
+          actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
+        })
+        .orderBy('actTimeBegin', 'desc')
+        .skip(1)
+        .limit(5)
+        .get()
+        .then(
+          res => {
+            res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
+              // let that = this
+              collect.where({
+                  _openid: that.data.openid,
+                  aid: currentValue._id
+                })
+                .get()
+                .then(
+                  res2 => {
+                    currentValue.isCollected = res2.data.length == 1 ? true : false
+                  },
+                )
 
               db.collection('register').where({
-                aid: currentValue._id
-              })
-              .get()
-              .then(
-                res3 => {
-                  currentValue.regNum = res3.data.length 
-                },
-              )
-          })
-          setTimeout(() => {
-            this.setData({
-              acting: res.data //获取到活动的raw数据 直接赋值给acting
+                  aid: currentValue._id
+                })
+                .get()
+                .then(
+                  res3 => {
+                    console.log("tttttt", currentValue, res3.data.length)
+                    currentValue.regNum = res3.data.length
+                  },
+                )
             })
-          }, 300);
-        }
-      )
+
+            setTimeout(() => {
+              this.setData({
+                acting: res.data //获取到活动的raw数据 直接赋值给acting
+              })
+            }, 500);
+          }
+        )
     }, 200);
   },
   // 一个用来获取openid的回调函数
@@ -131,7 +132,7 @@ Page({
     act.where({
         actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
       })
-      .orderBy('actTimeEnd', 'desc')
+      .orderBy('actTimeBegin', 'desc')
       .skip(1 + 5 * this.data.pageId)
       .limit(5)
       .get()
@@ -164,19 +165,19 @@ Page({
     this.setData({
       openid: "",
 
-    // 顶部日期
-    year: '',
-    month: '',
-    day: '',
+      // 顶部日期
+      year: '',
+      month: '',
+      day: '',
 
-    //顶部主活动
-    actMain: {},
+      //顶部主活动
+      actMain: {},
 
-    //活动集 | 正在进行的
-    acting: [],
+      //活动集 | 正在进行的
+      acting: [],
 
-    // 标识当前page
-    pageId: 0,
+      // 标识当前page
+      pageId: 0,
     })
     this.onLoad()
   },
@@ -194,12 +195,12 @@ Page({
   collect(e) {
     if (e.mark.starMark === "star") {
       console.log("已点击收藏按钮", e)
-      
+
       let that = this
       var aid = e.currentTarget.dataset.collectid
       var index = e.currentTarget.dataset.index
       let openid = that.data.openid
-      console.log("Collecting",aid,index)
+      console.log("Collecting", aid, index)
       collect.where({
         _openid: that.data.openid,
         aid: aid
@@ -210,9 +211,9 @@ Page({
             collect.add({
               data: {
                 aid: aid,
-                openid : openid
+                openid: openid
               },
-              success: function(res1) {
+              success: function (res1) {
                 console.log(res1)
                 wx.showToast({
                   title: '成功收藏',
@@ -222,7 +223,7 @@ Page({
                 let tmp = that.data.acting
                 tmp[index].isCollected = true
                 that.setData({
-                  acting : tmp
+                  acting: tmp
                 })
               }
             })
@@ -240,7 +241,7 @@ Page({
                 let tmp = that.data.acting
                 tmp[index].isCollected = false
                 that.setData({
-                  acting : tmp
+                  acting: tmp
                 })
               }
             })
@@ -268,10 +269,6 @@ Page({
     }
   },
 
-  // 点击筛选按钮后 弹出模态框 进行条件筛选
-  select(e) {
-
-  },
   formatDate(date) {
     date = new Date(date);
     var year = date.getFullYear();

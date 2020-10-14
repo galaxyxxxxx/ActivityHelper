@@ -1,32 +1,49 @@
 <view class="contain">
 
-	<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="#80a0c0" border="false"
+	<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="var(--color-theme)" border="false"
 		line-height="1px" sticky="{{true}}">
 
 		<!-- 类型分区 -->
-		<van-tab title="TYPE">
-			<van-grid clickable column-num="1" border="{{true}}">
-				<van-grid-item link-type="navigateTo" wx:for="{{actType}}" wx:key="item" icon="{{item.type_icon}}"
-					url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" />
-			</van-grid>
+		<van-tab title="分区">
+		<block wx:for="{{actType}}" wx:key="item" class="typeBlock">
+				<view class="type" bindtap="moreTypeList" data-id="{{item._id}}">
+					<!-- 类型图 -->
+					<image src="{{item.type_img}}"
+						style="width: 150rpx; height:150rpx; display: inline-block; background-color: #f7f7f7; border-radius:50%; overflow:hidden" />
+					<!-- 类型名 -->
+					<view class="typeTitle">
+						{{item.type_name}}
+					</view>
+					<!-- 订阅按钮 -->
+					<van-button class="subscribe" bindtap="subscribe" data-typeid="{{item._id}}" mark:subscribeMark="subscribe"
+						round custom-style="padding: 0 15rpx 0 15rpx;float:right;letter-spacing:5rpx;" color="#80a0c0" plain
+						size="small">订阅
+					</van-button>
+				</view>
+			</block>
 			<!-- 由于tabbar的bug而加的空白框 -->
 			<view class="null" wx:if="{{acting.length != 0}}"></view>
 		</van-tab>
 
 		<!-- 日历查询 -->
-		<van-tab title="CALENDAR">
+		<van-tab title="时序">
 			<!-- PART1.日历及活动 主体 -->
 			<view class="body">
 				<!-- 日历 -->
 				<van-calendar show-title="{{false}}" show-subtitle="{{false}}" type="single" poppable="{{ false }}"
-					row-height="45" show-confirm="{{ false }}" class="calendar" bind:select="onSelect" />
+					row-height="45" show-confirm="{{ false }}" class="calendar" bind:select="onSelect"
+					color="var(--color-theme)" />
 				<!-- 活动事件 -->
 				<view class="activity">
 					<scroll-view bind:scroll="onScroll" scroll-y id="scroller">
+
 						<block wx:key="index" wx:for="{{actLine}}">
-							<van-cell title="{{item.title}}" value="{{item.host}}" icon="bullhorn-o" is-link link-type="navigateTo"
-								url="../../packageA/activityDetail/activityDetail?aid={{item.id}}" />
+
+							<van-cell value="{{item.addr}}" is-link link-type="navigateTo"
+								url="../../packageA/activityDetail/activityDetail?aid={{item.id}}" title="{{item.title}}" icon="smile-o"
+								title-class="actTitle" title-width="240rpx" value-class="actAddr" />
 						</block>
+
 						<view class="noEvents" wx:if="{{actLine.length == 0 }}">No Events</view>
 					</scroll-view>
 					<!-- 由于tabbar的bug而加的空白框 -->

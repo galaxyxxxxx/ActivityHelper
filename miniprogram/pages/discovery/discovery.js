@@ -13,15 +13,6 @@ Page({
     //顶部tabbar
     tabbar: 0,
 
-    //类型分区
-    types: [{
-      type: '学习',
-      icon: 'smile-o',
-    }, {
-      type: '',
-      icon: '',
-    }],
-
     // 有id的type
     actType: [],
     // 无id的type
@@ -34,6 +25,8 @@ Page({
     this.getTypes();
     // this.actInit();
   },
+
+  // 分区部分
   getTypes() {
     db.collection('type').get().then(
       res => {
@@ -50,7 +43,7 @@ Page({
     )
   },
   addCount(actType) {
-    actType.forEach(function(current, index, arr) {
+    actType.forEach(function (current, index, arr) {
       console.log(current);
       current['type_count'] = this.getActCount(current._id)
       arr[index] = current
@@ -60,13 +53,36 @@ Page({
     })
   },
   getActCount(type_id) {
-    console.log(type_id);    
+    console.log(type_id);
     let result = act.where({
       type: type_id
     }).count();
     let count = result.total
     return count
   },
+  // 查看某类别的所有信息
+  moreTypeList(e) {
+    console.log("tappppasda",e)
+    if (e.mark.subscribeMark == null) {
+      let id = e.currentTarget.dataset.id
+      wx.navigateTo({
+        url: '../../packageA/list/list?type=' + id,
+      })
+    }
+  },
+  // 订阅某类别推送
+  subscribe(e) {
+    let id = e.target.dataset.typeid
+
+    //以下需要补充订阅的代码
+    wx.showToast({
+      title: '已订阅',
+      icon: 'success',
+      duration: 1000
+    })
+  },
+
+
   onShow: function () {
     // tabbar
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
@@ -74,7 +90,9 @@ Page({
         active: 1
       })
     }
-    this.onSelect({detail: new Date()})
+    this.onSelect({
+      detail: new Date()
+    })
   },
   //切换顶部tab
   onChangeTab(event) {
@@ -99,7 +117,9 @@ Page({
   },
   onChangeTabbar(e) {
     console.log(e.detail)
-    this.setData({ activeTab: e.detail });
+    this.setData({
+      activeTab: e.detail
+    });
   },
 
   onSelect(e) {
@@ -117,20 +137,21 @@ Page({
     }).get({
       success(res) {
         console.log(res)
-        if (res.data.length != 0) {   //查询成功时
+        if (res.data.length != 0) { //查询成功时
           for (let i = 0; i < res.data.length; i++) {
             obj.id = res.data[i]._id
             obj.title = res.data[i].title
-            obj.host = res.data[i].host
+            obj.addr = res.data[i].addr
             actLine.push(Object.assign({}, obj))
           }
-        } else {                      //查询失败时
+        } else { //查询失败时
           console.log("无查询结果")
         }
-        that.setData({ actLine: actLine })
+        that.setData({
+          actLine: actLine
+        })
       }
     })
-  }, 
-  onScroll() {
-  }
+  },
+  onScroll() {}
 });

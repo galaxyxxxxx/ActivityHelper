@@ -29,11 +29,11 @@ van-icon {
 .todayTitle {
   color: black;
   font-weight: 700;
-  font-size: 50rpx;
+  font-size: var(--font-size-L);
 }
 
 .mainPart .actTime {
-  color: #80a0c0;
+  color: var(--color-theme);
   font-weight: 400;
 }
 
@@ -58,19 +58,19 @@ van-icon {
 
 .mainPart .actSquare {
   height: auto;
-  background-color: #80a0c0;
+  background-color: var(--color-theme);
   /* background: linear-gradient(to left top,#aa4b6b,#6b6b83,#3b8d99); */
-  margin-top: 30rpx;
+  margin-top: var(--font-size-M);
   padding: 40rpx;
   color: white;
-  border-radius: 30rpx;
+  border-radius: var(--font-size-M);
 }
 
 .mainPart .actTitle {
   letter-spacing: 5rpx;
-  font-size: 50rpx;
+  font-size: var(--font-size-L);
   font-weight: 700;
-  margin-top: 20rpx;
+  margin-top: var(--font-size-S);
   margin-bottom: 300rpx;
 }
 
@@ -92,14 +92,14 @@ van-icon {
 /* 活动集部分 */
 .actPart {
   margin-top: 45rpx;
-  font-size: 20rpx;
+  font-size: var(--font-size-S);
   color: black;
   font-weight: 400;
 }
 
 .divideText {
   display: inline;
-  font-size: 30rpx;
+  font-size: var(--font-size-M);
   font-weight: 700;
 }
 
@@ -112,12 +112,12 @@ van-icon {
 
 /* 活动集块 */
 .acts{
-  margin-top: 30rpx;
+  margin-top: var(--font-size-M);
   /* margin-bottom: 70rpx; */
 }
 
 .act {
-  border-radius: 30rpx;
+  border-radius: var(--font-size-M);
   overflow: hidden;
   background-color: rgb(255, 255, 255);
   margin-bottom: 50rpx;
@@ -141,9 +141,9 @@ van-icon {
 
 .act .actTitle {
   letter-spacing: 2rpx;
-  margin-top: 30rpx;
+  margin-top: var(--font-size-M);
   font-weight: 700;
-  font-size: 30rpx;
+  font-size: var(--font-size-M);
 }
 
 .act .actIntro {

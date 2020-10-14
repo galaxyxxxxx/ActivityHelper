@@ -1,4 +1,6 @@
 var util = require('../../utils/util.js')
+import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
+
 wx.cloud.init({
   env: 'x1-vgiba'
 })
@@ -6,17 +8,16 @@ const db = wx.cloud.database({
   env: 'x1-vgiba'
 })
 const act = db.collection('activity')
-
 const cite = {
   线上: [''],
   本部: ['', '一教', '二教', '三教', '四教', '南操', '北操', '礼堂', '奥运'],
   通州: ['', '一报', '二报', '三报', '四报', '操场', '一教', '二教', '三教', '四教']
 };
 const types = {
-  文娱类: [' ', '歌赛', '演讲比赛'],
-  体育类: [' ', '篮球赛', '足球赛', '乒乓球赛'],
-  学习类: [' ', '竞赛类', '考前模考'],
-  社交类: [' ', '舞会', '学院联谊']
+  演出: [' ', '歌赛', '演讲比赛'],
+  体育: [' ', '篮球赛', '足球赛', '乒乓球赛'],
+  学习: [' ', '竞赛类', '考前模考'],
+  社交: [' ', '舞会', '学院联谊']
 };
 
 Page({
@@ -54,15 +55,16 @@ Page({
     showRegDate: false,
 
     address: [{
-      values: Object.keys(cite),
-      className: 'column1',
-      defaultIndex: 1,
-    },
-    {
-      values: cite['线上'],
-      className: 'column2',
-      defaultIndex: 2,
-    }],
+        values: Object.keys(cite),
+        className: 'column1',
+        defaultIndex: 1,
+      },
+      {
+        values: cite['线上'],
+        className: 'column2',
+        defaultIndex: 2,
+      }
+    ],
 
     actType: [],
 
@@ -76,8 +78,8 @@ Page({
   onLoad: function (options) {
     var that = this;
     wx.cloud.callFunction({
-      name: 'login', 
-      success: function(res) {
+      name: 'login',
+      success: function (res) {
         console.log(res);
         that.setData({
           openid: res.result.openid
@@ -144,7 +146,7 @@ Page({
       let addr1_index = this.getIndex(Object.keys(cite), form.addr1)
       address[0].defaultIndex = addr1_index
       address[1].values = cite[form.addr1]
-      let addr2_index = this.getIndex(cite[form.addr1], form.addr2);      
+      let addr2_index = this.getIndex(cite[form.addr1], form.addr2);
       address[1].defaultIndex = addr2_index
       this.setData({
         addr1_index: addr1_index,
@@ -199,6 +201,12 @@ Page({
       formData: form
     })
   },
+  onCancelAddr(e) {
+    this.setData({
+      addr: null,
+      showAddr: false,
+    });
+  },
   onCloseAddr() {
     this.setData({
       showAddr: false,
@@ -223,6 +231,12 @@ Page({
     this.setData({
       formData: form
     })
+  },
+  onCancelType() {
+    this.setData({
+      type: null,
+      showType: false,
+    });
   },
   onCloseType() {
     this.setData({
@@ -320,9 +334,14 @@ Page({
 
   // 上传图片
   uploadToCloud() {
-    const { fileList } = this.data;
+    const {
+      fileList
+    } = this.data;
     if (!fileList.length) {
-      wx.showToast({ title: '请选择图片', icon: 'none' });
+      wx.showToast({
+        title: '请选择图片',
+        icon: 'none'
+      });
     } else {
       console.log('Before Upload', fileList)
       var picRootPath = "activityCover/" + new Date().getTime()
@@ -351,24 +370,36 @@ Page({
   //删除
   delete: function (e) {
     let form = this.data.formData
-    db.collection('activity').doc(form.id).remove({
-      success: function (res) {
-        console.log(res.data)
-      }
-    })
-    wx.showToast({
-      title: '已成功撤销该活动',
-      icon: 'success',
-      duration: 1500
-    })
-    setTimeout(function () {
-      wx.hideToast()
-    }, 2000)
-    wx.switchTab({
-      url: '../../pages/me/me',
-    })
+    let regNum = form.regNum
+    let dontDelete = regNum > 0 ? '已有' + regNum + '同学报名了，请谨慎删除！\n如确认撤销，将向这' + regNum + '名同学推送通知' : ''
+    Dialog.confirm({
+        title: '真的要撤销该活动吗！😱',
+        message: dontDelete,
+      })
+      .then(() => {
+        let form = this.data.formData
+        db.collection('activity').doc(form.id).remove({
+          success: function (res) {
+            console.log(res.data)
+          }
+        })
+        wx.showToast({
+          title: '已成功撤销该活动',
+          icon: 'success',
+          duration: 1500
+        })
+        setTimeout(function () {
+          wx.hideToast()
+        }, 2000)
+        wx.switchTab({
+          url: '../../pages/me/me',
+        })
+      })
+      .catch(() => {
+
+      });
   },
-  
+
   deletePic(event) {
     console.log(event)
     let imgDelIndex = event.detail.index
@@ -432,49 +463,72 @@ Page({
 
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {
-    var aid = ''
-    var that = this
-    var openid = this.data.openid
-    console.log('onSubmit')
+
     let form = this.data.formData
-    console.log(form);
-    new Promise((resolve, reject) => {
-      let checkResult = this.checkForm(form);
-      if (checkResult) {
-        console.log('onFinal');
-        wx.showLoading({
-          title: '提交中......',
-        });
-        resolve();
-      } else {
-        reject();
-      }
-    }).then(() => {
-      new Promise((resolve1, reject1) => {
-        console.log("in Promise");
-        form.coverUrl = that.data.formData.coverUrl
-        console.log(form.coverUrl);
-        wx.cloud.callFunction({
-          name: 'updateActivity', 
-          data: {
-            form: form
-          },
-          success: function (res) {
-            console.log("finish add: ", res)
-            resolve1();
-          }, 
-          fail: function (err) {
-            console.error(err);
-            
-            reject1("fail update");
-          }
-        })
-      }).then(() => {
-        wx.hideLoading();
-        wx.redirectTo({
-          url: `../../packageA/activityDetail/activityDetail?aid=${form.id}`,
-        });
+    let regNum = form.regNum
+    let dontDelete = regNum > 0 ? '已有' + regNum + '同学报名了，请谨慎修改信息！\n如每次修改，将向这' + regNum + '名同学推送通知' : ''
+    Dialog.confirm({
+        title: '确定要修改该活动吗！',
+        message: dontDelete,
       })
-    })
+      .then(() => {
+
+        var aid = ''
+        var that = this
+        let form = this.data.formData
+
+        new Promise((resolve, reject) => {
+          let checkResult = this.checkForm(form);
+          if (checkResult) {
+            console.log('onFinal');
+            wx.showLoading({
+              title: '提交中......',
+            });
+            resolve();
+          } else {
+            reject();
+          }
+        }).then(() => {
+          new Promise((resolve1, reject1) => {
+            console.log("in Promise");
+            form.coverUrl = that.data.formData.coverUrl
+            console.log(form.coverUrl);
+            wx.cloud.callFunction({
+              name: 'updateActivity',
+              data: {
+                form: form
+              },
+              success: function (res) {
+                console.log("finish add: ", res)
+                resolve1();
+              },
+              fail: function (err) {
+                console.error(err);
+                reject1("fail update");
+              }
+            })
+          }).then(() => {
+            wx.hideLoading();
+            wx.showToast({
+              title: '成功修改',
+              icon: 'success',
+              duration: 1000
+            })
+            wx.hideToast({
+              success: (res) => {
+                wx.redirectTo({
+                  url: '../../packageA/activityDetail/activityDetail?aid='+form.id,
+                });
+              },
+            })
+          })
+        })
+
+      })
+      .catch(() => {
+
+      });
+
+
   },
 })

@@ -35,7 +35,7 @@
     "packNpmRelationList": []
   },
   "compileType": "miniprogram",
-  "libVersion": "2.8.1",
+  "libVersion": "2.12.2",
   "appid": "wx1f240f5ecbee02ea",
   "projectname": "CAX",
   "miniprogramRoot": "miniprogram/",
@@ -111,7 +111,7 @@
           "id": 5,
           "name": "editActivity",
           "pathName": "packageB/editActivity/editActivity",
-          "query": "aid=b8df3bd65f6705720022e202586fde9c",
+          "query": "aid=8e5be7055f670211002c6f6c55974c70",
           "scene": null
         },
         {
