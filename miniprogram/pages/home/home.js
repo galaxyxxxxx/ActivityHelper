@@ -180,6 +180,7 @@ Page({
       pageId: 0,
     })
     this.onLoad()
+    wx.stopPullDownRefresh()
   },
 
   onShow: function () {

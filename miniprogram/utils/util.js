@@ -148,5 +148,5 @@ module.exports = {
   isTel: isTel,
   showTime: showTime,
   sameWeek: sameWeek,
-  sameYear: sameYear,
+  sameYear: sameYear
 }

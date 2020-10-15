@@ -1,14 +1,12 @@
 var util = require('../../utils/util.js')
-import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
 wx.cloud.init({
   env: 'x1-vgiba'
 })
 const db = wx.cloud.database({
   env: 'x1-vgiba'
 })
-const act = db.collection('activity')
 
-const cite = {};
+var cite = {};
 
 Page({
   data: {
@@ -18,8 +16,8 @@ Page({
       host: "",
       numMax: "",
       addr: "",
-      addr1:"",
-      addr2:"",
+      addr1: "",
+      addr2: "",
       type: "",
       actTimeBegin: "",
       actTimeEnd: "",
@@ -155,7 +153,7 @@ Page({
   },
 
   // 删除图片
-  delete(event) {
+  deletePic(event) {
     console.log(event)
     let imgDelIndex = event.detail.index
     let fileList = this.data.fileList
@@ -176,7 +174,6 @@ Page({
       showAddr: true,
     });
     console.log(this.data.addr);
-    
     if (this.data.addr === undefined) {
       let choose = [];
       choose[0] = Object.keys(cite)[0];
@@ -219,6 +216,7 @@ Page({
       formData: form
     })
   },
+  
   getIndexByName(arr, target) {
     for (let i = 0; i < arr.length; i++) {
       if (arr[i] === target) {
@@ -241,7 +239,6 @@ Page({
       showAddr: false,
     });
   },
-
   // 活动类型选择
   showPopupType() {
     this.setData({
@@ -374,7 +371,7 @@ Page({
           title: null
         })
         reject(false);
-      }else{
+      } else {
         resolve(true);
       }
     })
@@ -386,7 +383,6 @@ Page({
         form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
         form.description.length == 0) {
         console.log("校验2 出错")
-        
         wx.showToast({
           title: '请完成所有必填项',
           icon: 'none',
@@ -395,9 +391,9 @@ Page({
         setTimeout(function () {
           wx.hideToast()
         }, 2000)
-        reject(false);
-      }else{
-        resolve(true);
+        reject();
+      } else {
+        resolve();
       }
     })
 
@@ -406,7 +402,6 @@ Page({
       console.log("进入校验3")
       if (form.numMax != "" && !util.checkRate(form.numMax)) {
         console.log("校验3 出错")
-        
         wx.showToast({
           title: '人数限制应为正整数',
           icon: 'none',
@@ -528,10 +523,10 @@ Page({
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {
     console.log("点击提交", e)
-
     let aid = ''
     let form = this.data.formData
     console.log(form)
+    var that = this;
     new Promise((resolve, reject) => {
       // 数据校验
       console.log("提交promise")
@@ -543,8 +538,7 @@ Page({
           title: '提交中......',
         });
         resolve();
-      })
-      .catch(() => {
+      }).catch(() => {
         reject();
       })
     }).then(() => {
@@ -561,6 +555,8 @@ Page({
             numMax: form.numMax,
             regNum: 0,
             addr: form.addr,
+            addr1: form.addr1_index,
+            addr2: form.addr2_index,
             type: form.type,
             actTimeBegin: form.actTimeBegin,
             actTimeEnd: form.actTimeEnd,

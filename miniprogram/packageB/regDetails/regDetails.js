@@ -1,5 +1,4 @@
 var util = require('../../utils/util.js')
-
 import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
 
 wx.cloud.init({

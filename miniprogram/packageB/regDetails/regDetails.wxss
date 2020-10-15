@@ -22,6 +22,7 @@
 }
 
 .button2 {
-  position: relative;
-  left: 40%;
+  position: absolute;
+  right: 6%;
+  left: auto;
 }

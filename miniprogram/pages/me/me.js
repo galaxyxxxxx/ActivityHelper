@@ -183,6 +183,7 @@ Page({
       pageId: 0,
     })
     this.onLoad()
+    wx.stopPullDownRefresh();
   },
 
   // 获取用户角色

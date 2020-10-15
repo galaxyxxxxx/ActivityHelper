@@ -8,17 +8,8 @@ const db = wx.cloud.database({
   env: 'x1-vgiba'
 })
 const act = db.collection('activity')
-const cite = {
-  线上: [''],
-  本部: ['', '一教', '二教', '三教', '四教', '南操', '北操', '礼堂', '奥运'],
-  通州: ['', '一报', '二报', '三报', '四报', '操场', '一教', '二教', '三教', '四教']
-};
-const types = {
-  演出: [' ', '歌赛', '演讲比赛'],
-  体育: [' ', '篮球赛', '足球赛', '乒乓球赛'],
-  学习: [' ', '竞赛类', '考前模考'],
-  社交: [' ', '舞会', '学院联谊']
-};
+
+var cite = {};
 
 Page({
   data: {
@@ -42,8 +33,6 @@ Page({
       coverUrl: "",
     },
     type_index: -1,
-    addr1_index: -1,
-    addr2_index: -1,
     showAddr: false,
     showType: false,
 
@@ -103,6 +92,31 @@ Page({
         })
       }
     );
+    db.collection('place').get().then(
+      res => {
+        let addr = res.data;
+        let allAddr1 = addr.map(values => values.addr1);
+        let pickerAddr = [{
+          values: allAddr1,
+          defalutIndex: 0,
+        }, {
+          values: addr[0].addr2,
+          defalutIndex: 0,
+        }];
+        this.setData({
+          allAddr: addr,
+          allAddr1: allAddr1,
+          address: pickerAddr
+        });
+        console.log(addr);
+        for (let i = 0; i < addr.length; i++) {
+          cite[addr[i].addr1] = addr[i].addr2;
+        }
+        console.log(cite);
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 500);
+      })
     act.where({
       _id: form.id
     }).get({
@@ -111,9 +125,10 @@ Page({
         form.host = res.data[0].host
         form.numMax = res.data[0].numMax
         form.regNum = res.data[0].regNum
-        form.addr1 = res.data[0].addr[0] + res.data[0].addr[1]
-        form.addr2 = (res.data[0].addr[2] + res.data[0].addr[3]) || ""
-        form.addr = res.data[0].addr
+        form.addr1_index = res.data[0].addr1_index
+        form.addr1 = Object.keys(cite)[form.addr1_index]
+        form.addr2_index = res.data[0].addr2_index
+        form.addr2 = cite[form.addr1_index][form.addr2_index]
         form.type_id = res.data[0].type.trim()
         form.actTimeBegin = res.data[0].actTimeBegin
         form.actTimeEnd = res.data[0].actTimeEnd
@@ -142,15 +157,10 @@ Page({
           formData: form
         })
       });
-      // 活动地址第二列默认选项有问题
-      let addr1_index = this.getIndex(Object.keys(cite), form.addr1)
-      address[0].defaultIndex = addr1_index
+      address[0].defaultIndex = form.addr1_index
       address[1].values = cite[form.addr1]
-      let addr2_index = this.getIndex(cite[form.addr1], form.addr2);
-      address[1].defaultIndex = addr2_index
+      address[1].defaultIndex = form.addr2_index
       this.setData({
-        addr1_index: addr1_index,
-        addr2_index: addr2_index,
         address: address,
       })
       setTimeout(() => {
