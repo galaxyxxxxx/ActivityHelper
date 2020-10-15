@@ -21,7 +21,7 @@
   bind:change="onFormChange" />
 
 <!-- 活动地址 -->
-<van-cell title="活动地址" value="{{formData.addr1+formData.addr2}}" data-field="addr" is-link bind:click="showPopupAddr"
+<van-cell title="活动地址" value="{{formData.addr}}" data-field="addr" is-link bind:click="showPopupAddr"
   bind:change="onFormChange" required />
 <van-popup show="{{ showAddr }}" position="bottom" bind:close="onCloseAddr" round>
   <van-picker columns="{{ address }}" bind:change="onChangeAddr" show-toolbar title="" bind:cancel="onCancelAddr"
@@ -29,7 +29,7 @@
 </van-popup>
 
 <!-- 活动类别 -->
-<van-cell title="活动类别" model:value="{{formData.type}}" data-field="type" is-link bind:click="showPopupType"
+<van-cell title="活动类别" value="{{formData.type}}" data-field="type" is-link bind:click="showPopupType"
   bind:change="onFormChange" required />
 <van-popup show="{{ showType }}" position="bottom" bind:close="onCloseType" round>
   <van-picker default-index="{{type_index}}" columns="{{ typeCollection }}" show-toolbar title=""

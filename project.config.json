@@ -111,7 +111,7 @@
           "id": 5,
           "name": "editActivity",
           "pathName": "packageB/editActivity/editActivity",
-          "query": "aid=8e5be7055f670211002c6f6c55974c70",
+          "query": "aid=d81cd5415f88644c0153ccc427737aea",
           "scene": null
         },
         {
@@ -143,17 +143,10 @@
           "scene": null
         },
         {
-          "id": 11,
+          "id": 10,
           "name": "activityDetail",
           "pathName": "packageA/activityDetail/activityDetail",
-          "query": "aid=8e5be7055f670211002c6f6c55974c70",
-          "scene": null
-        },
-        {
-          "id": 12,
-          "name": "activityDetail",
-          "pathName": "packageA/activityDetail/activityDetail",
-          "query": "aid=0d06a2fd5f282af60049935b10c59212",
+          "query": "aid=d81cd5415f88644c0153ccc427737aea",
           "scene": null
         },
         {

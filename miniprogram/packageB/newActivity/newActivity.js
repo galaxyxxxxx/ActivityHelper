@@ -534,6 +534,7 @@ Page({
     console.log("点击提交", e)
     let aid = ''
     let form = this.data.formData
+    form.host = this.data.host
     console.log(form)
     var that = this;
     new Promise((resolve, reject) => {

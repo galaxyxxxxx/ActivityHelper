@@ -14,6 +14,8 @@ exports.main = async (event, context) => {
         host: form.host,
         numMax: form.numMax,
         addr: form.addr,
+        addr1: form.addr1_index,
+        addr2: form.addr2_index,
         type: form.type_id,
         actTimeBegin: form.actTimeBegin,
         actTimeEnd: form.actTimeEnd,
