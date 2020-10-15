@@ -36,6 +36,7 @@ Page({
     showActDate: false,
     regDate: '',
     showRegDate: false,
+    type: '',
 
     allAddr: [],
     allAddr1: [],
@@ -45,8 +46,7 @@ Page({
     }, {
       values: [],
       defalutIndex: 0,
-    }
-    ],
+    }],
     actType: [],
   },
 
@@ -56,7 +56,7 @@ Page({
     });
     this.setData({
       openid: wx.getStorageSync('openid'),
-      host : wx.getStorageSync('org')
+      host: wx.getStorageSync('org')
     })
     // 取类别信息
     db.collection('type').get().then(
@@ -216,7 +216,7 @@ Page({
       formData: form
     })
   },
-  
+
   getIndexByName(arr, target) {
     for (let i = 0; i < arr.length; i++) {
       if (arr[i] === target) {
@@ -244,6 +244,18 @@ Page({
     this.setData({
       showType: true,
     });
+    console.log(this.data.type);
+    if (this.data.type === "") {
+      let allActType = this.data.actType;
+      let form = this.data.formData
+      setTimeout(() => {
+        form['type'] = allActType[0]._id;
+        this.setData({
+          formData: form,
+          type: allActType[0].type_name
+        })
+      }, 300)
+    }
   },
   onChangeType(e) {
     console.log('event', e.detail.value);
@@ -358,7 +370,7 @@ Page({
       console.log("进入校验1")
       if (form.title.length == 0 || form.title.length > 30) {
         console.log("校验1 出错")
-        
+
         wx.showToast({
           title: '标题应为1-30个字符',
           icon: 'none',
@@ -414,7 +426,7 @@ Page({
           numMax: null
         })
         reject(false);
-      }else{
+      } else {
         resolve(true);
       }
     })
@@ -433,7 +445,7 @@ Page({
           resolve(true)
         },
         fail(err) {
-          
+
           wx.showToast({
             title: '活动名称存在敏感词汇',
             icon: 'none',
@@ -464,7 +476,7 @@ Page({
           resolve(true)
         },
         fail(err) {
-          
+
           wx.showToast({
             title: '概要介绍存在敏感词汇 请修改',
             icon: 'none',
@@ -472,7 +484,7 @@ Page({
           })
           setTimeout(function () {
             wx.hideToast()
-          }, 2000) 
+          }, 2000)
           that.setData({
             description: null
           })
@@ -494,7 +506,7 @@ Page({
           resolve(true)
         },
         fail(err) {
-          
+
           wx.showToast({
             title: '图片存在敏感画面 请修改',
             icon: 'none',
@@ -514,10 +526,7 @@ Page({
         }
       })
     })
-
-
     return Promise.all([promise1, promise2, promise3, promise4, promise5, promise6])
-
   },
 
   //提交键 检查数据格式并上传至云数据库
@@ -530,7 +539,6 @@ Page({
     new Promise((resolve, reject) => {
       // 数据校验
       console.log("提交promise")
-      
       let checkResult = this.checkForm(form);
       checkResult.then(() => {
         console.log('onFinal');
