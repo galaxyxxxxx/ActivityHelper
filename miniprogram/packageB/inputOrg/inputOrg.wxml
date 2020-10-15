@@ -1,0 +1,28 @@
+<!-- title -->
+<view class="title">填写部门信息</view>
+<van-divider />
+
+<!-- intro -->
+<view class="intro">
+· 认证部门身份后，将代表该部门进行活动发布和管理。
+</view>
+<view class="intro">
+· 请先确定已填写正确的个人信息，将有助于更快完成您的认证。
+</view>
+<view class="intro">
+· 部门信息将作为默认主办方 显示在您所发布的每个活动上
+</view>
+<view class="intro">
+· 部门信息一经提交无法修改
+</view>
+<view class="intro">
+· 身份审核将于24h内完成 并发送审核结果至您的微信
+</view>
+
+<!-- inputBox -->
+<van-field class="inputBox" data-field="org" value="{{ org }}" placeholder="请输入您所在的部门名称 (15个字符以内)" border="{{ false }}" bind:change="onChangeOrg" maxlength='15'/>
+
+<!-- button -->
+<view class="submit">
+<van-button color="var(--color-theme)" round="{{true}}" bindtap="submit" block >提交申请</van-button>
+</view>

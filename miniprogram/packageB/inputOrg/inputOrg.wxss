@@ -1,0 +1,21 @@
+.title{
+  font-size: var(--font-size-M);
+  font-weight: 600;
+  margin: 50rpx 30rpx 0 30rpx;
+}
+
+.intro{
+  margin: 0 30rpx 15rpx 35rpx;
+  color: #8b8989;
+  line-height: 40rpx;
+}
+
+.inputBox{
+  overflow: hidden;
+  margin: 30rpx;
+  border-radius: 10rpx;
+}
+
+.submit {
+  padding: 30rpx 20rpx 50rpx 20rpx;
+}
