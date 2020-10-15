@@ -4,8 +4,9 @@
 		<van-cell-group>
 			<van-field label="姓名" data-field="name" value="{{ name }}" placeholder="请输入姓名" border="{{ false }}" bind:change="onChangeName" />
 			<van-field label="学号" data-field="uid" value="{{ uid }}" placeholder="请输入学号" border="{{ false }}" type="number" bind:change="onChangeUid" />
-			<van-field label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" bind:change="onChangeTel"/>
-			<van-field label="邮箱" data-field="email" value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}" bind:change="onChangeEmail" />
+			<van-field  label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" bind:change="onChangeTel"/>
+			<van-field  label="邮箱" data-field="email" value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}" bind:change="onChangeEmail" />
+			<van-field  label="部门" data-field="org" value="{{ org }}" placeholder="" border="{{ false }}" disabled  wx:if="{{role}} == 2"/>
 
     <!-- 院系选择器 -->
     <van-cell title="院系" value="{{dep1}} {{dep2}}" data-field = "dep" is-link bind:click="onShowDep" bind:change="onChange" value-class="department" title-width="80rpx"/>
@@ -18,9 +19,10 @@
     <!-- 按钮 -->
 		<view class="btn-area">
 			<!-- 认证功能尚未完成 -->
-			<van-button type="primary" size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx">社团认证</van-button>
+			<van-button  size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx" wx:if="{{role == 0}}">社团认证</van-button>
+			<van-button  size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx" wx:if="{{role == 2}}"  disabled>认证审核中</van-button>
 			<van-dialog id="van-dialog"/>
-			<van-button type="primary" formType="submit" size="small" round="{{true}}" bindtap="submit" color="var(--color-theme)" plain custom-style="width:180rpx">修改信息</van-button>
+			<van-button  formType="submit" size="small" round="{{true}}" bindtap="submit" color="var(--color-theme)" plain custom-style="width:180rpx">提交信息</van-button>
 		</view>
 
 	</view>

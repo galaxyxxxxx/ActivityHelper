@@ -19,7 +19,8 @@
         "editActivity/editActivity",
         "regDetails/regDetails",
         "newActivity/newActivity",
-        "setting/setting"
+        "setting/setting",
+        "inputOrg/inputOrg"
       ]
     }
   ],

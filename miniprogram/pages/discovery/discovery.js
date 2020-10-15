@@ -1,4 +1,5 @@
 var util = require('../../utils/util.js');
+const typeTmpId = '';
 wx.cloud.init({
   env: 'x1-vgiba'
 })

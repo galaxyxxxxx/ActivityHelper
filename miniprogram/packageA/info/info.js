@@ -25,6 +25,8 @@ Page({
     email: '',
     dep1: '',
     dep2: '',
+    org: '',
+    role: '',
     registed: 0, //标记数据库里是否已有该用户  用以判断该信息修改操作对数据库是add还是update
     change: 0, //标记当前页面数据是否有改动
 
@@ -46,9 +48,12 @@ Page({
   onLoad(option) {
     let opid = option.openid
     this.setData({
-      openid: opid
+      openid: opid,
+      role : wx.getStorageSync('role'),
+      org: wx.getStorageSync('org')
     })
     let openid = this.data.openid
+    
 
     let that = this
     user.where({
@@ -143,17 +148,19 @@ Page({
   identify(e){
     Dialog.confirm({
       context: this,
-      // className: 'identify',
       customStyle : "font-size: var(--font-size-S);line-height: 50rpx;",
       closeOnClickOverlay:"true",
       messageAlign:"left",
       customStyle:"font-size:var(--font-size-S)",
       confirmButtonText:"申请认证",
       cancelButtonText:"暂不申请",
-      message: '认证社团身份后可代表社团发布活动\n\n认证方法\n1 点击申请认证按钮\n2 填写当前页面信息\n\n若信息真实有效\n我们会在48h内完成您的身份认证\n感谢您的加入:D',
+      message: '认证社团身份后可代表社团发布活动:D\n\n认证方法\n1 填写并提交当前页个人信息 \n2 点击申请认证按钮\n3 填写新页面部门信息',
     })
       .then(() => {
         console.log('用户确定认证')
+        wx.navigateTo({
+          url: '../../packageB/inputOrg/inputOrg',
+        })
       })
       .catch(() => {
         console.log('用户取消认证')
@@ -192,7 +199,8 @@ Page({
         this.setData({
           name: null
         })
-      } else if (uid != '' && !util.isUid(parseInt(uid))) {
+      } 
+      if (uid != '' && !util.isUid(parseInt(uid))) {
         console.log(util.isUid(parseInt(uid)))
         wx.showToast({
           title: '请输入正确的学号',
@@ -202,7 +210,8 @@ Page({
         this.setData({
           uid: null
         })
-      } else if (tel != '' && !util.isTel(parseInt(tel))) {
+      }
+      if (tel != '' && !util.isTel(parseInt(tel))) {
         wx.showToast({
           title: '该手机号不存在，请重新输入',
           icon: 'none',
@@ -211,7 +220,8 @@ Page({
         this.setData({
           tel: null
         })
-      } else if (email != '' && !util.isEmail(email)) {
+      }
+      if (email != '' && !util.isEmail(email)) {
         wx.showToast({
           title: '该邮箱不存在，请重新输入',
           icon: 'none',
@@ -222,63 +232,7 @@ Page({
         })
       } else {
         //满足条件判断后，进行更新/写入
-        if (registed == 1) {
-          user.doc(_id).update({
-            data: {
-              name: name,
-              uid: uid,
-              tel: tel,
-              email: email,
-              dep1: dep1,
-              dep2: dep2,
-            },
-            success(res) {
-              console.log("已成功更新数据", res)
-              wx.showToast({
-                title: '已成功修改信息',
-                icon: 'success',
-                duration: 3500
-              })
-              wx.redirectTo({
-                url: '../info/info?openid=' + openid
-              })
-            },
-            fail(err) {
-              console.log("未成功更新数据", err)
-              wx.showToast({
-                title: '已成功修改信息',
-                icon: 'success',
-                duration: 3500
-              })
-              wx.redirectTo({
-                url: '../info/info?openid=' + openid
-              })
-            }
-          })
-        } else {
-          user.add({
-            data: {
-              name: name,
-              openid:openid,
-              uid: uid,
-              tel: tel,
-              email: email,
-              dep1: dep1,
-              dep2: dep2,
-              role: 0
-            },
-            success(res) {
-              wx.showToast({
-                title: '已成功完善信息',
-                icon: 'success',
-                duration: 3500
-              })
-              wx.redirectTo({
-                url: '../info/info?openid=' + openid
-              })
-            }
-          })
-        }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
       }
     }
   }
