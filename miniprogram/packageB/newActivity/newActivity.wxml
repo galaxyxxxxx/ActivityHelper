@@ -18,11 +18,8 @@
 <van-cell title="活动地址" value="{{addr}}" data-field="addr" is-link bind:click="showPopupAddr" bind:change="onFormChange" required />
 <van-popup show="{{ showAddr }}" position="bottom" bind:close="onCloseAddr" round>
   <van-picker columns="{{ address }}" bind:change="onChangeAddr" show-toolbar
-  title=""
-  bind:cancel="onCancelAddr"
-  bind:confirm="onCloseAddr"/>
+  title="" bind:cancel="onCancelAddr" bind:confirm="onCloseAddr"/>
 </van-popup>
-
 
 <!-- 活动类别 -->
 <van-cell title="活动类别" value="{{type}}" data-field="type" is-link bind:click="showPopupType" bind:change="onFormChange" required />

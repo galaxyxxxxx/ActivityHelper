@@ -1,7 +1,7 @@
 /**app.wxss**/
 page{
-  --font-size-L: 60rpx;
-  --font-size-M: 40rpx;
+  --font-size-L: 50rpx;
+  --font-size-M: 35rpx;
   --font-size-S: 25rpx;
   --font-size-XS: 20rpx;
   --color-theme: #80a0c0;

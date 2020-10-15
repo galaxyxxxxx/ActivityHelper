@@ -54,6 +54,7 @@ App({
           // role记入缓存
           console.log("hi get role!",res.data[0].role)
           wx.setStorageSync('role', res.data[0].role)
+          wx.setStorageSync('org', res.data[0].org)
         }
       })
     }, 2500);

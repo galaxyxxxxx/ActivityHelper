@@ -8,17 +8,7 @@ const db = wx.cloud.database({
 })
 const act = db.collection('activity')
 
-const cite = {
-  线上: [''],
-  本部: ['', '一教', '二教', '三教', '四教', '南操', '北操', '礼堂', '奥运'],
-  通州: ['', '一报', '二报', '三报', '四报', '操场', '一教', '二教', '三教', '四教']
-};
-const types = {
-  演出: ['', '歌赛', '演讲比赛'],
-  体育: ['', '篮球赛', '足球赛', '乒乓球赛'],
-  学习: ['', '竞赛类', '考前模考'],
-  社交: ['', '舞会', '学院联谊']
-};
+const cite = {};
 
 Page({
   data: {
@@ -28,6 +18,8 @@ Page({
       host: "",
       numMax: "",
       addr: "",
+      addr1:"",
+      addr2:"",
       type: "",
       actTimeBegin: "",
       actTimeEnd: "",
@@ -47,32 +39,28 @@ Page({
     regDate: '',
     showRegDate: false,
 
+    allAddr: [],
+    allAddr1: [],
     address: [{
-        values: Object.keys(cite),
-        className: 'column1',
-        defalutIndex: 0,
-      },
-      {
-        values: cite['线上'],
-        className: 'column2',
-        defalutIndex: 2,
-      }
+      values: [],
+      defalutIndex: 0,
+    }, {
+      values: [],
+      defalutIndex: 0,
+    }
     ],
-
     actType: [],
   },
 
   onLoad: function () {
-    var that = this;
-    wx.cloud.callFunction({
-      name: 'login',
-      success: function (res) {
-        console.log(res);
-        that.setData({
-          openid: res.result.openid
-        })
-      }
+    wx.showLoading({
+      title: '正在加载',
+    });
+    this.setData({
+      openid: wx.getStorageSync('openid'),
+      host : wx.getStorageSync('org')
     })
+    // 取类别信息
     db.collection('type').get().then(
       res => {
         console.log('types', res.data)
@@ -85,6 +73,32 @@ Page({
         })
       }
     )
+    // 取地址信息
+    db.collection('place').get().then(
+      res => {
+        let addr = res.data;
+        let allAddr1 = addr.map(values => values.addr1);
+        let pickerAddr = [{
+          values: allAddr1,
+          defalutIndex: 0,
+        }, {
+          values: addr[0].addr2,
+          defalutIndex: 0,
+        }];
+        this.setData({
+          allAddr: addr,
+          allAddr1: allAddr1,
+          address: pickerAddr
+        });
+        console.log(addr);
+        for (let i = 0; i < addr.length; i++) {
+          cite[addr[i].addr1] = addr[i].addr2;
+        }
+        console.log(cite);
+        setTimeout(() => {
+          wx.hideLoading();
+        }, 500);
+      })
   },
 
   beforeRead(event) {
@@ -140,6 +154,7 @@ Page({
     }
   },
 
+  // 删除图片
   delete(event) {
     console.log(event)
     let imgDelIndex = event.detail.index
@@ -160,6 +175,23 @@ Page({
     this.setData({
       showAddr: true,
     });
+    console.log(this.data.addr);
+    
+    if (this.data.addr === undefined) {
+      let choose = [];
+      choose[0] = Object.keys(cite)[0];
+      choose[1] = cite[choose[0]][0];
+      let form = this.data.formData
+      form['addr'] = (choose[0] + choose[1]).toString()
+      form['addr1'] = choose[0];
+      form['addr2'] = choose[1];
+      form['addr1_index'] = 0;
+      form['addr2_index'] = 0;
+      this.setData({
+        formData: form,
+        addr: choose[0] + choose[1]
+      })
+    }
   },
   onChangeAddr(e) {
     const {
@@ -167,20 +199,40 @@ Page({
       value,
       index
     } = e.detail
+    console.log("On change", e);
     picker.setColumnValues(1, cite[value[0]]);
-    console.log(e);
     this.setData({
-      addr: e.detail.value[0] + e.detail.value[1]
+      addr: value[0] + value[1]
     })
+    var choice = [0, 0]
+    let allAddr1 = this.data.allAddr1
+    choice[0] = this.getIndexByName(allAddr1, value[0]);
+    choice[1] = this.getIndexByName(cite[value[0]], value[1]);
+    console.log("choice", choice);
     let form = this.data.formData
-    form['addr'] = (e.detail.value[0] + e.detail.value[1]).toString()
+    form['addr'] = (value[0] + value[1]).toString()
+    form['addr1'] = value[0];
+    form['addr2'] = value[1];
+    form['addr1_index'] = choice[0];
+    form['addr2_index'] = choice[1];
     this.setData({
       formData: form
     })
   },
+  getIndexByName(arr, target) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === target) {
+        return i;
+      }
+    }
+    return -1;
+  },
+
   onCancelAddr(e) {
     this.setData({
-      addr : null,
+      addr: null,
+      addr1: null,
+      addr2: null,
       showAddr: false,
     });
   },
@@ -209,9 +261,9 @@ Page({
       formData: form
     })
   },
-  onCancelType(){
+  onCancelType() {
     this.setData({
-      type : null,
+      type: null,
       showType: false,
     });
   },
@@ -299,14 +351,17 @@ Page({
     })
   },
 
+  // 表单信息校验
   checkForm(form) {
     console.log("进入校验")
-    let res = true;
+    var that = this
+
+    // 标题长度校验
     const promise1 = new Promise((resolve, reject) => {
       console.log("进入校验1")
       if (form.title.length == 0 || form.title.length > 30) {
         console.log("校验1 出错")
-        res = false;
+        
         wx.showToast({
           title: '标题应为1-30个字符',
           icon: 'none',
@@ -318,17 +373,20 @@ Page({
         this.setData({
           title: null
         })
+        reject(false);
+      }else{
+        resolve(true);
       }
     })
 
+    // 必填项检查 
     const promise2 = new Promise((resolve, reject) => {
-      // 必填项检查 
       console.log("进入校验2")
-      if (form.host.length == 0 || form.addr.length == 0 ||
+      if (form.addr.length == 0 ||
         form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
         form.description.length == 0) {
-          console.log("校验2 出错")
-        res = false;
+        console.log("校验2 出错")
+        
         wx.showToast({
           title: '请完成所有必填项',
           icon: 'none',
@@ -337,15 +395,18 @@ Page({
         setTimeout(function () {
           wx.hideToast()
         }, 2000)
+        reject(false);
+      }else{
+        resolve(true);
       }
     })
 
+    // 人数数据检验（检查是否为正整数
     const promise3 = new Promise((resolve, reject) => {
-      // 数据可靠性检验
       console.log("进入校验3")
       if (form.numMax != "" && !util.checkRate(form.numMax)) {
         console.log("校验3 出错")
-        res = false;
+        
         wx.showToast({
           title: '人数限制应为正整数',
           icon: 'none',
@@ -357,37 +418,135 @@ Page({
         this.setData({
           numMax: null
         })
+        reject(false);
+      }else{
+        resolve(true);
       }
     })
 
-    Promise.all([promise1,promise2,promise3])
-    .then((value) => {
-      console.log("最终校验结果",res)
-      // return res;
+    // UGC安全校验 - title
+    const promise4 = new Promise((resolve, reject) => {
+      console.log("进入校验4")
+      let title = title
+      wx.cloud.callFunction({
+        name: "textsec",
+        data: {
+          text: form.title
+        },
+        success(res) {
+          console.log("title内容安全")
+          resolve(true)
+        },
+        fail(err) {
+          
+          wx.showToast({
+            title: '活动名称存在敏感词汇',
+            icon: 'none',
+            duration: 1500
+          })
+          setTimeout(function () {
+            wx.hideToast()
+          }, 2000)
+          that.setData({
+            title: null
+          })
+          reject(false);
+        }
+      })
     })
+
+    // UGC安全校验 - description
+    const promise5 = new Promise((resolve, reject) => {
+      console.log("进入校验5")
+      let description = description
+      wx.cloud.callFunction({
+        name: "textsec",
+        data: {
+          text: form.description
+        },
+        success(res) {
+          console.log("description内容安全")
+          resolve(true)
+        },
+        fail(err) {
+          
+          wx.showToast({
+            title: '概要介绍存在敏感词汇 请修改',
+            icon: 'none',
+            duration: 3000
+          })
+          setTimeout(function () {
+            wx.hideToast()
+          }, 2000) 
+          that.setData({
+            description: null
+          })
+          reject(false)
+        }
+      })
+    })
+
+    // UGC安全校验 - image
+    const promise6 = new Promise((resolve, reject) => {
+      console.log("进入校验6")
+      wx.cloud.callFunction({
+        name: "imagesec",
+        data: {
+          img: form.coverUrl
+        },
+        success(res) {
+          console.log("image内容安全")
+          resolve(true)
+        },
+        fail(err) {
+          
+          wx.showToast({
+            title: '图片存在敏感画面 请修改',
+            icon: 'none',
+            duration: 3000
+          })
+          setTimeout(function () {
+            wx.hideToast()
+          }, 2000)
+          //删除图片
+          wx.cloud.deleteFile({
+            fileList: [form.coverUrl],
+          })
+          this.setData({
+            fileList: []
+          })
+          reject(false)
+        }
+      })
+    })
+
+
+    return Promise.all([promise1, promise2, promise3, promise4, promise5, promise6])
 
   },
 
   //提交键 检查数据格式并上传至云数据库
   submit: function (e) {
-    console.log("点击提交",e)
- 
+    console.log("点击提交", e)
+
     let aid = ''
     let form = this.data.formData
     console.log(form)
     new Promise((resolve, reject) => {
       // 数据校验
       console.log("提交promise")
+      
       let checkResult = this.checkForm(form);
-      if (checkResult) {
+      checkResult.then(() => {
         console.log('onFinal');
         wx.showLoading({
           title: '提交中......',
         });
         resolve();
-      } else {
+      })
+      .catch(() => {
         reject();
-      }
+      })
     }).then(() => {
       new Promise((resolve1, reject1) => {
         console.log("in Promise");
@@ -426,7 +585,7 @@ Page({
         wx.redirectTo({
           url: `../../packageA/activityDetail/activityDetail?aid=${aid}`,
         });
-        
+
       })
     })
   },

@@ -50,16 +50,18 @@
 	<view class="null" wx:if="{{acting.length != 0}}"></view>
 
 </view>
+
+<!-- 底部栏 -->
 <view style="z-index:5">
 	<van-goods-action>
   <van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickIcon" />
-  <van-goods-action-button
+  <!-- <van-goods-action-button
 		color="var(--color-theme)"
     text="收藏"
     type="warning"
 		plain
     bind:click="onClickButton"
-  />
+  /> -->
 	<van-goods-action-button
 		color="var(--color-theme)"
     text="立即报名"

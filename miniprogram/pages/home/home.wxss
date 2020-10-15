@@ -54,7 +54,9 @@ page{
 
 .mainPart .actSquare {
   height: auto;
-  background-color: var(--color-theme);
+  background: no-repeat, linear-gradient(to bottom, #678099c5, #80a0c0b9);
+  background-size: 100% 100%;
+  /* background-color: var(--color-theme); */
   /* background: linear-gradient(to left top,#aa4b6b,#6b6b83,#3b8d99); */
   margin-top: var(--font-size-M);
   padding: 40rpx;
@@ -71,18 +73,24 @@ page{
 }
 
 .mainPart .bottom {
+  width: 600rpx;
   margin-top: 100rpx;
+  display: flexbox;
+  flex-direction: row;
+  align-items: center;
+  text-align: justify;
 }
 .mainPart .bottom .regNum{
   display: inline-block;
 }
 .mainPart .bottom .collect{
   display: inline-block;
-  float: right;
+  /* float: right; */
 }
 .mainPart .bottom .moreButton{
   display: inline-block;
   float: right;
+  position: relative;
 }
 
 /* 活动集部分 */
@@ -103,9 +111,9 @@ page{
   border-radius: var(--font-size-M);
   overflow: hidden;
   background-color: rgb(255, 255, 255);
-  margin-bottom: 50rpx;
-  padding: 40rpx;
-  box-shadow: 10rpx 10rpx 40rpx rgba(150, 150, 150, 0.2);
+  margin-bottom: 40rpx;
+  padding: 40rpx 40rpx 30rpx 40rpx;
+  box-shadow: 10rpx 10rpx 40rpx rgba(150, 150, 150, 0.35);
 }
 
 .act .actLable {
@@ -128,19 +136,20 @@ page{
   display: inline-block;
   width: 70%;
   letter-spacing: 2rpx;
-  margin-top: var(--font-size-M);
+  margin-top: 30rpx;
   font-weight: 800;
   font-size: var(--font-size-M);
+  height: 75rpx;
 }
 
 .actCover{
   display: inline;
   float: right;
-  margin-top: var(--font-size-M);
+  margin-top: 30rpx;
 }
 
 .act .actIntro {
-  margin-top: 120rpx;
+  margin-top: 100rpx;
   font-size: var(--font-size-S);
 }
 

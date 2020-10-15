@@ -263,7 +263,7 @@ Page({
   viewMore(e) {
     if (e.mark.starMark !== "star") {
       console.log("已点击查看更多按钮 列表", e)
-      wx.redirectTo({
+      wx.navigateTo({
         url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
       })
     }

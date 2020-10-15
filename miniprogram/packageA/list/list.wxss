@@ -18,76 +18,12 @@ van-icon {
   margin: 0 auto;
 }
 
-/* 主图部分 */
-.mainPart {
-  width: 100%;
-  height: auto;
-  font-size: 25rpx;
-  margin-top: 50rpx;
-}
-
-.todayTitle {
-  color: black;
-  font-weight: 700;
+.divideText{
   font-size: var(--font-size-L);
+  font-weight: 600;
 }
 
-.mainPart .actTime {
-  color: var(--color-theme);
-  font-weight: 400;
-}
-
-.mainPart .chooseToday {
-  display: inline-block;
-  float: right;
-  vertical-align: middle;
-  opacity: 0.4;
-}
-
-/* 用户头像 */
-.mainPart .cover {
-  position: absolute;
-  top: 80rpx;
-  left: 85%;
-  width: 60rpx;
-  height: 60rpx;
-  border-radius: 60rpx;
-  border: 1rpx solid transparent;
-  overflow: hidden;
-}
-
-.mainPart .actSquare {
-  height: auto;
-  background-color: var(--color-theme);
-  /* background: linear-gradient(to left top,#aa4b6b,#6b6b83,#3b8d99); */
-  margin-top: var(--font-size-M);
-  padding: 40rpx;
-  color: white;
-  border-radius: var(--font-size-M);
-}
-
-.mainPart .actTitle {
-  letter-spacing: 5rpx;
-  font-size: var(--font-size-L);
-  font-weight: 700;
-  margin-top: var(--font-size-S);
-  margin-bottom: 300rpx;
-}
-
-.mainPart .bottom {
-  margin-top: 100rpx;
-}
-.mainPart .bottom .regNum{
-  display: inline-block;
-}
-.mainPart .bottom .collect{
-  display: inline-block;
-  float: right;
-}
-.mainPart .bottom .moreButton{
-  display: inline-block;
-  float: right;
-}
+/* 活动集部分 */
 
 /* 活动集部分 */
 .actPart {
@@ -95,19 +31,6 @@ van-icon {
   font-size: var(--font-size-S);
   color: black;
   font-weight: 400;
-}
-
-.divideText {
-  display: inline;
-  font-size: var(--font-size-M);
-  font-weight: 700;
-}
-
-.selectButton {
-  display: inline;
-  /* margin-left: 76%; */
-  float: right;
-  font-size: 25rpx;
 }
 
 /* 活动集块 */
@@ -120,9 +43,9 @@ van-icon {
   border-radius: var(--font-size-M);
   overflow: hidden;
   background-color: rgb(255, 255, 255);
-  margin-bottom: 50rpx;
-  padding: 40rpx;
-  box-shadow: 10rpx 10rpx 40rpx rgba(150, 150, 150, 0.2);
+  margin-bottom: 40rpx;
+  padding: 40rpx 40rpx 30rpx 40rpx;
+  box-shadow: 10rpx 10rpx 40rpx rgba(150, 150, 150, 0.35);
 }
 
 .act .actLable {
@@ -136,18 +59,30 @@ van-icon {
   margin-top: 5rpx;
   display: inline;
   float: right;
+  /* font-weight: 580; */
+  letter-spacing: 5rpx;
   color: #868688;
 }
 
 .act .actTitle {
+  display: inline-block;
+  width: 70%;
   letter-spacing: 2rpx;
-  margin-top: var(--font-size-M);
-  font-weight: 700;
+  margin-top: 30rpx;
+  font-weight: 800;
   font-size: var(--font-size-M);
+  height: 75rpx;
+}
+
+.actCover{
+  display: inline;
+  float: right;
+  margin-top: 30rpx;
 }
 
 .act .actIntro {
-  margin-top: 80rpx;
+  margin-top: 100rpx;
+  font-size: var(--font-size-S);
 }
 
 .act .regNum {
@@ -164,6 +99,15 @@ van-icon {
 .act .collect {
   display: inline;
   float: right;
+  position: relative;
+  top: -10rpx;
+}
+
+.act .collect::after{
+  left: -20rpx; 
+  top: -20rpx; 
+  right: -20rpx; 
+  bottom: -20rpx;
 }
 
 .null{

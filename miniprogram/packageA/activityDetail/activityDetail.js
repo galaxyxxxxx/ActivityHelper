@@ -12,7 +12,7 @@ Page({
     openid: "",
     comment_input: "",
     comments: [],
-    alreadyTaken: false,
+    alreadyTaken: false,  //是否已报名
     activity_detail: {},
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg'
   },
@@ -69,7 +69,15 @@ Page({
         }
       )
   },
+
+  onShow: function(){
+    wx.hideHomeButton({
+      success: (res) => {},
+    })
+  },
+
   // 一个用来获取openid的回调函数
+  // 暂时不再用到
   cb: function (res) {
     let that = this
     that.setData({
@@ -135,8 +143,7 @@ Page({
       },
     });
   },
-  // 更新报名人数
-  
+
   // 分享按钮
   onShareAppMessage(options) {
     var that = this;
