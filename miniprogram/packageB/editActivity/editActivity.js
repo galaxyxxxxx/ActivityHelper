@@ -10,6 +10,7 @@ const db = wx.cloud.database({
 const act = db.collection('activity')
 
 var cite = {};
+var actType = [];
 
 Page({
   data: {
@@ -36,7 +37,6 @@ Page({
     showAddr: false,
     showType: false,
 
-    actType: [],
     typeCollection: [],
     actDate: '',
     showActDate: false,
@@ -51,8 +51,6 @@ Page({
       defalutIndex: 0,
     }],
 
-    actType: [],
-
     fileList: [{
       url: 'http://iph.href.lu/300x300?text=default',
       isImage: true,
@@ -60,7 +58,7 @@ Page({
     }]
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     var that = this;
     wx.showLoading({
       title: '正在加载',
@@ -72,8 +70,20 @@ Page({
     let aid = options.aid
     var form = {}
     form.id = aid
+    var address = this.data.address
     var typeCollection = []
-    var address = this.data.address    
+    // 取类别信息
+    db.collection('type').get().then(
+      res => {
+        actType = res.data
+        console.log('types', actType)
+        typeCollection = actType.map(values => values.type_name)
+        console.log(typeCollection);
+        this.setData({
+          typeCollection: typeCollection
+        })
+      }
+    )
     db.collection('place').get().then(
       res => {
         let addr = res.data;
@@ -118,7 +128,6 @@ Page({
         form.description = res.data[0].description
         form.coverUrl = res.data[0].cover
         that.setData({
-          formData: form,
           regDate: `${form.regTimeBegin} - ${form.regTimeEnd}`,
           regArr: [form.regTimeBegin, form.regTimeEnd],
           actDate: `${form.actTimeBegin} - ${form.actTimeEnd}`,
@@ -126,37 +135,35 @@ Page({
         })
       }
     });
-    setTimeout(() => {
-      console.log(form);
-      db.collection('type').where({
-        _id: form.type_id
-      }).get().then(res => {
-        console.log("timeout Res", res);
-        form.type = res.data[0].type_name;
-        this.setData({
-          formData: form
-        })
-      });
-      address[0].values = Object.keys(cite)
-      address[0].defaultIndex = form.addr1_index
-      address[1].values = cite[form.addr1]
-      address[1].defaultIndex = form.addr2_index
+    console.log(form);
+    db.collection('type').where({
+      _id: form.type_id
+    }).get().then(res => {
+      console.log("timeout Res", res);
+      form.type = res.data[0].type_name;
       this.setData({
-        address: address,
         formData: form
       })
-      setTimeout(() => {
-        let picList = [{
-          url: form.coverUrl,
-          isImage: true,
-          deletable: true
-        }]
-        this.setData({
-          fileList: picList,
-          type_index: this.getIndexByName(typeCollection, form.type)
-        })
-        wx.hideLoading();
-      }, 1000)
+    });
+    address[0].values = Object.keys(cite)
+    address[0].defaultIndex = form.addr1_index
+    address[1].values = cite[form.addr1]
+    address[1].defaultIndex = form.addr2_index
+    this.setData({
+      address: address,
+      formData: form
+    })
+    setTimeout(() => {
+      let picList = [{
+        url: form.coverUrl,
+        isImage: true,
+        deletable: true
+      }]
+      this.setData({
+        fileList: picList,
+        type_index: this.getIndexByName(typeCollection, form.type)
+      })
+      wx.hideLoading();
     }, 1000);
   },
 
@@ -167,7 +174,7 @@ Page({
         return i
       }
     }
-    return -1
+    return 0;
   },
 
   // 活动地址选择
@@ -177,7 +184,7 @@ Page({
     });
   },
   onChangeAddr(e) {
-    const {picker, value, index} = e.detail;
+    const { picker, value, index } = e.detail;
     console.log('event', e.detail);
     picker.setColumnValues(1, cite[value[0]]);
     this.setData({
@@ -224,7 +231,7 @@ Page({
     })
     let index = e.detail.index
     let form = this.data.formData
-    form['type'] = this.data.actType[index]._id
+    form['type'] = actType[index]._id
     this.setData({
       formData: form
     })

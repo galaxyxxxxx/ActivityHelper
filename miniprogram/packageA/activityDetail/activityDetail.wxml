@@ -12,8 +12,10 @@
 		<van-button color="var(--color-theme)" size="small" round disabled="{{alreadyTaken}}" bind:click="submit">
 			{{alreadyTaken?"已报名":"报名"}}
 		</van-button>
-		<van-button open-type="share" bind:click="onShareAppMessage" custom-style="border: 1px transparent;height:60rpx;padding:0">
-			<van-icon name="share" size="50rpx" style="vertical-align: middle;height:var(--font-size-S);color:var(--color-theme)"/>
+		<van-button open-type="share" bind:click="onShareAppMessage"
+			custom-style="border: 1px transparent;height:60rpx;padding:0">
+			<van-icon name="share" size="50rpx"
+				style="vertical-align: middle;height:var(--font-size-S);color:var(--color-theme)" />
 		</van-button>
 	</view>
 	<!-- 活动介绍 -->
@@ -30,21 +32,21 @@
 	</view>
 	<!-- 评论输入框 -->
 	<view class="commentShell">
-	<van-row>
-		<!-- 评论输入框 -->
-		<van-col span="19">
-			<view class="inputComment">
-			<van-field custom-style="widthFix" value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}"
-				type="textarea" autosize fixed="true" bind:change="onChange" />
-			</view>
-		</van-col>
-		<!-- 评论按钮 -->
-		<van-col span="5">
-		<view class="submitComment">
-			<van-button color="var(--color-theme)" size="small" round bind:click="submitComment">评论</van-button>
-		</view>
-		</van-col>
-	</van-row>
+		<van-row>
+			<!-- 评论输入框 -->
+			<van-col span="19">
+				<view class="inputComment">
+					<van-field custom-style="widthFix" value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}"
+						type="textarea" autosize fixed="true" bind:change="onChange" />
+				</view>
+			</van-col>
+			<!-- 评论按钮 -->
+			<van-col span="5">
+				<view class="submitComment">
+					<van-button color="var(--color-theme)" size="small" round bind:click="submitComment">评论</van-button>
+				</view>
+			</van-col>
+		</van-row>
 	</view>
 	<!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
 	<view class="null" wx:if="{{acting.length != 0}}"></view>
@@ -54,19 +56,8 @@
 <!-- 底部栏 -->
 <view style="z-index:5">
 	<van-goods-action>
-  <van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickIcon" />
-  <!-- <van-goods-action-button
-		color="var(--color-theme)"
-    text="收藏"
-    type="warning"
-		plain
-    bind:click="onClickButton"
-  /> -->
-	<van-goods-action-button
-		color="var(--color-theme)"
-    text="立即报名"
-    type="warning"
-    bind:click="onClickButton"
-  />
-</van-goods-action>
+		<van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickIcon" />
+		<van-goods-action-button color="var(--color-theme)" text="{{isCollected? '取消收藏': '收藏'}}" type="warning" plain bind:click="onClickStar" />
+		<van-goods-action-button color="var(--color-theme)" text="{{alreadyTaken? '取消报名': '立即报名'}}" type="warning" bind:click="onClickRegister" />
+	</van-goods-action>
 </view>

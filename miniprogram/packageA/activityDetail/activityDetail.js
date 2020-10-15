@@ -6,13 +6,17 @@ const db = wx.cloud.database({
   env: "x1-vgiba",
 });
 const app = getApp()
+const collect = db.collection("collect")
 const _ = db.command
 Page({
   data: {
     openid: "",
+    aid: "",
     comment_input: "",
     comments: [],
+    isCollected: false,
     alreadyTaken: false,  //是否已报名
+    reg_id: '',
     activity_detail: {},
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg'
   },
@@ -21,11 +25,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    //设置回调，防止小程序globalData拿到空数据
+    // 设置回调，防止小程序globalData拿到空数据
     let that = this;
-    app.getopenid(that.cb);
-
+    // 单页模式
+    if (options.scene != 1154) {
+      // app.getopenid(that.cb);
+      this.setData({
+        openid: wx.getStorageSync('openid'),
+      });
+    }
     let aid = options.aid;
     if (!aid) {
       wx.showToast({
@@ -37,6 +45,9 @@ Page({
       }, 1000);
       return;
     }
+    this.setData({
+      aid: aid
+    })
     this.getComments(aid);
     db.collection("activity")
       .where({
@@ -56,23 +67,34 @@ Page({
     db.collection("register").where({
       aid: aid,
       openid: this.data.openid
-    })
-      .get()
+    }).get()
       .then(
         res => {
           console.log("tset", res)
           if (res.data.length > 0) { //数据大于零 说明被报名过了
             this.setData({
-              alreadyTaken: true
+              alreadyTaken: true, 
+              reg_id: res.data[0]._id
             })
           }
         }
       )
+    db.collection('collect').where({
+      aid: aid,
+      openid: this.data.openid
+    }).get().then(res => {
+      console.log("collect", res);
+      if (res.data.length > 0) {
+        this.setData({
+          isCollected: true
+        })
+      }
+    })
   },
 
-  onShow: function(){
+  onShow: function () {
     wx.hideHomeButton({
-      success: (res) => {},
+      success: (res) => { },
     })
   },
 
@@ -86,7 +108,7 @@ Page({
   },
 
   // 报名
-  submit() {
+  onClickRegister() {
     // 查询user表
     db.collection('user').where({
       openid: this.data.openid
@@ -107,41 +129,44 @@ Page({
       }
     )
     // 检测是否已报名
-    if (this.data.alreadyTaken == true) {
-      wx.showToast({
-        title: "已报名",
-        icon: "none",
-      });
-      return;
-    }
-
-    let today = new Date();
-    today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
-    console.log("today", today, this.data.activity_detail)
-    if (this.data.activity_detail.actTimeBegin > today || this.data.activity_detail.actTimeEnd < today) {
-      wx.showToast({
-        title: "不在报名时间",
-        icon: "none",
-      });
-      return;
-    }
-    db.collection("register").add({
-      data: {
-        aid: this.data.activity_detail._id,
-        openid: this.data.openid
-      },
-      success: (res) => {
-        setTimeout(() => {
-          this.updateRegNum();
-        }, 1000)
+    if (this.data.alreadyTaken === true) {
+      db.collection("register").doc(this.data.reg_id).remove({
+        success: () => {
+          this.setData({
+            reg_id: '', 
+            alreadyTaken: false
+          })
+        }
+      })
+    } else {
+      let today = new Date();
+      today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
+      console.log("today", today, this.data.activity_detail)
+      if (this.data.activity_detail.actTimeBegin > today || this.data.activity_detail.actTimeEnd < today) {
         wx.showToast({
-          title: "报名成功",
+          title: "不在报名时间",
+          icon: "none",
         });
-        this.setData({
-          alreadyTaken: true,
-        });
-      },
-    });
+        return;
+      }
+      db.collection("register").add({
+        data: {
+          aid: this.data.activity_detail._id,
+          openid: this.data.openid
+        },
+        success: (res) => {
+          setTimeout(() => {
+            this.updateRegNum();
+          }, 1000)
+          wx.showToast({
+            title: "报名成功",
+          });
+          this.setData({
+            alreadyTaken: true,
+          });
+        },
+      });
+    }
   },
 
   // 分享按钮
@@ -150,14 +175,78 @@ Page({
     var form = this.data.activity_detail
     return {
       title: form.title,
-      imageUrl: form.coverUrl,
+      imageUrl: form.cover,
       success: function (res) {
         // 转发成功
-        that.shareClick();
       },
       fail: function (res) {
         // 转发失败
       }
+    }
+  },
+  // 分享到朋友圈
+  onShareTimeline(options) {
+    var that = this;
+    var form = this.data.activity_detail
+    return {
+      title: form.title,
+      imageUrl: form.cover,
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+        })
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  },
+  //点击收藏按钮的事件
+  onClickStar(e) {
+    let that = this
+    let aid = that.data.aid
+    let openid = that.data.openid
+    if (this.data.isCollected === false) {
+      console.log("已点击收藏按钮", e)
+      collect.add({
+        data: {
+          aid: aid,
+          openid: openid
+        },
+        success: function (res1) {
+          console.log(res1)
+          wx.showToast({
+            title: '收藏成功',
+            icon: 'success',
+            duration: 1000
+          });
+          that.setData({
+            isCollected: true
+          })
+        }
+      })
+    } else {
+      console.log("已被收藏，即将取消收藏")
+      collect.where({
+        aid: aid,
+        _openid: openid
+      }).get().then(res => {
+        collect.doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
+          success(res) {
+            console.log(res)
+            console.log('已成功取消该收藏');
+            wx.showToast({
+              title: '已取消收藏',
+              icon: 'success',
+              duration: 1000
+            });
+            that.setData({
+              isCollected: false
+            })
+          }
+        })
+      })
     }
   },
   //获取评论
