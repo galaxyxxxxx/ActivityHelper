@@ -9,7 +9,7 @@
 				<view class="type" bindtap="moreTypeList" data-id="{{item._id}}">
 					<!-- 类型图 -->
 					<image src="{{item.type_img}}"
-						style="width: 150rpx; height:150rpx; display: inline-block; background-color: #f7f7f7; border-radius:50%; overflow:hidden" />
+						style="width: 150rpx; height:150rpx; display: inline-block; background-color: var(--color-background); border-radius:50%; overflow:hidden" />
 					<!-- 类型名 -->
 					<view class="typeTitle">
 						{{item.type_name}}

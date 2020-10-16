@@ -1,4 +1,6 @@
 {
+  "darkmode" : true,
+  "themeLocation": "theme.json",
   "pages": [
     "pages/home/home",
     "pages/discovery/discovery",
@@ -45,9 +47,9 @@
   "window": {
     "backgroundColor": "#f7f7f7",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#f7f7f7",
+    "navigationBarBackgroundColor": "@navBackgroundColor",
     "navigationBarTitleText": "校园活动助手",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "@navTextStyle"
   },
   "tabBar": {
     "custom": true,

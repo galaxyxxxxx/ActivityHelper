@@ -71,9 +71,7 @@ Page({
     // 加载列表
     setTimeout(() => {
       console.log("openid ttt", that.data.openid)
-      this.setData({
-        loading: true
-      })
+      
       act.where({
           actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
         })
@@ -110,7 +108,8 @@ Page({
 
             setTimeout(() => {
               this.setData({
-                acting: res.data //获取到活动的raw数据 直接赋值给acting
+                acting: res.data, //获取到活动的raw数据 直接赋值给acting
+                loading: true
               })
             }, 500);
           }

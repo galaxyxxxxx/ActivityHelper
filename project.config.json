@@ -1,5 +1,43 @@
 {
   "description": "项目配置文件",
+  "skeleton-config": {
+    "global": {
+      "loading": "spin",
+      "text": {
+        "color": "#EEEEEE"
+      },
+      "image": {
+        "shape": "",
+        "color": "#EFEFEF",
+        "shapeOpposite": []
+      },
+      "button": {
+        "color": "#EFEFEF",
+        "excludes": []
+      },
+      "pseudo": {
+        "color": "#EFEFEF",
+        "shape": "circle",
+        "shapeOpposite": []
+      },
+      "excludes": [],
+      "remove": [],
+      "empty": [],
+      "hide": [],
+      "grayBlock": [],
+      "showNative": false,
+      "backgroundColor": "transparent",
+      "mode": "fullscreen",
+      "templateName": "skeleton",
+      "cssUnit": "rpx",
+          "decimal": 4
+    },
+    "pages":{
+      "pages/home/home" :{
+
+      }
+    }
+  },
   "packOptions": {
     "ignore": []
   },
