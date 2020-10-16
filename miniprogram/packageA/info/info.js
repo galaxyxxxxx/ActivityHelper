@@ -158,9 +158,17 @@ Page({
     })
       .then(() => {
         console.log('用户确定认证')
-        wx.navigateTo({
-          url: '../../packageB/inputOrg/inputOrg',
-        })
+        if(this.data.registed == 0){
+          wx.showToast({
+            title: '请先完善个人信息',
+            icon: 'fail',
+            duration:1500
+          })
+        }else{
+          wx.navigateTo({
+            url: '../../packageB/inputOrg/inputOrg',
+          })
+        }
       })
       .catch(() => {
         console.log('用户取消认证')
@@ -232,7 +240,48 @@ Page({
         })
       } else {
         //满足条件判断后，进行更新/写入
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        if(this.data.registed == 0){ //未注册
+          user.add({
+            data: {
+              name: name,
+              uid: uid,
+              tel: tel,
+              email: email,
+              dep1: dep1,
+              dep2: dep2,
+              role: 0
+            },
+            success(res) {
+              wx.showToast({
+                title: '已成功完善信息',
+                icon: 'success',
+                duration: 3500
+              })
+            }
+          })
+        }else{  //已注册的
+          user.where({
+            openid: this.data.openid
+          }).update({
+            data: {
+              name: name,
+              uid: uid,
+              tel: tel,
+              email: email,
+              dep1: dep1,
+              dep2: dep2,
+              role: 0
+            },
+            success(res) {
+              wx.showToast({
+                title: '已成功完善信息',
+                icon: 'success',
+                duration: 3500
+              })
+            }
+          })
+        }
+        
       }
     }
   }

@@ -25,7 +25,7 @@ van-icon {
   color: black;
   font-size: 45rpx;
   font-weight: 800;
-  width: 70%;
+  width: 92%;
   display: inline-block;
 }
 /* 报名按钮 */
@@ -36,7 +36,7 @@ van-icon {
 }
 
 /* 活动详情 */
-.detail {
+.description {
   display: block;
   color: #868688;
   margin-top: var(--font-size-M);
@@ -45,6 +45,31 @@ van-icon {
   line-height: 45rpx;
   width: 100%;
   text-align: justify;
+}
+
+.info{
+  margin: 30rpx 0 30rpx 0;
+  color: #868688;
+}
+
+.infoTitle{
+  font-size: var(--font-size-M);
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 20rpx;
+}
+.van-cell{
+  padding: 10rpx 0 10rpx 0 !important;
+  /* position: relative;
+  left: -26rpx; */
+  /* font-size: var(--font-size-S); */
+}
+
+.noComment{
+  /* text-align: center; */
+  color: #868688;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
 }
 
 .comment{
@@ -71,7 +96,7 @@ van-icon {
 
 .inputComment{
   /* display: inline-block; */
-  background-color: aqua;
+  /* background-color: aqua; */
   border: var(--color-theme) 1px solid;
   border-radius: var(--font-size-S);
   overflow: hidden;
@@ -84,6 +109,56 @@ van-icon {
   /* align-items : center; */
   /* display: flex; */
   /* float: right; */ 
+}
+
+.moreTitle{
+  display: inline;
+  font-size: var(--font-size-M);
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 40rpx;
+}
+
+.moreList{
+  display: inline;
+  float: right;
+  color: var(--color-link);
+  position: relative;
+  top: 5rpx;
+}
+.act{
+  margin: 20rpx 0 20rpx 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.coverMini{
+  display: inline-block;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+  border: rgb(170, 170, 170) 1rpx solid;
+}
+.mini{
+  width: 580rpx;
+  display: inline-flexbox;
+  flex-direction: column;
+  margin: 5rpx 20rpx 5rpx 30rpx;
+  vertical-align: top;
+}
+.titleMini{
+  font-size: 30rpx;
+  font-weight: 600;
+  vertical-align: top;
+  letter-spacing: 3rpx;
+}
+.tagMini{
+  display: inline-block;
+  margin-top: 5rpx;
+}
+van-tag{
+  margin-right: 10rpx;
 }
 
 .activity-time {

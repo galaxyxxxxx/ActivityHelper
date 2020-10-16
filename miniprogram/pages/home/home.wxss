@@ -55,7 +55,6 @@ page{
 
 .mainPart .actSquare {
   height: auto;
-  background: no-repeat, linear-gradient(to bottom, #678099c5, #80a0c0b9);
   background-size: 100% 100%;
   /* background-color: var(--color-theme); */
   /* background: linear-gradient(to left top,#aa4b6b,#6b6b83,#3b8d99); */
@@ -63,6 +62,7 @@ page{
   padding: 40rpx;
   color: white;
   border-radius: var(--font-size-M);
+  
 }
 
 .mainPart .actTitle {

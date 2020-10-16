@@ -102,9 +102,7 @@ function isTel(num) {
 
 //邮箱验证
 function isEmail(val) {
-
   const regu = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-
   if (regu.test(val)) {
     return true;
   } else return false;

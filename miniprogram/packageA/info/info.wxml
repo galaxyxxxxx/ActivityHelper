@@ -6,7 +6,7 @@
 			<van-field label="学号" data-field="uid" value="{{ uid }}" placeholder="请输入学号" border="{{ false }}" type="number" bind:change="onChangeUid" />
 			<van-field  label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" bind:change="onChangeTel"/>
 			<van-field  label="邮箱" data-field="email" value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}" bind:change="onChangeEmail" />
-			<van-field  label="部门" data-field="org" value="{{ org }}" placeholder="" border="{{ false }}" disabled  wx:if="{{role}} == 2"/>
+			<van-field  label="部门" data-field="org" value="{{ org }}" placeholder="" border="{{ false }}" disabled  wx:if="{{role}} == 1"/>
 
     <!-- 院系选择器 -->
     <van-cell title="院系" value="{{dep1}} {{dep2}}" data-field = "dep" is-link bind:click="onShowDep" bind:change="onChange" value-class="department" title-width="80rpx"/>

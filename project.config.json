@@ -30,12 +30,10 @@
       "mode": "fullscreen",
       "templateName": "skeleton",
       "cssUnit": "rpx",
-          "decimal": 4
+      "decimal": 4
     },
-    "pages":{
-      "pages/home/home" :{
-
-      }
+    "pages": {
+      "pages/home/home": {}
     }
   },
   "packOptions": {
@@ -179,7 +177,7 @@
           "id": 10,
           "name": "activityDetail",
           "pathName": "packageA/activityDetail/activityDetail",
-          "query": "aid=d81cd5415f88644c0153ccc427737aea",
+          "query": "aid=8e5be7055f8581b401b1e3147ebc8108",
           "scene": null
         },
         {

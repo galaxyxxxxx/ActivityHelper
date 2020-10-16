@@ -4,7 +4,7 @@
 </view>
 <view class="content">
 	<!-- 活动时间 -->
-	<view class="time">{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}</view>
+	<!-- <view class="time">{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}</view> -->
 	<!-- 标题 -->
 	<view class="title">{{activity_detail.title}}</view>
 	<!-- 报名&分享 按钮 -->
@@ -19,10 +19,13 @@
 		</van-button>
 	</view>
 	<!-- 活动介绍 -->
-	<view class="detail">{{activity_detail.description}}</view>
+	<view class="description">{{activity_detail.description}}</view>
 
-	<!-- 评论区 -->
-	<view class="comments">
+		<!-- 评论区 -->
+		<view class="comments">
+		<van-divider />
+		<view class="infoTitle">评论</view>
+		<view wx:if="{{comments.length == 0}}" class="noComment"> 暂无评论 快来抢沙发吧~</view>
 		<block wx:for="{{comments}}" wx:key="index">
 			<view class="comment">
 				<view class="comment_time">{{comments[index].time}}</view>
@@ -30,6 +33,21 @@
 			</view>
 		</block>
 	</view>
+
+	<!-- 信息列表 -->
+	<view class="info">
+		<van-divider />
+		<view class="infoTitle">信息</view>
+		<van-cell-group class="infoBox" border="{{false}}">
+			<van-cell title="举办部门" title-width="160rpx" value="{{activity_detail.host}}" border="{{false}}" />
+			<van-cell title="报名人数" title-width="160rpx" value="{{regNum}}/{{activity_detail.numMax}}" border="{{false}}" />
+			<van-cell title="活动地点" title-width="160rpx" value="{{activity_detail.addr}}" border="{{false}}" />
+			<van-cell title="活动时间" title-width="160rpx" value="{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}" border="{{false}}" />
+			<van-cell title="报名时间" title-width="160rpx" value="{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}" border="{{false}}" />
+			<van-cell title="联系电话" title-width="160rpx" value="{{activity_detail.tel}}" border="{{false}}" />
+		</van-cell-group>
+	</view>
+
 	<!-- 评论输入框 -->
 	<!-- <view class="commentShell">
 		<van-row> -->
@@ -48,24 +66,23 @@
 			</van-col>
 		</van-row> -->
 	<!-- </view> -->
-	<view>
-		<van-row>
-			<van-col span="8">举办单位</van-col>
-			<van-col span="16">{{activity_detail.host}}</van-col>
-		</van-row>
-		<van-row>
-			<van-col span="8">报名开始时间</van-col>
-			<van-col span="16">{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}</van-col>
-		</van-row>
-		<van-row>
-			<van-col span="8">报名人数上限</van-col>
-			<van-col span="16">{{activity_detail.numMax}}</van-col>
-		</van-row>
-		<van-row>
-			<van-col span="8">已报名人数</van-col>
-			<van-col span="16">{{regNum}}</van-col>
-		</van-row>
 
+	<!-- 类似活动 -->
+	<view class="youMayLike" wx:if="{{typeActList.length > 0}}">
+		<van-divider />
+		<view class="moreTitle">更多该类别的活动</view>
+		<view class="moreList" bindtap="moreTypeList">查看全部</view>
+		<view class="list" >
+			<block wx:for="{{typeActList}}">
+				<view class="act" bindtap="toActDetail">
+					<view class="coverMini"><image src="{{item.cover}}" style="width:100rpx; height:100rpx"/></view>
+					<view class="mini">
+						<view class="titleMini">{{item.title}}</view>
+						<view class="tagMini"><van-tag round plain color="var(--color-theme)">{{item.addr}}</van-tag><van-tag round plain color="var(--color-theme)">{{item.host}}</van-tag></view>
+					</view>
+				</view>
+			</block>
+		</view>
 	</view>
 
 	<!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->

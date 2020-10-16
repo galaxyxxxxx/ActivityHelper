@@ -19,12 +19,31 @@ Page({
     reg_id: '',
     activity_detail: {},
     regNum: 0,
-    defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg'
+    defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg',
+    type:'',  //用于查询该类别的其他活动
+    typeActList: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  getTypeActList(a){
+    console.log("type！",a)
+    let today = new Date()
+    db.collection('activity').where({
+      type: a,
+      _id: _.neq(this.data.aid)
+    })
+    .orderBy('actTimeBegin', 'desc')
+    .limit(3)
+    .get()
+    .then(
+      res => {
+        console.log("同类别活动查询",res);
+        this.setData({
+          typeActList : res.data
+        })
+      }
+    )
+  },
+
   onLoad: function (options) {
     // 设置回调，防止小程序globalData拿到空数据
     let that = this;
@@ -54,10 +73,15 @@ Page({
       _id: aid,
     }).get({
       success: (res) => {
+        console.log(res)
         var raw = res.data[0] || {}
         this.setData({
           activity_detail: raw || {},
+          type : res.data[0].type
         });
+        setTimeout(() => {
+          this.getTypeActList(res.data[0].type);
+        }, 200);
       },
     });
 
@@ -102,7 +126,10 @@ Page({
   },
 
   onShow: function () {
+    
   },
+
+  
 
   // 一个用来获取openid的回调函数
   // 暂时不再用到
@@ -371,5 +398,13 @@ Page({
         // 转发失败
       }
     }
+  },
+
+  moreTypeList(){
+    let type = this.data.type
+    wx.navigateTo({
+      url: '../../packageA/list/list?type='+type,
+    })
+
   }
 });

@@ -10,7 +10,7 @@
 			</view>
 			<view class="todayTitle">TODAY</view>
 			<!-- 1.2图像块 -->
-			<view class="actSquare" style="background: image({{actMain.cover}})" bindtap="viewMoreMain" mark="register" id="{{actMain._id}}">
+			<view class="actSquare" style="background: url(http://60.205.155.131/wp-content/uploads/2020/10/home1.gif)  no-repeat; background-size:100% 100%; background-position: center; overflow:hidden" bindtap="viewMoreMain" mark="register" id="{{actMain._id}}">
 				<view class="actLable">最新活动 | {{actMain.addr}}</view>
 				<view class="actTitle">{{actMain.title}}</view>
 				<!-- 首图底部信息栏 报名人数 收藏 更多 -->

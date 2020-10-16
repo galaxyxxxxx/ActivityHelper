@@ -57,6 +57,7 @@ App({
           console.log("hi get role!", res.data[0].role)
           wx.setStorageSync('role', res.data[0].role)
           wx.setStorageSync('org', res.data[0].org)
+          wx.setStorageSync('tel', res.data[0].tel)
         }
       })
     }, 2500);

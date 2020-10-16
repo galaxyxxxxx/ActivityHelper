@@ -109,7 +109,6 @@ Page({
         form.title = res.data[0].title
         form.host = res.data[0].host
         form.numMax = res.data[0].numMax
-        form.regNum = res.data[0].regNum
         form.addr1_index = res.data[0].addr1
         form.addr1 = Object.keys(cite)[form.addr1_index]
         form.addr2_index = res.data[0].addr2

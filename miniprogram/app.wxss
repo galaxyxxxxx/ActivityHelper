@@ -7,6 +7,7 @@ page{
   --color-theme: #80a0c0;
   --color-theme-background: #80a0c07a; 
   --color-background: #f7f7f7;
+  --color-link: rgb(52, 120, 243);
 
   background-size: auto 100%;
   background-color: #f7f7f7;

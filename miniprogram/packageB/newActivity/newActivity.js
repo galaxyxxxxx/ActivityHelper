@@ -11,9 +11,11 @@ var cite = {};
 Page({
   data: {
     openid: '',
+    contact:'',
     formData: {
       title: "",
       host: "",
+      contact:'',
       numMax: "",
       addr: "",
       addr1: "",
@@ -54,9 +56,17 @@ Page({
     wx.showLoading({
       title: '正在加载',
     });
+    let contact = this.data.formData.contact
     this.setData({
       openid: wx.getStorageSync('openid'),
-      host: wx.getStorageSync('org')
+      host: wx.getStorageSync('org'),
+      contact : wx.getStorageSync('tel')
+    })
+
+    let form = this.data.formData
+    form['contact'] = wx.getStorageSync('tel')
+    this.setData({
+      formData: form
     })
     // 取类别信息
     db.collection('type').get().then(
@@ -391,7 +401,7 @@ Page({
     // 必填项检查 
     const promise2 = new Promise((resolve, reject) => {
       console.log("进入校验2")
-      if (form.addr.length == 0 ||
+      if (form.addr.length == 0 || form.contact.length == 0 ||
         form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
         form.description.length == 0) {
         console.log("校验2 出错")
@@ -410,7 +420,7 @@ Page({
     })
 
     // 人数数据检验（检查是否为正整数
-    const promise3 = new Promise((resolve, reject) => {
+    const promise31 = new Promise((resolve, reject) => {
       console.log("进入校验3")
       if (form.numMax != "" && !util.checkRate(form.numMax)) {
         console.log("校验3 出错")
@@ -431,6 +441,28 @@ Page({
       }
     })
 
+        // 联系方式数据检验（检查是否为手机号或邮箱
+        const promise32 = new Promise((resolve, reject) => {
+          console.log("进入校验32")
+          if (util.isTel(form.contact) || util.isEmail(form.contact)) {
+            console.log("校验3 出错")
+            wx.showToast({
+              title: '联系方式格式不正确',
+              icon: 'none',
+              duration: 1500
+            })
+            setTimeout(function () {
+              wx.hideToast()
+            }, 2000)
+            this.setData({
+              contact: null
+            })
+            reject(false);
+          } else {
+            resolve(true);
+          }
+        })
+
     // UGC安全校验 - title
     const promise4 = new Promise((resolve, reject) => {
       console.log("进入校验4")
@@ -445,7 +477,6 @@ Page({
           resolve(true)
         },
         fail(err) {
-
           wx.showToast({
             title: '活动名称存在敏感词汇',
             icon: 'none',
