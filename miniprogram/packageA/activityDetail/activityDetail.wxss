@@ -40,6 +40,7 @@ van-icon {
   display: block;
   color: #868688;
   margin-top: var(--font-size-M);
+  margin-bottom: var(--font-size-M);
   font-size: 26rpx;
   line-height: 45rpx;
   width: 100%;

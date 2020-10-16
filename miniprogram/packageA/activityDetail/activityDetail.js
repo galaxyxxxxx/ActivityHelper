@@ -18,6 +18,7 @@ Page({
     alreadyTaken: false,  //是否已报名
     reg_id: '',
     activity_detail: {},
+    regNum: 0,
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg'
   },
 
@@ -49,18 +50,16 @@ Page({
       aid: aid
     })
     this.getComments(aid);
-    db.collection("activity")
-      .where({
-        _id: aid,
-      })
-      .get({
-        success: (res) => {
-          var raw = res.data[0] || {}
-          this.setData({
-            activity_detail: raw || {},
-          });
-        },
-      });
+    db.collection("activity").where({
+      _id: aid,
+    }).get({
+      success: (res) => {
+        var raw = res.data[0] || {}
+        this.setData({
+          activity_detail: raw || {},
+        });
+      },
+    });
 
     // 查询报名情况
     console.log(aid)
@@ -73,7 +72,7 @@ Page({
           console.log("tset", res)
           if (res.data.length > 0) { //数据大于零 说明被报名过了
             this.setData({
-              alreadyTaken: true, 
+              alreadyTaken: true,
               reg_id: res.data[0]._id
             })
           }
@@ -89,13 +88,20 @@ Page({
           isCollected: true
         })
       }
-    })
+    });
+    db.collection('register').where({
+      aid: aid
+    }).get().then(
+      res => {
+        let regNum = res.data.length;
+        this.setData({
+          regNum: regNum
+        })
+      },
+    )
   },
 
   onShow: function () {
-    wx.hideHomeButton({
-      success: (res) => { },
-    })
   },
 
   // 一个用来获取openid的回调函数
@@ -130,15 +136,37 @@ Page({
     )
     // 检测是否已报名
     if (this.data.alreadyTaken === true) {
+      wx.showLoading({
+        title: '正在取消...',
+      });
       db.collection("register").doc(this.data.reg_id).remove({
         success: () => {
           this.setData({
-            reg_id: '', 
+            reg_id: '',
             alreadyTaken: false
-          })
+          });
+          db.collection('register').where({
+            aid: this.data.activity_detail._id
+          }).get().then(
+            res => {
+              let regNum = res.data.length;
+              this.setData({
+                regNum: regNum
+              })
+            },
+          );
+          wx.hideLoading()
+          wx.showToast({
+            title: "已取消报名",
+            icon: "success", 
+            duration: 1500
+          });
         }
       })
     } else {
+      wx.showLoading({
+        title: '正在报名...',
+      });
       let today = new Date();
       today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
       console.log("today", today, this.data.activity_detail)
@@ -155,20 +183,31 @@ Page({
           openid: this.data.openid
         },
         success: (res) => {
-          setTimeout(() => {
-            this.updateRegNum();
-          }, 1000)
+          console.log("success res", res);
+          wx.hideLoading();
           wx.showToast({
             title: "报名成功",
+            icon: "success", 
+            duration: 1500
           });
           this.setData({
+            reg_id: res._id, 
             alreadyTaken: true,
           });
+          db.collection('register').where({
+            aid: this.data.activity_detail._id
+          }).get().then(
+            res => {
+              let regNum = res.data.length;
+              this.setData({
+                regNum: regNum
+              })
+            },
+          )
         },
       });
     }
   },
-
   // 分享按钮
   onShareAppMessage(options) {
     var that = this;
@@ -209,6 +248,9 @@ Page({
     let openid = that.data.openid
     if (this.data.isCollected === false) {
       console.log("已点击收藏按钮", e)
+      wx.showLoading({
+        title: '正在收藏...',
+      });
       collect.add({
         data: {
           aid: aid,
@@ -216,6 +258,7 @@ Page({
         },
         success: function (res1) {
           console.log(res1)
+          wx.hideLoading();
           wx.showToast({
             title: '收藏成功',
             icon: 'success',
@@ -227,6 +270,9 @@ Page({
         }
       })
     } else {
+      wx.showLoading({
+        title: '正在取消...',
+      });
       console.log("已被收藏，即将取消收藏")
       collect.where({
         aid: aid,
@@ -236,6 +282,7 @@ Page({
           success(res) {
             console.log(res)
             console.log('已成功取消该收藏');
+            wx.hideLoading();
             wx.showToast({
               title: '已取消收藏',
               icon: 'success',

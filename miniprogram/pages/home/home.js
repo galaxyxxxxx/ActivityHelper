@@ -46,8 +46,8 @@ Page({
     var obj = {}
     // 加载主图
     act.where({
-        actTimeEnd: _.gte(today)
-      })
+      actTimeEnd: _.gte(today)
+    })
       .orderBy('actTimeBegin', 'desc')
       .limit(1)
       .get()
@@ -55,8 +55,8 @@ Page({
         res => {
           obj = res.data[0]
           db.collection('register').where({
-              aid: res.data._id
-            })
+            aid: res.data._id
+          })
             .get()
             .then(
               res3 => {
@@ -72,11 +72,10 @@ Page({
     // 加载列表
     setTimeout(() => {
       console.log("openid ttt", that.data.openid)
-      
+
       act.where({
-          actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
-        })
-        .orderBy('actTimeBegin', 'desc')
+        actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
+      }).orderBy('actTimeBegin', 'desc')
         .skip(1)
         .limit(5)
         .get()
@@ -85,20 +84,18 @@ Page({
             res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
               // let that = this
               collect.where({
-                  _openid: that.data.openid,
-                  aid: currentValue._id
-                })
+                _openid: that.data.openid,
+                aid: currentValue._id
+              })
                 .get()
                 .then(
                   res2 => {
                     currentValue.isCollected = res2.data.length == 1 ? true : false
                   },
                 )
-
               db.collection('register').where({
-                  aid: currentValue._id
-                })
-                .get()
+                aid: currentValue._id
+              }).get()
                 .then(
                   res3 => {
                     console.log("tttttt", currentValue, res3.data.length)
@@ -130,8 +127,8 @@ Page({
     let today = this.formatDate(new Date())
     this.data.pageId = this.data.pageId + 1
     act.where({
-        actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
-      })
+      actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
+    })
       .orderBy('actTimeBegin', 'desc')
       .skip(1 + 5 * this.data.pageId)
       .limit(5)
@@ -140,9 +137,9 @@ Page({
         res => {
           res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
             collect.where({
-                openid: currentValue.openid,
-                aid: currentValue._id
-              })
+              openid: currentValue.openid,
+              aid: currentValue._id
+            })
               .get()
               .then(
                 res2 => {
