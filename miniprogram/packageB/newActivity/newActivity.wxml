@@ -6,8 +6,7 @@
   <van-field value="{{ title }}" data-field="title" label="活动名称" placeholder="请输入活动名称" bind:change="onFormChange"
     required />
   <!-- 举办部门 -->
-  <van-field value="{{ host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange"
-    required disabled/>
+  <van-field value="{{ host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange" disabled/>
   
   <!-- 人数上限 -->
   <van-field value="{{ numMax }}" data-field="numMax" label="人数上限" placeholder="若无人数要求 可不填"

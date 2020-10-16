@@ -35,7 +35,8 @@ Page({
     //设置回调，防止小程序globalData拿到空数据
     let that = this;
     app.getopenid(that.cb);
-
+    app.getAllPlace();
+    app.getAllType();
     // 时间栏显示
     this.showDate();
     // 加载今日日期 用于筛选未到期的活动

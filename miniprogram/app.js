@@ -1,7 +1,9 @@
-App({
 
+App({
   globalData: {
     openid: '',
+    cite: {},
+    type: {}
   },
 
   onLaunch: function () {
@@ -60,4 +62,36 @@ App({
     }, 2500);
   },
 
+  getAllPlace() {
+    let that = this
+    if (wx.getStorageSync('allPlace') != undefined) {
+      wx.cloud.database({
+        env: 'x1-vgiba'
+      }).collection('place').get().then(
+        res => {
+          let addr = res.data;
+          let cite = {};
+          for (let i = 0; i < addr.length; i++) {
+            cite[addr[i].addr1] = addr[i].addr2;
+          }
+          console.log(cite);
+          that.globalData.cite = cite;
+          wx.setStorageSync('allPlace', cite)
+        })
+    }
+  },
+  getAllType() {
+    let that = this
+    if (wx.getStorageSync('allType') != undefined) {
+      wx.cloud.database({
+        env: 'x1-vgiba'
+      }).collection('type').get().then(
+        res => {
+          let type = res.data;
+          console.log(type);
+          that.globalData.type = type;
+          wx.setStorageSync('allType', type)
+        })
+    }
+  }
 })

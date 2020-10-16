@@ -11,6 +11,7 @@ const act = db.collection('activity')
 
 var cite = {};
 var actType = [];
+var allAddr1 = [];
 
 Page({
   data: {
@@ -72,44 +73,38 @@ Page({
     form.id = aid
     var address = this.data.address
     var typeCollection = []
-    // 取类别信息
-    db.collection('type').get().then(
-      res => {
-        actType = res.data
-        console.log('types', actType)
-        typeCollection = actType.map(values => values.type_name)
-        console.log(typeCollection);
-        this.setData({
-          typeCollection: typeCollection
-        })
-      }
-    )
-    db.collection('place').get().then(
-      res => {
-        let addr = res.data;
-        let allAddr1 = addr.map(values => values.addr1);
-        let pickerAddr = [{
-          values: allAddr1,
-          defalutIndex: 0,
-        }, {
-          values: addr[0].addr2,
-          defalutIndex: 0,
-        }];
-        this.setData({
-          allAddr: addr,
-          allAddr1: allAddr1,
-          address: pickerAddr
-        });
-        console.log(addr);
-        for (let i = 0; i < addr.length; i++) {
-          cite[addr[i].addr1] = addr[i].addr2;
-        }
-        console.log(cite);
-      })
-    act.where({
-      _id: options.aid
-    }).get({
-      success(res) {
+    const promise1 = new Promise((resolve, reject) => {
+      // 取类别信息
+      actType = wx.getStorageSync('allType')
+      console.log('types', actType)
+      typeCollection = actType.map(values => values.type_name)
+      console.log(typeCollection);
+      this.setData({
+        typeCollection: typeCollection
+      });
+      resolve();
+    });
+    const promise2 = new Promise((resolve, reject) => {
+      cite = wx.getStorageSync('allPlace')
+      let thisAllAddr1 = Object.keys(cite);
+      let pickerAddr = [{
+        values: thisAllAddr1,
+        defalutIndex: 0,
+      }, {
+        values: cite[thisAllAddr1[0]],
+        defalutIndex: 0,
+      }];
+      allAddr1 = thisAllAddr1;
+      this.setData({
+        address: pickerAddr
+      });
+      console.log(cite);
+      resolve();
+    })
+    const promise3 = new Promise((resolve, reject) => {
+      act.where({
+        _id: options.aid
+      }).get().then(res => {
         console.log("act detail", res);
         form.title = res.data[0].title
         form.host = res.data[0].host
@@ -132,44 +127,59 @@ Page({
           regArr: [form.regTimeBegin, form.regTimeEnd],
           actDate: `${form.actTimeBegin} - ${form.actTimeEnd}`,
           actArr: [form.actTimeBegin, form.actTimeEnd],
-        })
-      }
-    });
-    console.log(form);
-    db.collection('type').where({
-      _id: form.type_id
-    }).get().then(res => {
-      console.log("timeout Res", res);
-      form.type = res.data[0].type_name;
-      this.setData({
-        formData: form
+        });
+        resolve();
+      }).catch(err => {
+        reject(err);
       })
     });
-    address[0].values = Object.keys(cite)
-    address[0].defaultIndex = form.addr1_index
-    address[1].values = cite[form.addr1]
-    address[1].defaultIndex = form.addr2_index
-    this.setData({
-      address: address,
-      formData: form
-    })
-    setTimeout(() => {
+
+    Promise.all([promise1, promise2, promise3]).then(() => {
+      console.log(form);
+      // db.collection('type').where({
+      //   _id: form.type_id
+      // }).get().then(res => {
+      //   console.log("timeout Res", res);
+      //   form.type = res.data[0].type_name;
+      //   this.setData({
+      //     formData: form
+      //   })
+      // });
+      for (let i = 0; i < actType.length; i++) {
+        if (actType[i]._id === form.type_id) {
+          form.type = actType[i].type_name
+          this.setData({
+            formData: form,
+            type_index: i
+          })
+        }
+      }
+      address[0].values = Object.keys(cite)
+      address[0].defaultIndex = form.addr1_index
+      address[1].values = cite[form.addr1]
+      address[1].defaultIndex = form.addr2_index
+      this.setData({
+        address: address,
+        formData: form
+      })
       let picList = [{
         url: form.coverUrl,
         isImage: true,
         deletable: true
       }]
+      console.log(picList, form.coverUrl);
+
       this.setData({
         fileList: picList,
-        type_index: this.getIndexByName(typeCollection, form.type)
+        // type_index: this.getIndexByName(typeCollection, form.type)
       })
       wx.hideLoading();
-    }, 1000);
+    })
   },
 
   getIndexByName(arr, target) {
     console.log("getIndex", arr, target);
-    for (var i = 1; i <= arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
       if (target === arr[i]) {
         return i
       }

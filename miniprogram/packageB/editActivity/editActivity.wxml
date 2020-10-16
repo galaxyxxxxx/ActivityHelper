@@ -8,8 +8,7 @@
     bind:change="onFormChange" required />
 
   <!-- 举办部门 -->
-  <van-field value="{{ formData.host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange"
-    required disabled />
+  <van-field value="{{ formData.host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange" disabled />
 
   <!-- 报名人数 -->
   <van-field value="{{ formData.regNum }}" data-field="regNum" label="报名人数" placeholder="报名人数"
