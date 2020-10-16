@@ -132,8 +132,19 @@ Page({
         reject(err);
       })
     });
-
-    Promise.all([promise1, promise2, promise3]).then(() => {
+    const promise4 = new Promise((resolve, reject) => {
+      db.collection('register').where({
+        aid: aid
+      }).get().then(
+        res => {
+          console.log("get regNum", res);
+          let regNum = res.data.length;
+          form.regNum = regNum;
+          resolve()
+        }
+      )
+    })
+    Promise.all([promise1, promise2, promise3, promise4]).then(() => {
       console.log(form);
       // db.collection('type').where({
       //   _id: form.type_id
@@ -384,38 +395,42 @@ Page({
   delete: function (e) {
     let form = this.data.formData
     let regNum = form.regNum
-    let dontDelete = regNum > 0 ? '已有' + regNum + '同学报名了，请谨慎删除！\n如确认撤销，将向这' + regNum + '名同学推送通知' : ''
+    let dontDelete = (regNum > 0)? `已有${regNum}同学报名了，请谨慎删除！\n如确认撤销，将向这${regNum}名同学推送通知` : ''
     Dialog.confirm({
       title: '真的要撤销该活动吗！😱',
       message: dontDelete,
-    })
-      .then(() => {
+    }).then(() => {
         let form = this.data.formData
-        db.collection('activity').doc(form.id).remove({
-          success: function (res) {
-            console.log(res.data)
+        wx.cloud.callFunction({
+          name: 'sendDelMsg',
+          success: () => {
+            db.collection('activity').doc(form.id).remove({
+              success: function (res) {
+                console.log(res.data)
+              }
+            })
+            this.deletePic()
+            wx.showToast({
+              title: '已成功撤销',
+              icon: 'success',
+              duration: 1000
+            })
+            setTimeout(function () {
+              wx.hideToast()
+              wx.switchTab({
+                url: '../../pages/me/me',
+              })
+            }, 1000)
           }
-        })
-        wx.showToast({
-          title: '已成功撤销该活动',
-          icon: 'success',
-          duration: 1500
-        })
-        setTimeout(function () {
-          wx.hideToast()
-        }, 2000)
-        wx.switchTab({
-          url: '../../pages/me/me',
         })
       })
       .catch(() => {
-
       });
   },
 
   deletePic(event) {
     console.log(event)
-    let imgDelIndex = event.detail.index
+    let imgDelIndex = 0
     let fileList = this.data.fileList
     let form = this.data.formData
     wx.cloud.deleteFile({
@@ -605,8 +620,7 @@ Page({
     Dialog.confirm({
       title: '确定要修改该活动吗！',
       message: dontDelete,
-    })
-      .then(() => {
+    }).then(() => {
         var aid = ''
         var that = this
         let form = this.data.formData

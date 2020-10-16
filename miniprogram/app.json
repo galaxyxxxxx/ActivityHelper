@@ -1,5 +1,4 @@
 {
-  "darkmode" : true,
   "themeLocation": "theme.json",
   "pages": [
     "pages/home/home",

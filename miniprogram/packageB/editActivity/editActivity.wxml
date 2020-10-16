@@ -61,4 +61,4 @@
   <van-button color="var(--color-theme)" round="{{true}}" bindtap="submit">确认修改</van-button>
 </view>
 
-<van-dialog id="van-dialog"/>
+<van-dialog id="van-dialog" show-cancel-button/>

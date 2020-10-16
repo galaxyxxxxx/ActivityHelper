@@ -8,11 +8,11 @@ exports.main = async (event, context) => {
   try {
     const res = await db.collection('message').add({
       data: {
-        touser: event.userInfo.openid,
-        page: 'index',
+        touser: event.openid,
+        page: 'packageA/activityDetail/activityDetails?aid=' + event.aid,
         data: event.data,
-        templateId: EventTarget.templateId,
-        date : new Date(event.date),
+        templateId: event.templateId,
+        date : event.date,
         done: false,
       },
     });
