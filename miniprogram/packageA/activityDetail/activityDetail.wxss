@@ -160,6 +160,9 @@ van-icon {
 van-tag{
   margin-right: 10rpx;
 }
+.contact{
+  color: var(--color-link) !important;
+}
 
 .activity-time {
   display        : flex;

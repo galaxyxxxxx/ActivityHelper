@@ -24,7 +24,9 @@ Page({
 
   onLoad: function (options) {
     let that = this;
-    app.getopenid(that.cb);
+    this.setData({
+      openid: wx.getStorageSync('openid')
+    })
     let today = this.formatDate(new Date())
 
     let type_id = options.type
@@ -43,8 +45,6 @@ Page({
 
     // 加载列表
     setTimeout(() => {
-      console.log("openid ttt", that.data.openid)
-
       act.where({
         actTimeEnd: _.gte(today), //查找尚未到截止日期的活动
         type: this.data.type_id
@@ -89,15 +89,6 @@ Page({
 
 
   },
-
-  // 一个用来获取openid的回调函数
-  cb: function (res) {
-    let that = this
-    that.setData({
-      openid: res
-    })
-  },
-
   //点击收藏按钮的事件
   collect(e) {
     if (e.mark.starMark === "star") {
