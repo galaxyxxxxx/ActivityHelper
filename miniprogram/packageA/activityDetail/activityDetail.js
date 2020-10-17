@@ -503,6 +503,16 @@ Page({
     wx.navigateTo({
       url: '../../packageA/list/list?type=' + type,
     })
+  },
 
+  call(){
+    let contact = this.data.activity_detail.contact
+    if(contact == null || !util.isTel(contact)){
+      return;
+    }else{
+      wx.makePhoneCall({
+        phoneNumber: contact,
+      })
+    }
   }
 });

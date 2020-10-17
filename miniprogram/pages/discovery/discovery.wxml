@@ -5,25 +5,16 @@
 
 		<!-- 类型分区 -->
 		<van-tab title="分区">
-		<block wx:for="{{actType}}" wx:key="item" class="typeBlock">
-				<view class="type" bindtap="moreTypeList" data-id="{{item._id}}">
-					<!-- 类型图 -->
-					<image src="{{item.type_img}}"
-						style="width: 150rpx; height:150rpx; display: inline-block; background-color: var(--color-background); border-radius:50%; overflow:hidden" />
-					<!-- 类型名 -->
-					<view class="typeTitle">
-						{{item.type_name}}
-					</view>
-					<!-- 订阅按钮 -->
-					<van-button class="subscribe" bindtap="subscribe" data-typeid="{{item._id}}" mark:subscribeMark="subscribe"
-						round custom-style="padding: 0 15rpx 0 15rpx;float:right;letter-spacing:5rpx;" color="#80a0c0" plain
-						size="small">订阅
-					</van-button>
-				</view>
-			</block>
-			<!-- 由于tabbar的bug而加的空白框 -->
-			<view class="null" wx:if="{{acting.length != 0}}"></view>
+			<van-grid clickable column-num="3" icon-size="100rpx" border="{{false}}" clickable="{{true}}" squre="{{true}}" gutter="20rpx">
+				<block wx:for="{{actType}}" wx:key="item" class="typeBlock">
+					<van-grid-item text-class="type" icon="{{item.type_img}}" link-type="navigateTo"
+						url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" />
+				</block>
+			</van-grid>
+			<!-- 由于tabbar的bug而加的空白框 -->
+			<view class="null" ></view>
 		</van-tab>
+		
 
 		<!-- 日历查询 -->
 		<van-tab title="时序">
