@@ -9,7 +9,7 @@ const _ = db.command;
 exports.main = async (event, context) => {
   try {
     const messageResult = await db.collection('message').where({
-      templateId: '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA',
+      templateId: 'CJpRUgZOMZEJVNUIc3-CfXiJXOoZzgd0qKynIeTu0wg',
       aid: event.aid,
       done: false
     }).get();

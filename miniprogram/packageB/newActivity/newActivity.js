@@ -598,6 +598,7 @@ Page({
             addr1: form.addr1_index,
             addr2: form.addr2_index,
             type: form.type,
+            contact: form.contact, 
             actTimeBegin: form.actTimeBegin,
             actTimeEnd: form.actTimeEnd,
             regTimeBegin: form.regTimeBegin,

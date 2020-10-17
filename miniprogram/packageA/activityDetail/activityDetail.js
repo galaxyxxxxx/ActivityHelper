@@ -160,6 +160,7 @@ Page({
     )
     // 检测是否已报名
     if (this.data.alreadyTaken === true) {
+      let that = this;
       wx.showLoading({
         title: '正在取消...',
       });
@@ -170,7 +171,7 @@ Page({
             alreadyTaken: false
           });
           db.collection('register').where({
-            aid: this.data.activity_detail._id
+            aid: that.data.activity_detail._id
           }).get().then(
             res => {
               let regNum = res.data.length;
@@ -199,7 +200,7 @@ Page({
       let today = new Date();
       today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
       console.log("today", today, this.data.activity_detail)
-      if (this.data.activity_detail.actTimeBegin > today || this.data.activity_detail.actTimeEnd < today) {
+      if (this.data.activity_detail.regTimeBegin > today || this.data.activity_detail.regTimeEnd < today) {
         wx.showToast({
           title: "不在报名时间",
           icon: "none",
@@ -214,7 +215,7 @@ Page({
         return;
       }
       console.log("regular Add");
-      let lessonTmplId = ['w-vPBajcx_ej4CQ6QtmXduAbQT2scKZfN74E67Jj2ZQ', '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA'];  // 开始、取消
+      let lessonTmplId = ['w-vPBajcx_ej4CQ6QtmXduAbQT2scKZfN74E67Jj2ZQ', '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA', 'CJpRUgZOMZEJVNUIc3-CfXiJXOoZzgd0qKynIeTu0wg'];  // 开始、取消、报名成功
 
       wx.requestSubscribeMessage({
         // 传入订阅消息的模板id，模板 id 可在小程序管理后台申请
@@ -226,7 +227,6 @@ Page({
             // 这里将订阅的课程信息调用云函数存入云开发数据
             let acting = that.data.activity_detail;
             console.log(acting);
-
             const promise1 = new Promise((resolve, reject) => {
               wx.cloud.callFunction({
                 name: 'subscribe',
@@ -236,7 +236,7 @@ Page({
                   data: {
                     thing4: { value: acting.title },
                     thing6: { value: acting.addr },
-                    date3: { value: new Date(acting.actTimeBegin) },
+                    date3: { value: util.formatTimeMessage(new Date(acting.actTimeBegin)) },
                   },
                   date: new Date(),
                   templateId: lessonTmplId[0],
@@ -254,7 +254,7 @@ Page({
                   data: {
                     thing1: { value: acting.title },
                     thing3: { value: acting.addr },
-                    date2: { value: new Date(acting.actTimeBegin) }
+                    date2: { value: util.formatTimeMessage(new Date(acting.actTimeBegin)) }
                   },
                   date: new Date(),
                   templateId: lessonTmplId[1],
@@ -263,7 +263,25 @@ Page({
                 resolve();
               })
             })
-            Promise.all([promise1, promise2]).then(() => {
+            const promise3 = new Promise((resolve, reject) => {
+              wx.cloud.callFunction({
+                name: 'subscribe',
+                data: {
+                  openid: that.data.openid,
+                  aid: acting._id,
+                  data: {
+                    thing1: { value: acting.title },
+                    thing3: { value: acting.addr },
+                    date5: { value: util.formatTimeMessage(new Date(acting.actTimeBegin)) },
+                  },
+                  date: new Date(),
+                  templateId: lessonTmplId[2],
+                }
+              }).then(() => {
+                resolve();
+              })
+            })
+            Promise.all([promise1, promise2, promise3]).then(() => {
               console.log("all Promise");
               db.collection("register").add({
                 data: {
@@ -286,15 +304,23 @@ Page({
                   let regNum = res.data.length;
                   that.setData({
                     regNum: regNum,
+                    alreadyTaken: true
                   });
-                  wx.hideLoading();
-                  wx.showToast({
-                    title: '报名成功',
-                    icon: 'success',
-                    duration: 2000,
-                  });
-                },
-              )
+                  wx.cloud.callFunction({
+                    name: 'sendNewMsg',
+                    data: {
+                      aid: acting._id
+                    },
+                    success: () => {
+                      wx.hideLoading();
+                      wx.showToast({
+                        title: '报名成功',
+                        icon: 'success',
+                        duration: 2000,
+                      });
+                    }
+                  })
+                })
             })
           } else {
             wx.showToast({
