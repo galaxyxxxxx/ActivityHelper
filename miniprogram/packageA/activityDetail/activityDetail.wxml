@@ -34,6 +34,29 @@
 		</block>
 	</view>
 
+	<van-dialog
+  use-slot
+  title="评论"
+  show="{{ showCommentDialog }}"
+  show-cancel-button
+  confirm-button-open-type="getUserInfo"
+  bind:close="submitComment"
+  bind:getuserinfo="getUserInfo"
+>
+<van-cell-group>
+  <van-field
+    value="{{ comment_input }}"
+    type="textarea"
+    placeholder="请输入留言"
+		autosize
+		bind:change="onChangeComment"
+    border="{{ false }}"
+  />
+</van-cell-group>
+</van-dialog>
+
+
+
 	<!-- 信息列表 -->
 	<view class="info">
 		<van-divider />
@@ -73,7 +96,7 @@
 		<view class="moreTitle">更多该类别的活动</view>
 		<view class="moreList" bindtap="moreTypeList">查看全部</view>
 		<view class="list" >
-			<block wx:for="{{typeActList}}">
+			<block wx:for="{{typeActList}}" wx:key="item">
 				<view class="act" bindtap="toActDetail">
 					<view class="coverMini"><image src="{{item.cover}}" style="width:100rpx; height:100rpx"/></view>
 					<view class="mini">

@@ -395,6 +395,12 @@ Page({
       })
     }
   },
+  //点击评论按钮
+  onClickComment(e){
+    this.setData({
+      showCommentDialog : true
+    })
+  },
   //获取评论
   getComments(id) {
     db.collection('comment')
@@ -450,7 +456,7 @@ Page({
       },
     });
   },
-  onChange(e) {
+  onChangeComment(e) {
     this.setData({
       comment_input: e.detail,
     });
