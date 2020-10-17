@@ -109,6 +109,7 @@ Page({
         form.title = res.data[0].title
         form.host = res.data[0].host
         form.numMax = res.data[0].numMax
+        form.contact = res.data[0].contact
         form.addr1_index = res.data[0].addr1
         form.addr1 = Object.keys(cite)[form.addr1_index]
         form.addr2_index = res.data[0].addr2
@@ -146,15 +147,6 @@ Page({
     })
     Promise.all([promise1, promise2, promise3, promise4]).then(() => {
       console.log(form);
-      // db.collection('type').where({
-      //   _id: form.type_id
-      // }).get().then(res => {
-      //   console.log("timeout Res", res);
-      //   form.type = res.data[0].type_name;
-      //   this.setData({
-      //     formData: form
-      //   })
-      // });
       for (let i = 0; i < actType.length; i++) {
         if (actType[i]._id === form.type_id) {
           form.type = actType[i].type_name
@@ -180,8 +172,7 @@ Page({
       console.log(picList, form.coverUrl);
 
       this.setData({
-        fileList: picList,
-        // type_index: this.getIndexByName(typeCollection, form.type)
+        fileList: picList
       })
       wx.hideLoading();
     })
@@ -401,12 +392,16 @@ Page({
       message: dontDelete,
     }).then(() => {
         let form = this.data.formData
+        console.log(form);
         wx.cloud.callFunction({
           name: 'sendDelMsg',
           data: {
             aid: form.id
           },
-          success: () => {
+          success: (res) => {
+            db.collection('register').where({
+              aid: form.id
+            }).remove();
             db.collection('activity').doc(form.id).remove({
               success: function (res) {
                 console.log(res.data)
@@ -619,7 +614,7 @@ Page({
 
     let form = this.data.formData
     let regNum = form.regNum
-    let dontDelete = regNum > 0 ? '已有' + regNum + '同学报名了，请谨慎修改信息！\n如每次修改，将向这' + regNum + '名同学推送通知' : ''
+    let dontDelete = regNum > 0 ? '已有' + regNum + '同学报名了，请谨慎修改信息！' : ''
     Dialog.confirm({
       title: '确定要修改该活动吗！',
       message: dontDelete,
