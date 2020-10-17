@@ -20,28 +20,28 @@ Page({
     activity_detail: {},
     regNum: 0,
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg',
-    type:'',  //用于查询该类别的其他活动
+    type: '',  //用于查询该类别的其他活动
     typeActList: []
   },
 
-  getTypeActList(a){
-    console.log("type！",a)
+  getTypeActList(a) {
+    console.log("type！", a)
     let today = new Date()
     db.collection('activity').where({
       type: a,
       _id: _.neq(this.data.aid)
     })
-    .orderBy('actTimeBegin', 'desc')
-    .limit(3)
-    .get()
-    .then(
-      res => {
-        console.log("同类别活动查询",res);
-        this.setData({
-          typeActList : res.data
-        })
-      }
-    )
+      .orderBy('actTimeBegin', 'desc')
+      .limit(3)
+      .get()
+      .then(
+        res => {
+          console.log("同类别活动查询", res);
+          this.setData({
+            typeActList: res.data
+          })
+        }
+      )
   },
 
   onLoad: function (options) {
@@ -77,7 +77,7 @@ Page({
         var raw = res.data[0] || {}
         this.setData({
           activity_detail: raw || {},
-          type : res.data[0].type
+          type: res.data[0].type
         });
         setTimeout(() => {
           this.getTypeActList(res.data[0].type);
@@ -126,10 +126,7 @@ Page({
   },
 
   onShow: function () {
-    
   },
-
-  
 
   // 一个用来获取openid的回调函数
   // 暂时不再用到
@@ -182,6 +179,10 @@ Page({
               })
             },
           );
+          db.collection('message').where({
+            aid: this.data.activity_detail._id,
+            touser: this.data.openid
+          }).remove();
           wx.hideLoading()
           wx.showToast({
             title: "已取消报名",
@@ -230,12 +231,12 @@ Page({
               wx.cloud.callFunction({
                 name: 'subscribe',
                 data: {
-                  openid: that.data.openid, 
+                  openid: that.data.openid,
                   aid: acting._id,
                   data: {
-                    thing4: acting.title,
-                    thing6: acting.addr,
-                    date3: new Date(acting.actTimeBegin),
+                    thing4: { value: acting.title },
+                    thing6: { value: acting.addr },
+                    date3: { value: new Date(acting.actTimeBegin) },
                   },
                   date: new Date(),
                   templateId: lessonTmplId[0],
@@ -248,12 +249,12 @@ Page({
               wx.cloud.callFunction({
                 name: 'subscribe',
                 data: {
-                  openid: that.data.openid, 
+                  openid: that.data.openid,
                   aid: acting._id,
                   data: {
-                    thing1: acting.title,
-                    thing3: acting.addr,
-                    date2: new Date(acting.actTimeBegin)
+                    thing1: { value: acting.title },
+                    thing3: { value: acting.addr },
+                    date2: { value: new Date(acting.actTimeBegin) }
                   },
                   date: new Date(),
                   templateId: lessonTmplId[1],
@@ -284,7 +285,7 @@ Page({
                   console.log("get regNum", res);
                   let regNum = res.data.length;
                   that.setData({
-                    regNum: regNum
+                    regNum: regNum,
                   });
                   wx.hideLoading();
                   wx.showToast({
@@ -297,7 +298,7 @@ Page({
             })
           } else {
             wx.showToast({
-              title: '订阅失败',
+              title: '报名失败',
               icon: 'cancel',
               duration: 2000,
             });
@@ -471,10 +472,10 @@ Page({
     }
   },
 
-  moreTypeList(){
+  moreTypeList() {
     let type = this.data.type
     wx.navigateTo({
-      url: '../../packageA/list/list?type='+type,
+      url: '../../packageA/list/list?type=' + type,
     })
 
   }

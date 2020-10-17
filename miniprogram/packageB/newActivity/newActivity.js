@@ -444,7 +444,7 @@ Page({
         // 联系方式数据检验（检查是否为手机号或邮箱
         const promise32 = new Promise((resolve, reject) => {
           console.log("进入校验32")
-          if (util.isTel(form.contact) || util.isEmail(form.contact)) {
+          if (!util.isTel(form.contact) && !util.isEmail(form.contact)) {
             console.log("校验3 出错")
             wx.showToast({
               title: '联系方式格式不正确',
@@ -557,7 +557,7 @@ Page({
         }
       })
     })
-    return Promise.all([promise1, promise2, promise3, promise4, promise5, promise6])
+    return Promise.all([promise1, promise2, promise31, promise32, promise4, promise5, promise6])
   },
 
   //提交键 检查数据格式并上传至云数据库

@@ -8,9 +8,10 @@ const _ = db.command;
 // 云函数入口函数
 exports.main = async (event, context) => {
   try {
-    // let now = new Date();
-    const messageResult = db.collection('message').where({
-      templateId: "8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA"
+    const messageResult = await db.collection('message').where({
+      templateId: "8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA", 
+      aid: event.aid, 
+      done: false
     }).get();
     const sendPromises = messageResult.data.map(async message => {
       try {
@@ -18,7 +19,12 @@ exports.main = async (event, context) => {
           touser: message.touser,
           page: message.page,
           data: message.data,
-          templateId: message.templateId
+          template_id: message.templateId
+        });
+        return db.collection('message').doc(message._id).update({
+          data: {
+            done: true
+          }
         })
       } catch (err) {
         console.log(err);

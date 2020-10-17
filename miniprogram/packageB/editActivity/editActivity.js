@@ -403,6 +403,9 @@ Page({
         let form = this.data.formData
         wx.cloud.callFunction({
           name: 'sendDelMsg',
+          data: {
+            aid: form.id
+          },
           success: () => {
             db.collection('activity').doc(form.id).remove({
               success: function (res) {

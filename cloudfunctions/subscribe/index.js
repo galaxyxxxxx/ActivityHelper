@@ -10,6 +10,7 @@ exports.main = async (event, context) => {
       data: {
         touser: event.openid,
         page: 'packageA/activityDetail/activityDetails?aid=' + event.aid,
+        aid: event.aid,
         data: event.data,
         templateId: event.templateId,
         date : event.date,
