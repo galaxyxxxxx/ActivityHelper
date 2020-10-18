@@ -169,11 +169,19 @@ van-tag{
   flex-wrap      : wrap;
   justify-content: space-around;
 }
-
+.commentContent{
+  margin: 40rpx !important;
+}
 .null{
   background-color: transparent;
   height: 150rpx;
   width: 100%;
   color: #cfcfcf;
   text-align: center;
+}
+.van-dialog__header{
+  padding: 20rpx !important;
+}
+.van-field textarea{
+  padding: 20rpx;
 }

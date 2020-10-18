@@ -36,15 +36,16 @@
 
 	<van-dialog
   use-slot
-  title="评论"
+	title="评论"
   show="{{ showCommentDialog }}"
   show-cancel-button
   confirm-button-open-type="getUserInfo"
   bind:close="submitComment"
   bind:getuserinfo="getUserInfo"
 >
-<van-cell-group>
-  <van-field
+<van-cell-group style="padding:20rpx !important">
+	<van-field
+	 input-class="commentContent"
     value="{{ comment_input }}"
     type="textarea"
     placeholder="请输入留言"

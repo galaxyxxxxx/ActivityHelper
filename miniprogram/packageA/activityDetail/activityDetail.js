@@ -15,12 +15,12 @@ Page({
     comment_input: "",
     comments: [],
     isCollected: false,
-    alreadyTaken: false,  //是否已报名
+    alreadyTaken: false, //是否已报名
     reg_id: '',
     activity_detail: {},
     regNum: 0,
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg',
-    type: '',  //用于查询该类别的其他活动
+    type: '', //用于查询该类别的其他活动
     typeActList: []
   },
 
@@ -28,9 +28,9 @@ Page({
     console.log("type！", a)
     let today = new Date()
     db.collection('activity').where({
-      type: a,
-      _id: _.neq(this.data.aid)
-    })
+        type: a,
+        _id: _.neq(this.data.aid)
+      })
       .orderBy('actTimeBegin', 'desc')
       .limit(3)
       .get()
@@ -88,9 +88,9 @@ Page({
     // 查询报名情况
     console.log(aid)
     db.collection("register").where({
-      aid: aid,
-      openid: this.data.openid
-    }).get()
+        aid: aid,
+        openid: this.data.openid
+      }).get()
       .then(
         res => {
           console.log("tset", res)
@@ -125,8 +125,7 @@ Page({
     )
   },
 
-  onShow: function () {
-  },
+  onShow: function () {},
 
   // 一个用来获取openid的回调函数
   // 暂时不再用到
@@ -215,7 +214,7 @@ Page({
         return;
       }
       console.log("regular Add");
-      let lessonTmplId = ['w-vPBajcx_ej4CQ6QtmXduAbQT2scKZfN74E67Jj2ZQ', '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA', 'CJpRUgZOMZEJVNUIc3-CfXiJXOoZzgd0qKynIeTu0wg'];  // 开始、取消、报名成功
+      let lessonTmplId = ['w-vPBajcx_ej4CQ6QtmXduAbQT2scKZfN74E67Jj2ZQ', '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA', 'CJpRUgZOMZEJVNUIc3-CfXiJXOoZzgd0qKynIeTu0wg']; // 开始、取消、报名成功
 
       wx.requestSubscribeMessage({
         // 传入订阅消息的模板id，模板 id 可在小程序管理后台申请
@@ -234,9 +233,15 @@ Page({
                   openid: that.data.openid,
                   aid: acting._id,
                   data: {
-                    thing4: { value: acting.title },
-                    thing6: { value: acting.addr },
-                    date3: { value: util.formatTimeMessage(new Date(acting.actTimeBegin)) },
+                    thing4: {
+                      value: acting.title
+                    },
+                    thing6: {
+                      value: acting.addr
+                    },
+                    date3: {
+                      value: util.formatTimeMessage(new Date(acting.actTimeBegin))
+                    },
                   },
                   date: new Date(),
                   templateId: lessonTmplId[0],
@@ -252,9 +257,15 @@ Page({
                   openid: that.data.openid,
                   aid: acting._id,
                   data: {
-                    thing1: { value: acting.title },
-                    thing3: { value: acting.addr },
-                    date2: { value: util.formatTimeMessage(new Date(acting.actTimeBegin)) }
+                    thing1: {
+                      value: acting.title
+                    },
+                    thing3: {
+                      value: acting.addr
+                    },
+                    date2: {
+                      value: util.formatTimeMessage(new Date(acting.actTimeBegin))
+                    }
                   },
                   date: new Date(),
                   templateId: lessonTmplId[1],
@@ -270,9 +281,15 @@ Page({
                   openid: that.data.openid,
                   aid: acting._id,
                   data: {
-                    thing1: { value: acting.title },
-                    thing3: { value: acting.addr },
-                    date5: { value: util.formatTimeMessage(new Date(acting.actTimeBegin)) },
+                    thing1: {
+                      value: acting.title
+                    },
+                    thing3: {
+                      value: acting.addr
+                    },
+                    date5: {
+                      value: util.formatTimeMessage(new Date(acting.actTimeBegin))
+                    },
                   },
                   date: new Date(),
                   templateId: lessonTmplId[2],
@@ -422,9 +439,9 @@ Page({
     }
   },
   //点击评论按钮
-  onClickComment(e){
+  onClickComment(e) {
     this.setData({
-      showCommentDialog : true
+      showCommentDialog: true
     })
   },
   //获取评论
@@ -461,26 +478,56 @@ Page({
       });
       return;
     }
-    let data = {
-      openid: this.data.openid,
-      aid: this.data.activity_detail._id,
-      comment: this.data.comment_input,
-      time: util.formatTime(new Date())
-    };
-    db.collection("comment").add({
-      data,
-      success: (res) => {
-        wx.showToast({
-          title: "评论成功",
-        });
-        this.setData({
-          comments: [...this.data.comments, data],
-        });
-        this.setData({
-          comment_input: "",
-        });
+    // 安全校验
+    var comment = this.data.comment_input
+    let that = this
+    wx.cloud.callFunction({
+      name: "textsec",
+      data: {
+        text: comment
       },
-    });
+      success(res) {
+        console.log("comment内容安全")
+        let data = {
+          openid: this.data.openid,
+          aid: this.data.activity_detail._id,
+          comment: this.data.comment_input,
+          time: util.formatTime(new Date())
+        };
+
+        db.collection("comment").add({
+          data,
+          success: (res) => {
+            wx.showToast({
+              title: "评论成功",
+            });
+            
+            that.setData({
+              comments: [...this.data.comments, data],
+            });
+            that.setData({
+              comment_input : "",
+            });
+          },
+        });
+
+
+      },
+      fail(err) {
+        wx.showToast({
+          title: '评论存在敏感词汇 请修改',
+          icon: 'none',
+          duration: 3000
+        })
+        setTimeout(function () {
+          wx.hideToast()
+        }, 2000)
+        that.setData({
+          comment_input : ''
+        })
+      }
+    })
+
   },
   onChangeComment(e) {
     this.setData({
@@ -511,11 +558,11 @@ Page({
     })
   },
 
-  call(){
+  call() {
     let contact = this.data.activity_detail.contact
-    if(contact == null || !util.isTel(contact)){
+    if (contact == null || !util.isTel(contact)) {
       return;
-    }else{
+    } else {
       wx.makePhoneCall({
         phoneNumber: contact,
       })

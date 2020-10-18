@@ -587,18 +587,19 @@ Page({
         form.coverUrl = this.data.formData.coverUrl
         let openid = this.data.openid
         console.log(form.coverUrl);
-        db.collection('activity').add({
+        db.coll
+        ection('activity').add({
           data: {
             openid: openid,
             title: form.title,
             host: form.host,
             numMax: form.numMax,
             regNum: 0,
+            contact:form.contact,
             addr: form.addr,
             addr1: form.addr1_index,
             addr2: form.addr2_index,
             type: form.type,
-            contact: form.contact, 
             actTimeBegin: form.actTimeBegin,
             actTimeEnd: form.actTimeEnd,
             regTimeBegin: form.regTimeBegin,
