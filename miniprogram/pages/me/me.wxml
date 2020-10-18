@@ -19,7 +19,7 @@
 		bind:change="changeTab" nav-class="tabNav">
 		<!-- 收藏列表 -->
 		<van-tab title="收藏列表">
-			<block wx:for="{{actCollected}}" wx:key="item" wx:index data-id="{{item._id}}" bindtap="viewMore">
+			<view wx:for="{{actCollected}}" wx:key="item" data-id="{{item._id}}" bindtap="viewMore">
 				<!-- 活动卡片 -->
 				<view class="act">
 					<!-- 活动标签 -->
@@ -36,17 +36,16 @@
 						<view class="actHost">{{item.host}}举办</view>
 					</view>
 				</view>
-			</block>
+			</view>
 			<!-- 空状态 -->
-			<van-empty wx:if="{{actCollected.length == 0}}" class="custom-image" image="{{emptyImg}}"
-				description="暂无已收藏的活动">
+			<van-empty wx:if="{{actCollected.length == 0}}" class="custom-image" image="{{emptyImg}}" description="暂无已收藏的活动">
 				<view class="null">可以轻点活动卡片的"★"进行收藏噢</view>
 			</van-empty>
 		</van-tab>
 
 		<!-- 报名列表 -->
 		<van-tab title="报名列表">
-			<block wx:for="{{actRegistered}}" wx:key="item" data-id="{{item._id}}" bindtap="viewMore">
+			<view wx:for="{{actRegistered}}" wx:key="item" data-id="{{item._id}}" bindtap="viewMore">
 				<!-- 活动卡片 -->
 				<view class="act">
 					<!-- 活动标签 -->
@@ -63,7 +62,7 @@
 						<view class="actHost">{{item.host}}举办</view>
 					</view>
 				</view>
-			</block>
+			</view>
 			<!-- 空状态 -->
 			<van-empty wx:if="{{actReleased.length == 0}}" class="custom-image" image="{{emptyImg}}"
 				description="同学你还没有报名过活动">
@@ -94,8 +93,7 @@
 				</view>
 			</view>
 			<!-- 空状态 -->
-			<van-empty wx:if="{{actReleased.length == 0}}" class="custom-image" image="{{emptyImg}}"
-				description="暂无已发布的活动">
+			<van-empty wx:if="{{actReleased.length == 0}}" class="custom-image" image="{{emptyImg}}" description="暂无已发布的活动">
 				<view class="null">轻点右下方的➕ 就可以进行发布活动噢</view>
 			</van-empty>
 		</van-tab>

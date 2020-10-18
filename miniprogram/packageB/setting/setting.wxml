@@ -1,23 +1,19 @@
 <view class="contain">
-
   <view class="inForm">
-    
-     <view class="intro">
-      《活动助手》是基于北京工业大学校园内的各项信息开发的一款集报名、统计、汇总、收藏于一体的活动助手小程序.
+    <view class="intro">
+      　　《活动助手》是基于北京工业大学校园内的各项信息开发的一款集报名、统计、汇总、收藏于一体的活动助手小程序.
     </view>
 
     <view class="intro">
-      目标用户可以拓展到各个高校，本次以北京工业大学的条目内容为中心展开，可方便适配给各个高校。
+      　　目标用户可以拓展到各个高校，本次以北京工业大学的条目内容为中心展开，可方便适配给各个高校。
     </view>
 
     <view class="feedback">
+      <van-button open-type="feedback" color="#868688" plain round>意见反馈</van-button>
     </view>
 
     <view class="version">
-    ActivityHelper 1.1.0
+      ActivityHelper 2.0.0
     </view>
-
-    
   </view>
-
 </view>

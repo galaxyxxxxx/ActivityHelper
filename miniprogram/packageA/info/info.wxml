@@ -19,10 +19,10 @@
     <!-- 按钮 -->
 		<view class="btn-area">
 			<!-- 认证功能尚未完成 -->
-			<van-button  size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx" wx:if="{{role == 0}}">社团认证</van-button>
-			<van-button  size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx" wx:if="{{role == 2}}"  disabled>认证审核中</van-button>
+			<van-button size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx" wx:if="{{role == 0}}">社团认证</van-button>
+			<van-button size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain custom-style="width:180rpx" wx:if="{{role == 2}}" disabled>认证审核中</van-button>
 			<van-dialog id="van-dialog"/>
-			<van-button  formType="submit" size="small" round="{{true}}" bindtap="submit" color="var(--color-theme)" plain custom-style="width:180rpx">提交信息</van-button>
+			<van-button formType="submit" size="small" round="{{true}}" bindtap="submit" color="var(--color-theme)" plain custom-style="width:180rpx">提交信息</van-button>
 		</view>
 
 	</view>

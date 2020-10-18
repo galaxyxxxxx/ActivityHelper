@@ -26,6 +26,11 @@ page{
 
 .feedback{
   margin-bottom: var(--font-size-M);
+  position: relative;
+  text-align: center;
+  display: flexbox;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .version{
