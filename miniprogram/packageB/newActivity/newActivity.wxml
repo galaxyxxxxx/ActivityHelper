@@ -8,7 +8,7 @@
     required />
   <!-- 举办部门 -->
   <van-field value="{{ host }}" data-field="host" label="举办部门" placeholder="" bind:change="onFormChange" disabled required/>
-  <!-- 举办部门 -->
+  <!-- 联系方式 -->
   <van-field value="{{ contact }}" data-field="contact" label="联系方式" placeholder="请输入活动联系方式(电话或邮箱)" bind:change="onFormChange" required />
 
   <!-- 人数上限 -->

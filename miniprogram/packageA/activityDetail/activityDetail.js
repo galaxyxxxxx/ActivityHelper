@@ -489,9 +489,9 @@ Page({
       success(res) {
         console.log("comment内容安全")
         let data = {
-          openid: this.data.openid,
-          aid: this.data.activity_detail._id,
-          comment: this.data.comment_input,
+          openid: that.data.openid,
+          aid: that.data.activity_detail._id,
+          comment: that.data.comment_input,
           time: util.formatTime(new Date())
         };
 

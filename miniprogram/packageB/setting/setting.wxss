@@ -5,7 +5,7 @@ page{
 }
 
 .contain{
-  margin-top: 20%;
+  margin-top: 30rpx;
   width: 100%;
   height: 100%;
 }
@@ -17,11 +17,17 @@ page{
   border-radius: 40rpx;
   overflow:hidden;
   box-shadow: 10rpx 10rpx 10rpx rgba(150, 150, 150, 0.2);
-  line-height: 2rem;
+  line-height: 1.5rem;
+}
+
+.title{
+  font-size: var(--font-size-M);
+  font-weight: 600;
+  margin-bottom: 10rpx;
 }
 
 .intro{
-  margin-bottom: var(--font-size-M);
+  margin-bottom: 10rpx;
 }
 
 .feedback{
@@ -34,5 +40,10 @@ page{
 }
 
 .version{
-  margin-bottom:var(--font-size-M)
+  margin-bottom:var(--font-size-M);
+  text-align: center;
+}
+
+.developer{
+  text-align: center;
 }

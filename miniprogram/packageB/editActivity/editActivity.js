@@ -22,6 +22,7 @@ Page({
       host: "",
       numMax: "",
       regNum: "",
+      contact: "",
       addr: "",
       addr1: "",
       addr2: "",

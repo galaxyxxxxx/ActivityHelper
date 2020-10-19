@@ -8,7 +8,8 @@
     bind:change="onFormChange" required />
 
   <!-- 举办部门 -->
-  <van-field value="{{ formData.host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange" disabled />
+  <van-field value="{{ formData.host }}" data-field="host" label="举办部门" placeholder="请输入举办部门" bind:change="onFormChange"
+    disabled />
 
   <!-- 报名人数 -->
   <van-field value="{{ formData.regNum }}" data-field="regNum" label="报名人数" placeholder="报名人数"
@@ -18,6 +19,11 @@
 <!-- 人数上限 -->
 <van-field value="{{ formData.numMax }}" data-field="numMax" label="人数上限" placeholder="若无人数要求 可不填"
   bind:change="onFormChange" />
+
+<!-- 联系方式 -->
+<van-field value="{{ formData.contact }}" data-field="contact" label="联系方式" placeholder="请输入活动联系方式(电话或邮箱)"
+  bind:change="onFormChange" required />
+
 
 <!-- 活动地址 -->
 <van-cell title="活动地址" value="{{formData.addr}}" data-field="addr" is-link bind:click="showPopupAddr"
@@ -61,4 +67,4 @@
   <van-button color="var(--color-theme)" round="{{true}}" bindtap="submit">确认修改</van-button>
 </view>
 
-<van-dialog id="van-dialog" show-cancel-button/>
+<van-dialog id="van-dialog" show-cancel-button />
