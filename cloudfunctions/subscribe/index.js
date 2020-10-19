@@ -9,7 +9,7 @@ exports.main = async (event, context) => {
     const res = await db.collection('message').add({
       data: {
         touser: event.openid,
-        page: 'packageA/activityDetail/activityDetails?aid=' + event.aid,
+        page: 'packageA/activityDetail/activityDetail?aid=' + event.aid,
         aid: event.aid,
         data: event.data,
         templateId: event.templateId,
