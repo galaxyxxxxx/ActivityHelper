@@ -11,7 +11,8 @@
       "pages": [
         "list/list",
         "info/info",
-        "activityDetail/activityDetail"
+        "activityDetail/activityDetail",
+        "search/search"
       ]
     },
     {

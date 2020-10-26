@@ -1,0 +1,29 @@
+<!-- 搜索栏 -->
+<van-search class="search" value="{{ value }}" shape="round" input-align="center" placeholder="请输入搜索关键词" bind:focus="onFocus"
+  bind:blur="onBlur" bind:clear="onClear" bind:change="onChange" bind:search="onSearch" />
+
+<!-- 活动参与部分 -->
+<view class="acts">
+  <view wx:for="{{searchRes}}" wx:key="item" data-id="{{item._id}}" bindtap="viewMore">
+    <!-- 活动卡片 -->
+    <view class="act">
+      <!-- 活动标签 -->
+      <view class="actLable">
+        <van-icon name="label-o" size="40rpx" color="var(--color-theme)" /> {{item.actTimeBegin}} -
+        {{item.actTimeEnd}}
+      </view>
+      <!-- 活动名称 -->
+      <view class="actTitle">{{item.title}}</view>
+      <!-- 底行信息 | 活动地址 举办方-->
+      <view class="actIntro">
+        <!-- 活动地址 -->
+        <view class="actAddr">{{item.addr}}</view>
+        <view class="actHost">{{item.host}}举办</view>
+      </view>
+    </view>
+  </view>
+  <!-- 空状态 -->
+  <van-empty wx:if="{{isEmpty}}" class="custom-image" image="{{emptyImg}}" description="暂无该活动😣">
+    <view class="empty">可以试着少输一些关键字噢</view>
+  </van-empty>
+</view>

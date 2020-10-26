@@ -1,6 +1,20 @@
 <view class="contain">
 
-	<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="var(--color-theme)" border="false"
+	<!-- 搜索栏 -->
+	<van-search
+  value="{{ value }}"
+	shape="round"
+	input-align="center"
+  placeholder= "请输入搜索关键词"
+  
+	bind:focus="onFocus"
+	bind:blur="onBlur"
+	bind:clear="onClear"
+	bind:change="onChange"
+	bind:search="onSearch"
+/>
+
+	<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="var(--color-theme)" border="{{false}}"
 		line-height="1px" sticky="{{true}}">
 
 		<!-- 类型分区 -->
@@ -43,5 +57,6 @@
 			</view>
 
 		</van-tab>
+
 	</van-tabs>
 </view>

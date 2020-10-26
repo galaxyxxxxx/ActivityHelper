@@ -1,0 +1,10 @@
+{
+  "usingComponents": {},
+  "window": {
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "校园活动助手",
+    "navigationBarTextStyle": "@navTextStyle"
+  }
+}

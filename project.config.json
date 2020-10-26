@@ -193,6 +193,13 @@
           "pathName": "packageB/inputOrg/inputOrg",
           "query": "",
           "scene": null
+        },
+        {
+          "id": -1,
+          "name": "search",
+          "pathName": "packageA/search/search",
+          "query": "",
+          "scene": null
         }
       ]
     }

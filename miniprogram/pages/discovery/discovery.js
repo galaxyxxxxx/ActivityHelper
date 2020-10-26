@@ -14,6 +14,9 @@ Page({
     //顶部tabbar
     tabbar: 0,
 
+    // 搜索栏输入内容
+    searchInput:'',
+
     // 有id的type
     actType: [],
     // 无id的type
@@ -82,7 +85,6 @@ Page({
       duration: 1000
     })
   },
-
 
   onShow: function () {
     // tabbar
@@ -154,5 +156,28 @@ Page({
       }
     })
   },
-  onScroll() {}
+  
+  // search line
+  onFocus(e){
+    console.log("focus",e)
+    wx.navigateTo({
+      url: '../../packageA/search/search',
+    })
+  },
+  onBlur(e){
+    // console.log("blur",e)
+  },
+  onClear(e){
+    console.log("clear",e)
+  },
+  onChange(e){
+    console.log("change",e)
+    this.setData({
+      searchInput : e.detail 
+    })
+  },
+  onSearch(e){
+    console.log("search",e)
+  }
+
 });
