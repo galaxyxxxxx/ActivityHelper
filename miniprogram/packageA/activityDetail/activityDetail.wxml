@@ -21,8 +21,8 @@
 	<!-- 活动介绍 -->
 	<view class="description">{{activity_detail.description}}</view>
 
-		<!-- 评论区 -->
-		<view class="comments">
+	<!-- 评论区 -->
+	<view class="comments">
 		<van-divider />
 		<view class="infoTitle">评论</view>
 		<view wx:if="{{comments.length == 0}}" class="noComment"> 暂无评论 快来抢沙发吧~</view>
@@ -34,27 +34,13 @@
 		</block>
 	</view>
 
-	<van-dialog
-  use-slot
-	title="评论"
-  show="{{ showCommentDialog }}"
-  show-cancel-button
-  confirm-button-open-type="getUserInfo"
-  bind:close="submitComment"
-  bind:getuserinfo="getUserInfo"
->
-<van-cell-group style="padding:20rpx !important">
-	<van-field
-	 input-class="commentContent"
-    value="{{ comment_input }}"
-    type="textarea"
-    placeholder="请输入留言"
-		autosize
-		bind:change="onChangeComment"
-    border="{{ false }}"
-  />
-</van-cell-group>
-</van-dialog>
+	<van-dialog use-slot title="评论" show="{{ showCommentDialog }}" show-cancel-button
+		confirm-button-open-type="getUserInfo" bind:close="submitComment" bind:getuserinfo="getUserInfo">
+		<van-cell-group style="padding:20rpx !important">
+			<van-field input-class="commentContent" value="{{ comment_input }}" type="textarea" placeholder="请输入留言" autosize
+				bind:change="onChangeComment" border="{{ false }}" />
+		</van-cell-group>
+	</van-dialog>
 
 
 
@@ -64,11 +50,15 @@
 		<view class="infoTitle">信息</view>
 		<van-cell-group class="infoBox" border="{{false}}">
 			<van-cell title="举办部门" title-width="160rpx" value="{{activity_detail.host}}" border="{{false}}" />
-			<van-cell title="报名人数" title-width="160rpx" value="{{regNum}}{{activity_detail.numMax >0 ? '/':''}}{{activity_detail.numMax}}" border="{{false}}" />
+			<van-cell title="报名人数" title-width="160rpx"
+				value="{{regNum}}{{activity_detail.numMax >0 ? '/':''}}{{activity_detail.numMax}}" border="{{false}}" />
 			<van-cell title="活动地点" title-width="160rpx" value="{{activity_detail.addr}}" border="{{false}}" />
-			<van-cell title="活动时间" title-width="160rpx" value="{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}" border="{{false}}" />
-			<van-cell title="报名时间" title-width="160rpx" value="{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}" border="{{false}}" />
-			<van-cell title="联系方式" title-width="160rpx" value="{{activity_detail.contact}}" border="{{false}}"  value-class="contact" bindtap="call"/>
+			<van-cell title="活动时间" title-width="160rpx"
+				value="{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}" border="{{false}}" />
+			<van-cell title="报名时间" title-width="160rpx"
+				value="{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}" border="{{false}}" />
+			<van-cell title="联系方式" title-width="160rpx" value="{{activity_detail.contact}}" border="{{false}}"
+				value-class="contact" bindtap="call" />
 		</van-cell-group>
 	</view>
 
@@ -96,13 +86,18 @@
 		<van-divider />
 		<view class="moreTitle">更多该类别的活动</view>
 		<view class="moreList" bindtap="moreTypeList">查看全部</view>
-		<view class="list" >
+		<view class="list">
 			<block wx:for="{{typeActList}}" wx:key="item">
 				<view class="act" bindtap="toActDetail">
-					<view class="coverMini"><image src="{{item.cover}}" style="width:100rpx; height:100rpx"/></view>
+					<view class="coverMini">
+						<image src="{{item.cover}}" style="width:100rpx; height:100rpx" />
+					</view>
 					<view class="mini">
 						<view class="titleMini">{{item.title}}</view>
-						<view class="tagMini"><van-tag round plain color="var(--color-theme)">{{item.addr}}</van-tag><van-tag round plain color="var(--color-theme)">{{item.host}}</van-tag></view>
+						<view class="tagMini">
+							<van-tag round plain color="var(--color-theme)">{{item.addr}}</van-tag>
+							<van-tag round plain color="var(--color-theme)">{{item.host}}</van-tag>
+						</view>
 					</view>
 				</view>
 			</block>

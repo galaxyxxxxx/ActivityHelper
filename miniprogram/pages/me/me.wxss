@@ -116,3 +116,16 @@ van-icon {
   position: relative;
   float: right;
 }
+.actLable .collect {
+  display: inline;
+  float: right;
+  position: relative;
+  top: -10rpx;
+}
+
+.actLable .collect::after{
+  left: -20rpx; 
+  top: -20rpx; 
+  right: -20rpx; 
+  bottom: -20rpx;
+}

@@ -41,14 +41,11 @@ Page({
     this.showDate();
     // 加载今日日期 用于筛选未到期的活动
     let today = this.formatDate(new Date())
-
-    var openid = this.data.openid
     var obj = {}
     // 加载主图
     act.where({
       actTimeEnd: _.gte(today)
-    })
-      .orderBy('actTimeBegin', 'desc')
+    }).orderBy('actTimeBegin', 'desc')
       .limit(1)
       .get()
       .then(
@@ -60,7 +57,7 @@ Page({
             .get()
             .then(
               res3 => {
-                obj.regNum = res.data.length
+                obj.regNum = res3.data.length
                 this.setData({
                   actMain: obj
                 })
@@ -86,8 +83,7 @@ Page({
               collect.where({
                 _openid: that.data.openid,
                 aid: currentValue._id
-              })
-                .get()
+              }).get()
                 .then(
                   res2 => {
                     currentValue.isCollected = res2.data.length == 1 ? true : false
@@ -120,6 +116,9 @@ Page({
     that.setData({
       openid: res
     })
+  },
+  onShow: function () {
+
   },
 
   // 滚动触底加载下一页活动

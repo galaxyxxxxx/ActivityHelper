@@ -14,7 +14,7 @@
 </view>
 
 <!-- 活动参与部分 -->
-<view class="acts" wx:if="{{role == 0 || role == 1}}">
+<view class="acts" wx:if="{{role == 0 || role == 1 || role == 2}}">
 	<van-tabs active="{{ tabbar }}" animated swipeable color="#80a0c0" border="false" line-height="1px" sticky="{{true}}"
 		bind:change="changeTab" nav-class="tabNav">
 		<!-- 收藏列表 -->
@@ -26,7 +26,13 @@
 					<view class="actLable">
 						<van-icon name="label-o" size="40rpx" color="var(--color-theme)" /> {{item.actTimeBegin}} -
 						{{item.actTimeEnd}}
+						<view class="collect" bindtap="collect" mark:starMark="star" data-collectId="{{item._id}}"
+							data-index="{{index}}">
+							<van-icon name="star" custom-style="color: gold" size="50rpx" wx:if="{{item.isCollected}}" />
+							<van-icon name="star-o" custom-style="color: gold" size="50rpx" wx:if="{{!item.isCollected}}" />
+						</view>
 					</view>
+					
 					<!-- 活动名称 -->
 					<view class="actTitle">{{item.title}}</view>
 					<!-- 底行信息 | 活动地址 举办方-->

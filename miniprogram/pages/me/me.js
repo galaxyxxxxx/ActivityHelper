@@ -45,7 +45,9 @@ Page({
       openid: wx.getStorageSync('openid'),
       role: wx.getStorageSync('role')
     })
-
+    wx.showLoading({
+      title: '正在加载...',
+    })
     //加载历史
     setTimeout(() => {
       this.loadCollect();
@@ -59,6 +61,7 @@ Page({
       if (this.data.role == 1) {
         this.loadRelease();
       }
+      wx.hideLoading();
     }, 300);
   },
 
@@ -204,11 +207,12 @@ Page({
 
   //加载收藏历史
   loadCollect() {
+    let actCol = [];
     let openid = this.data.openid
+    let that = this
     db.collection('collect').where({ //参与活动
       _openid: openid
-    })
-      .orderBy('actTimeEnd', 'desc')
+    }).orderBy('actTimeEnd', 'desc')
       .limit(10)
       .get({
         success: res => {
@@ -217,16 +221,21 @@ Page({
               _id: active.aid
             }).orderBy('actTimeBegin', 'desc')
               .get({
-                success: res => {
-                  this.setData({
-                    actCollected: [...this.data.actCollected, ...res.data],
+                success: res1 => {
+                  let current = res1.data[0];
+                  current.isCollected = true;
+                  actCol.push(current)
+                  that.setData({
+                    actCollected: actCol
                   })
                 },
                 fail(err) {
-                  console.log("报名列表加载失败", err)
+                  console.log("收藏列表加载失败", err)
                 }
               })
+              
           })
+          
         },
         fail(res) {
           console.log("fail", res)
@@ -291,7 +300,20 @@ Page({
 
   // 转换tab
   changeTab(e) {
-    if (e.detail.index == 2) { // 如果切换到发布管理页 让新建按钮晚一点儿出现
+    let that = this
+    if (e.detail.index == 0) {
+      this.loadCollect();
+      console.log("tabbbbb")
+      that.setData({
+        tabbar: e.detail.index
+      })
+    } else if (e.detail.index == 1) {
+      this.loadRegister();
+      console.log("tabbbbb")
+      that.setData({
+        tabbar: e.detail.index
+      })
+    } else if (e.detail.index == 2) { // 如果切换到发布管理页 让新建按钮晚一点儿出现
       console.log("taaaaaab", e.detail.index)
       setTimeout(() => {
         let that = this
@@ -300,15 +322,7 @@ Page({
           tabbar: e.detail.index
         })
       }, 200);
-    } else {
-      console.log("tabbbbb")
-      let that = this
-      let tabbar = that.data.tabbar
-      that.setData({
-        tabbar: e.detail.index
-      })
     }
-
   },
   // 转至个人信息修改页
   edit() {
@@ -402,10 +416,69 @@ Page({
   },
   // 查看活动详情
   viewMore(e) {
-    if (e.mark.moreMark !== "more") {
+    if (e.mark.moreMark !== "more" && e.mark.starMark !== "star") {
       console.log("已点击查看更多按钮 列表", e)
       wx.navigateTo({
         url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
+      })
+    }
+  },
+  //点击收藏按钮的事件
+  collect(e) {
+    if (e.mark.starMark === "star") {
+      console.log("已点击收藏按钮", e)
+      let that = this
+      var aid = e.currentTarget.dataset.collectid
+      var index = e.currentTarget.dataset.index
+      let openid = that.data.openid
+      console.log("Collecting", aid, index)
+      db.collection('collect').where({
+        _openid: that.data.openid,
+        aid: aid
+      }).get({
+        success: function (res) {
+          console.log("收藏数据库查找成功", res)
+          if (res.data.length == 0) { //如果未收藏，需要改为已收藏
+            collect.add({
+              data: {
+                aid: aid,
+                openid: openid
+              },
+              success: function (res1) {
+                console.log(res1)
+                wx.showToast({
+                  title: '成功收藏',
+                  icon: 'success',
+                  duration: 1000
+                })
+                let tmp = that.data.actCollected
+                tmp[index].isCollected = true
+                that.setData({
+                  actCollected: tmp
+                })
+              }
+            })
+          } else {
+            console.log("已被收藏，即将取消收藏")
+            db.collection('collect').doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
+              success(res) {
+                console.log(res)
+                console.log('已成功取消该收藏');
+                wx.showToast({
+                  title: '已取消收藏',
+                  icon: 'success',
+                  duration: 1000
+                })
+                let tmp = that.data.actCollected
+                tmp.splice(index, 1);
+                // tmp[index].isCollected = false;
+                that.setData({
+                  actCollected: tmp
+                });
+              }
+            })
+          }
+        }
       })
     }
   },

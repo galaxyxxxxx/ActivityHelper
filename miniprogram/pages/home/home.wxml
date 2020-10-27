@@ -19,8 +19,7 @@
 					<view class="regNum">
 						<van-icon name="friends" color="white" size="var(--font-size-M)" />{{actMain.regNum}}人已报名</view>
 					<!-- 更多按钮 -->
-					<van-button plain round size="small" class="moreButton" custom-style="color: var(--color-theme); top: -13rpx;" bindtap="viewMoreMain"
-						mark="register" id="{{actMain._id}}">查看更多</van-button>
+					<van-button plain round size="small" class="moreButton" custom-style="color: var(--color-theme); top: -13rpx;" mark="register" id="{{actMain._id}}">查看更多</van-button>
 					<!-- 收藏按钮 -->
 					<!-- <view class="collect" bindtap="collect" mark:starMark="star" data-collectId="{{actMain._id}}" data-index="-1">
 						<van-icon name="star" custom-style="color: gold" size="50rpx" wx:if="{{actMain.isCollected}}" />
