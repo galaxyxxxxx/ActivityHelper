@@ -303,7 +303,8 @@ Page({
               db.collection("register").add({
                 data: {
                   aid: acting._id,
-                  openid: that.data.openid
+                  openid: that.data.openid,
+                  regTime: new Date()
                 },
                 success: (res) => {
                   console.log("success reg res", res);
