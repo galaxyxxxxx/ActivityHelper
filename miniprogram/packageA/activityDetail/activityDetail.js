@@ -21,7 +21,8 @@ Page({
     regNum: 0,
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg',
     type: '', //用于查询该类别的其他活动
-    typeActList: []
+    typeActList: [],
+    isRegister: false
   },
 
   getTypeActList(a) {
@@ -85,7 +86,7 @@ Page({
       },
     });
     db.collection('user').where({
-      openid: this.data.openid
+      _openid: this.data.openid
     }).get().then(
       res => {
         if (res.data.length === 0) {
@@ -406,7 +407,8 @@ Page({
       collect.add({
         data: {
           aid: aid,
-          openid: openid
+          openid: openid,
+          collectTime: new Date()
         },
         success: function (res1) {
           console.log(res1)
