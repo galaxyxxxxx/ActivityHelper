@@ -17,14 +17,14 @@ Page({
     showReleasePop: false,
 
     releaseList: [{
-        name: '活动详情'
-      },
-      {
-        name: '活动删改'
-      },
-      {
-        name: '报名统计'
-      },
+      name: '活动详情'
+    },
+    {
+      name: '活动删改'
+    },
+    {
+      name: '报名统计'
+    },
     ],
 
     actCollected: [],
@@ -106,8 +106,8 @@ Page({
     let openid = this.data.openid
     this.data.pageId = this.data.pageId + 1
     db.collection('collect').where({ //参与活动
-        _openid: openid
-      })
+      _openid: openid
+    })
       .orderBy('actTimeEnd', 'desc')
       .skip(10 * this.data.pageId)
       .limit(10)
@@ -115,8 +115,8 @@ Page({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-                _id: active.aid
-              }).orderBy('actTimeBegin', 'desc')
+              _id: active.aid
+            }).orderBy('actTimeBegin', 'desc')
               .get({
                 success: res => {
                   this.setData({
@@ -135,8 +135,8 @@ Page({
       })
 
     db.collection('register').where({ //参与活动
-        _openid: openid
-      })
+      _openid: openid
+    })
       .orderBy('actTimeEnd', 'desc')
       .skip(10 * this.data.pageId)
       .limit(10)
@@ -144,8 +144,8 @@ Page({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-                _id: active.aid
-              }).orderBy('actTimeBegin', 'desc')
+              _id: active.aid
+            }).orderBy('actTimeBegin', 'desc')
               .get({
                 success: res => {
                   this.setData({
@@ -164,8 +164,8 @@ Page({
       })
 
     db.collection('activity').where({ //发布活动
-        _openid: openid
-      })
+      _openid: openid
+    })
       .orderBy('actTimeEnd', 'desc')
       .skip(10 * this.data.pageId)
       .limit(10)
@@ -187,7 +187,6 @@ Page({
   onPullDownRefresh() {
     let that = this
     that.setData({
-      tabbar: 0,
       openid: '',
       role: -1,
 
@@ -195,14 +194,14 @@ Page({
       showReleasePop: false,
 
       releaseList: [{
-          name: '活动详情'
-        },
-        {
-          name: '活动删改'
-        },
-        {
-          name: '报名统计'
-        },
+        name: '活动详情'
+      },
+      {
+        name: '活动删改'
+      },
+      {
+        name: '报名统计'
+      },
       ],
 
       actCollected: [],
@@ -238,15 +237,15 @@ Page({
     let openid = this.data.openid
     let that = this
     db.collection('collect').where({ //参与活动
-        _openid: openid
-      }).orderBy('actTimeEnd', 'desc')
+      _openid: openid
+    }).orderBy('actTimeEnd', 'desc')
       .limit(10)
       .get({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-                _id: active.aid
-              }).orderBy('actTimeBegin', 'desc')
+              _id: active.aid
+            }).orderBy('actTimeBegin', 'desc')
               .get({
                 success: res1 => {
                   let current = res1.data[0];
@@ -260,9 +259,7 @@ Page({
                   console.log("收藏列表加载失败", err)
                 }
               })
-
           })
-
         },
         fail(res) {
           console.log("fail", res)
@@ -272,22 +269,24 @@ Page({
 
   //加载报名列表
   loadRegister() {
+    let actReg = [];
     let openid = this.data.openid
     db.collection('register').where({ //参与活动
-        _openid: openid
-      })
+      _openid: openid
+    })
       .orderBy('actTimeEnd', 'desc')
       .limit(10)
       .get({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-                _id: active.aid
-              }).orderBy('actTimeBegin', 'desc')
+              _id: active.aid
+            }).orderBy('actTimeBegin', 'desc')
               .get({
-                success: res => {
+                success: res1 => {
+                  actReg.push(res1.data[0]);
                   this.setData({
-                    actRegistered: [...this.data.actRegistered, ...res.data],
+                    actRegistered: actReg,
                   })
                 },
                 fail(err) {
@@ -300,15 +299,14 @@ Page({
           console.log("fail", res)
         }
       })
-
   },
 
   //加载发布管理
   loadRelease() {
     let openid = this.data.openid
     db.collection('activity').where({ //发布活动
-        _openid: openid
-      })
+      _openid: openid
+    })
       .orderBy('actTimeEnd', 'desc')
       .limit(10)
       .get({
@@ -396,7 +394,6 @@ Page({
         showReleasePop: true
       })
     }
-
   },
   // 选择发布列表
   onSelectRelease(e) {
@@ -435,11 +432,9 @@ Page({
 
   // 修改活动
   editActivity(e) {
-
   },
   // 查看报名统计
   reg(e) {
-
   },
   // 查看活动详情
   viewMore(e) {
