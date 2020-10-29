@@ -17,14 +17,14 @@ Page({
     showReleasePop: false,
 
     releaseList: [{
-      name: '活动详情'
-    },
-    {
-      name: '活动删改'
-    },
-    {
-      name: '报名统计'
-    },
+        name: '活动详情'
+      },
+      {
+        name: '活动删改'
+      },
+      {
+        name: '报名统计'
+      },
     ],
 
     actCollected: [],
@@ -72,6 +72,33 @@ Page({
         active: 2
       })
     }
+
+    // data还原为初始值
+    this.setData({
+      releaseSelect: '',
+      showReleasePop: false,
+      actCollected: [],
+      actRegistered: [],
+      actReleased: [],
+      pageId: 0,
+    })
+
+    //重新加载内容
+    //加载历史
+    setTimeout(() => {
+      this.loadCollect();
+    }, 300);
+
+    setTimeout(() => {
+      this.loadRegister();
+    }, 300);
+
+    setTimeout(() => {
+      if (this.data.role == 1) {
+        this.loadRelease();
+      }
+      wx.hideLoading();
+    }, 300);
   },
 
   // 滚动触底加载
@@ -79,8 +106,8 @@ Page({
     let openid = this.data.openid
     this.data.pageId = this.data.pageId + 1
     db.collection('collect').where({ //参与活动
-      _openid: openid
-    })
+        _openid: openid
+      })
       .orderBy('actTimeEnd', 'desc')
       .skip(10 * this.data.pageId)
       .limit(10)
@@ -88,8 +115,8 @@ Page({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-              _id: active.aid
-            }).orderBy('actTimeBegin', 'desc')
+                _id: active.aid
+              }).orderBy('actTimeBegin', 'desc')
               .get({
                 success: res => {
                   this.setData({
@@ -108,8 +135,8 @@ Page({
       })
 
     db.collection('register').where({ //参与活动
-      _openid: openid
-    })
+        _openid: openid
+      })
       .orderBy('actTimeEnd', 'desc')
       .skip(10 * this.data.pageId)
       .limit(10)
@@ -117,8 +144,8 @@ Page({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-              _id: active.aid
-            }).orderBy('actTimeBegin', 'desc')
+                _id: active.aid
+              }).orderBy('actTimeBegin', 'desc')
               .get({
                 success: res => {
                   this.setData({
@@ -137,8 +164,8 @@ Page({
       })
 
     db.collection('activity').where({ //发布活动
-      _openid: openid
-    })
+        _openid: openid
+      })
       .orderBy('actTimeEnd', 'desc')
       .skip(10 * this.data.pageId)
       .limit(10)
@@ -168,14 +195,14 @@ Page({
       showReleasePop: false,
 
       releaseList: [{
-        name: '活动详情'
-      },
-      {
-        name: '活动删改'
-      },
-      {
-        name: '报名统计'
-      },
+          name: '活动详情'
+        },
+        {
+          name: '活动删改'
+        },
+        {
+          name: '报名统计'
+        },
       ],
 
       actCollected: [],
@@ -211,15 +238,15 @@ Page({
     let openid = this.data.openid
     let that = this
     db.collection('collect').where({ //参与活动
-      _openid: openid
-    }).orderBy('actTimeEnd', 'desc')
+        _openid: openid
+      }).orderBy('actTimeEnd', 'desc')
       .limit(10)
       .get({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-              _id: active.aid
-            }).orderBy('actTimeBegin', 'desc')
+                _id: active.aid
+              }).orderBy('actTimeBegin', 'desc')
               .get({
                 success: res1 => {
                   let current = res1.data[0];
@@ -233,9 +260,9 @@ Page({
                   console.log("收藏列表加载失败", err)
                 }
               })
-              
+
           })
-          
+
         },
         fail(res) {
           console.log("fail", res)
@@ -247,16 +274,16 @@ Page({
   loadRegister() {
     let openid = this.data.openid
     db.collection('register').where({ //参与活动
-      _openid: openid
-    })
+        _openid: openid
+      })
       .orderBy('actTimeEnd', 'desc')
       .limit(10)
       .get({
         success: res => {
           res.data.map(active => {
             db.collection('activity').where({
-              _id: active.aid
-            }).orderBy('actTimeBegin', 'desc')
+                _id: active.aid
+              }).orderBy('actTimeBegin', 'desc')
               .get({
                 success: res => {
                   this.setData({
@@ -280,8 +307,8 @@ Page({
   loadRelease() {
     let openid = this.data.openid
     db.collection('activity').where({ //发布活动
-      _openid: openid
-    })
+        _openid: openid
+      })
       .orderBy('actTimeEnd', 'desc')
       .limit(10)
       .get({

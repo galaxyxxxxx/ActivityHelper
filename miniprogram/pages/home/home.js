@@ -288,5 +288,10 @@ Page({
     wx.navigateTo({
       url: '../../packageA/info/info?openid=' + this.data.openid,
     })
+  },
+  search(e){
+    wx.navigateTo({
+      url: '../../packageA/search/search',
+    })
   }
 })

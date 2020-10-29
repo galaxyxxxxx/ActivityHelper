@@ -1,7 +1,7 @@
 <view class="contain">
 
 	<!-- 搜索栏 -->
-	<van-search
+	<!-- <van-search
   value="{{ value }}"
 	shape="round"
 	input-align="center"
@@ -12,7 +12,7 @@
 	bind:clear="onClear"
 	bind:change="onChange"
 	bind:search="onSearch"
-/>
+/> -->
 
 	<van-tabs active="{{ tabbar }}" bind:change="onChangeTab" animated swipeable color="var(--color-theme)" border="{{false}}"
 		line-height="1px" sticky="{{true}}">
@@ -49,7 +49,7 @@
 								title-class="actTitle" title-width="240rpx" value-class="actAddr" />
 						</block>
 
-						<view class="noEvents" wx:if="{{actLine.length == 0 }}">No Events</view>
+						<view class="noEvents" wx:if="{{actLine.length == 0 }}">暂无活动 试试其他日期吧~</view>
 					</scroll-view>
 					<!-- 由于tabbar的bug而加的空白框 -->
 					<view class="null" wx:if="{{actLine != 0}}"></view>

@@ -31,6 +31,12 @@
 
 		<!-- 2活动集 -->
 		<view class="actPart">
+			<!-- 2.1 筛选按钮 -->
+			<view class="selectLine">
+				<view class="divideText">热门活动</view>
+				<view class="selectButton" bindtap="search"><van-icon name="search" size="50rpx" color="var(--color-link)"/>
+				</view>
+			</view>
 			<!-- 2.2列表渲染各活动 -->
 			<view class="acts">
 				<view class="act" wx:for="{{acting}}" wx:key="item" bindtap="viewMore" data-id="{{item._id}}">

@@ -81,6 +81,12 @@ van-icon {
 
 .comment_time{
   color: #868688;
+  display: inline-block;
+}
+
+.comment_nickName{
+  display: inline-block;
+  float: right;
 }
 
 .comment_text{
