@@ -4,8 +4,8 @@ page{
   --font-size-M: 35rpx;
   --font-size-S: 25rpx;
   --font-size-XS: 20rpx;
-  --color-theme: #80a0c0;
-  --color-theme-background: #80a0c07a; 
+  --color-theme: #5a9cde;
+  --color-theme-background: #5a9cde7a; 
   --color-background: #f7f7f7;
   --color-link: rgb(52, 120, 243);
 
@@ -17,11 +17,11 @@ page{
   font-size: 25rpx;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   page{
     background: #000000;
   }
-}
+} */
 
 .container {
   display: flex;

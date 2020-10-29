@@ -70,7 +70,7 @@
 				</view>
 			</view>
 			<!-- 空状态 -->
-			<van-empty wx:if="{{actReleased.length == 0}}" class="custom-image" image="{{emptyImg}}"
+			<van-empty wx:if="{{actRegistered.length == 0}}" class="custom-image" image="{{emptyImg}}"
 				description="同学你还没有报名过活动">
 				<view class="null">(｡･∀･)ﾉﾞ快去看看有没有喜欢的活动8~</view>
 			</van-empty>

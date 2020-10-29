@@ -117,7 +117,6 @@ Page({
       index
     } = e.detail
     picker.setColumnValues(1, departments[value[0]]);
-
     let dep1 = this.data.dep1
     let dep2 = this.data.dep2
     if (dep1 == '') {
@@ -140,6 +139,13 @@ Page({
       change: 1
     })
   },
+  onCancelDep(e){
+    this.setData({
+      dep1 : '',
+      dep2 : '',
+      showDep : false,
+    })
+  },
   onCloseDep(e) {
     this.setData({
       showDep: false
@@ -160,12 +166,20 @@ Page({
     })
       .then(() => {
         console.log('用户确定认证')
-        if (this.data.registed == 0) {
-          wx.showToast({
-            title: '请先完善个人信息',
+        if (this.data.registed == 0 ) {
+          if( this.data.change == 1){
+            wx.showToast({
+              title: '请先对已更改的信息进行提交',
+              icon: 'none',
+              duration: 1500
+            })
+          }else{
+            wx.showToast({
+            title: '请先完善个人信息 并提交',
             icon: 'none',
             duration: 1500
           })
+          }
         } else {
           wx.navigateTo({
             url: '../../packageB/inputOrg/inputOrg',

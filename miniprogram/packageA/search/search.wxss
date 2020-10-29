@@ -6,6 +6,16 @@ page{
   z-index: 2;
 }
 
+.searchHistory{
+  margin: 20rpx;
+  padding-left: 20rpx;
+}
+
+.tag{
+  display: inline-block;
+  margin-right: 20rpx;
+}
+
 .empty{
   position: relative;
   top: -20rpx;

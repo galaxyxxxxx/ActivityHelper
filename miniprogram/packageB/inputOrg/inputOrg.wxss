@@ -2,6 +2,7 @@
   font-size: var(--font-size-M);
   font-weight: 600;
   margin: 50rpx 30rpx 0 30rpx;
+  text-align: center;
 }
 
 .intro{

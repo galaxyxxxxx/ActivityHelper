@@ -1,6 +1,12 @@
 <!-- 搜索栏 -->
-<van-search class="search" value="{{ value }}" shape="round" input-align="center" placeholder="请输入搜索关键词" bind:focus="onFocus"
+<van-search class="search" value="{{ value }}" shape="round" input-align="center" placeholder="请输入活动地址/主办方/名称关键词" bind:focus="onFocus"
   bind:blur="onBlur" bind:clear="onClear" bind:change="onChange" bind:search="onSearch" />
+
+  <view class="searchHistory" wx:if="{{showHistory}}">
+    <block wx:for="{{searchHistory}}" wx:key="history">
+      <van-tag class="tag" round plain color="var(--color-theme)" bindtap="search" data-text="{{item.text}}" size="medium">{{item.text}}</van-tag>
+    </block>
+  </view>
 
 <!-- 活动参与部分 -->
 <view class="acts">

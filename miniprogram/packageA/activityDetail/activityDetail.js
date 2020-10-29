@@ -32,9 +32,9 @@ Page({
     console.log("type！", a)
     let today = new Date()
     db.collection('activity').where({
-      type: a,
-      _id: _.neq(this.data.aid)
-    })
+        type: a,
+        _id: _.neq(this.data.aid)
+      })
       .orderBy('actTimeBegin', 'desc')
       .limit(3)
       .get()
@@ -56,8 +56,8 @@ Page({
       // app.getopenid(that.cb);
       this.setData({
         openid: wx.getStorageSync('openid'),
-        nickName : wx.getStorageSync('nickName'),
-        avatarUrl : wx.getStorageSync('avatarUrl')
+        nickName: wx.getStorageSync('nickName'),
+        avatarUrl: wx.getStorageSync('avatarUrl')
       });
     }
     let aid = options.aid;
@@ -108,9 +108,9 @@ Page({
     // 查询报名情况
     console.log(aid)
     db.collection("register").where({
-      aid: aid,
-      openid: this.data.openid
-    }).get()
+        aid: aid,
+        openid: this.data.openid
+      }).get()
       .then(
         res => {
           console.log("tset", res)
@@ -475,11 +475,18 @@ Page({
         success: (res) => {
           console.log("获取评论成功", res.data)
           var that = this
-          that.setData({
-            comments : res.data
-          })
+         that.setData({
+           comments : res.data
+         })
+
         },
       });
+  },
+  cancelComment(e){
+    this.setData({
+      showCommentDialog : false,
+      comment_input : ''
+    })
   },
   // 填写评论
   submitComment() {
@@ -504,8 +511,8 @@ Page({
         let data = {
           aid: that.data.activity_detail._id,
           comment: that.data.comment_input,
-          nickName : that.data.anonymous == false ? wx.getStorageSync('nickName') : '匿名',
-          time: util.formatTime(new Date())
+          nickName: that.data.anonymous == false ? wx.getStorageSync('nickName') : '匿名',
+          time: util.formatTime(new Date()).substring(0,16)
         };
 
         db.collection("comment").add({
@@ -516,7 +523,7 @@ Page({
             });
 
             that.setData({
-              comments: [data,...that.data.comments],  //改为放至头部
+              comments: [data, ...that.data.comments], //改为放至头部
             });
             that.setData({
               comment_input: "",

@@ -24,6 +24,7 @@ page{
   font-size: var(--font-size-M);
   font-weight: 600;
   margin-bottom: 10rpx;
+  color: #313131;
 }
 
 .intro{

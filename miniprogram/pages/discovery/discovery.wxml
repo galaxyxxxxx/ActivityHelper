@@ -19,10 +19,10 @@
 
 		<!-- 类型分区 -->
 		<van-tab title="分区">
-			<van-grid clickable column-num="3" icon-size="100rpx" border="{{false}}" clickable="{{true}}" squre="{{true}}" gutter="20rpx">
-				<block wx:for="{{actType}}" wx:key="item" class="typeBlock">
-					<van-grid-item text-class="type" icon="{{item.type_img}}" link-type="navigateTo"
-						url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" />
+			<van-grid clickable column-num="3" icon-size="100rpx" border="{{false}}" clickable="{{true}}"  gutter="0rpx">
+				<block wx:for="{{actType}}" wx:key="item">
+					<van-grid-item text-class="type" icon="{{item.type_img}}" link-type="navigateTo" icon-size="70rpx !important"
+						url="../../packageA/list/list?type={{item._id}}" text="{{item.type_name}}" custom-class="typeCustom" content-class="typeContent" icon-class="typeIcon" text-class="typeText"  />
 				</block>
 			</van-grid>
 			<!-- 由于tabbar的bug而加的空白框 -->

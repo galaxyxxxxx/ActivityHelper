@@ -224,7 +224,8 @@ Page({
             collect.add({
               data: {
                 aid: aid,
-                openid: openid
+                openid: openid,
+                collectTime: new Date()
               },
               success: function (res1) {
                 console.log(res1)
@@ -305,7 +306,7 @@ Page({
       url: '../../packageA/info/info?openid=' + this.data.openid,
     })
   },
-  search(e){
+  search(){
     wx.navigateTo({
       url: '../../packageA/search/search',
     })

@@ -104,5 +104,6 @@ Page({
         console.log(err);
       }
     });
+    wx.setStorageSync('role', 2)
   }
 })

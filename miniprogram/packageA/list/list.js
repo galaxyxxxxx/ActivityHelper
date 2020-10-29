@@ -109,7 +109,8 @@ Page({
             collect.add({
               data: {
                 aid: aid,
-                openid : openid
+                openid : openid,
+                collectTime: new Date()
               },
               success: function(res1) {
                 console.log(res1)

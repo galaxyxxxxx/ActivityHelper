@@ -48,7 +48,7 @@
     "backgroundColor": "#f7f7f7",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "@navBackgroundColor",
-    "navigationBarTitleText": "校园活动助手",
+    "navigationBarTitleText": "BJUT活动助手",
     "navigationBarTextStyle": "@navTextStyle"
   },
   "tabBar": {
