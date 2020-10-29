@@ -8,7 +8,29 @@ const db = wx.cloud.database({
 const app = getApp()
 const act = db.collection('activity')
 const collect = db.collection('collect')
+const user = db.collection('user')
 const _ = db.command
+
+const watcher = user.where({
+  openid: wx.getStorageSync('openid')
+}).watch({
+  onChange(event) {
+    console.log('userInfo change', event);
+    if (event.docChanges !== undefined && event.docChanges[0].dataType === 'update') {
+      if (event.docChanges[0].updatedFields.role == 1) {
+        wx.cloud.callFunction({
+          name: 'sendAuditMsg',
+          data: {
+            openid: wx.getStorageSync('openid')
+          }
+        }).then(() => {
+          wx.setStorageSync('role', 1);
+        })
+      }
+    }
+  }, onError(err) {
+  }
+});
 
 Page({
   data: {
@@ -48,28 +70,24 @@ Page({
     }).orderBy('actTimeBegin', 'desc')
       .limit(1)
       .get()
-      .then(
-        res => {
-          obj = res.data[0]
-          db.collection('register').where({
-            aid: res.data._id
-          })
-            .get()
-            .then(
-              res3 => {
-                obj.regNum = res3.data.length
-                this.setData({
-                  actMain: obj
-                })
-              },
-            )
-        }
-      )
-
+      .then(res => {
+        obj = res.data[0]
+        db.collection('register').where({
+          aid: obj._id
+        })
+          .get()
+          .then(
+            res3 => {
+              obj.regNum = res3.data.length
+              this.setData({
+                actMain: obj
+              })
+            },
+          )
+      });
     // 加载列表
     setTimeout(() => {
       console.log("openid ttt", that.data.openid)
-
       act.where({
         actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
       }).orderBy('actTimeBegin', 'desc')
@@ -99,7 +117,6 @@ Page({
                   },
                 )
             })
-
             setTimeout(() => {
               this.setData({
                 acting: res.data, //获取到活动的raw数据 直接赋值给acting
@@ -118,7 +135,6 @@ Page({
     })
   },
   onShow: function () {
-
   },
 
   // 滚动触底加载下一页活动

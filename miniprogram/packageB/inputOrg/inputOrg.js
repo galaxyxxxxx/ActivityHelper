@@ -48,7 +48,7 @@ Page({
                 openid: that.data.openid,
                 data: {
                   phrase1: {
-                    value: '通过'
+                    value: '审核通过'
                   },
                   thing2: {
                     value: that.data.org
@@ -76,7 +76,7 @@ Page({
                 wx.hideLoading();
                 wx.showToast({
                   title: '已成功提交申请',
-                  icon: 'none',
+                  icon: 'success',
                   duration: 2000
                 })
                 setTimeout(() => {

@@ -17,7 +17,7 @@
 				<view class="bottom">
 					<!-- 报名人数 -->
 					<view class="regNum">
-						<van-icon name="friends" color="white" size="var(--font-size-M)" />{{actMain.regNum}}人已报名</view>
+						<van-icon name="friends" color="white" size="var(--font-size-M)" /> {{actMain.regNum}}人已报名</view>
 					<!-- 更多按钮 -->
 					<van-button plain round size="small" class="moreButton" custom-style="color: var(--color-theme); top: -13rpx;" mark="register" id="{{actMain._id}}">查看更多</van-button>
 					<!-- 收藏按钮 -->
