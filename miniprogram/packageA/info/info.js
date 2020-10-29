@@ -31,14 +31,14 @@ Page({
     change: 0, //标记当前页面数据是否有改动
 
     department: [{
-        values: Object.keys(departments),
-        className: 'column1',
-      },
-      {
-        values: departments['计算机学院'],
-        className: 'column2',
-        defaultIndex: 0,
-      },
+      values: Object.keys(departments),
+      className: 'column1',
+    },
+    {
+      values: departments['计算机学院'],
+      className: 'column2',
+      defaultIndex: 0,
+    },
     ],
 
     showDep: false,
@@ -49,11 +49,11 @@ Page({
     let opid = option.openid
     this.setData({
       openid: opid,
-      role : wx.getStorageSync('role'),
+      role: wx.getStorageSync('role'),
       org: wx.getStorageSync('org')
     })
     let openid = this.data.openid
-    
+
 
     let that = this
     user.where({
@@ -145,26 +145,26 @@ Page({
   },
 
   //社团身份认证
-  identify(e){
+  identify(e) {
     Dialog.confirm({
       context: this,
-      customStyle : "font-size: var(--font-size-S);line-height: 50rpx;",
-      closeOnClickOverlay:"true",
-      messageAlign:"left",
-      customStyle:"font-size:var(--font-size-S)",
-      confirmButtonText:"申请认证",
-      cancelButtonText:"暂不申请",
+      customStyle: "font-size: var(--font-size-S);line-height: 50rpx;",
+      closeOnClickOverlay: "true",
+      messageAlign: "left",
+      customStyle: "font-size:var(--font-size-S)",
+      confirmButtonText: "申请认证",
+      cancelButtonText: "暂不申请",
       message: '认证社团身份后可代表社团发布活动:D\n\n认证方法\n1 填写并提交当前页个人信息 \n2 点击申请认证按钮\n3 填写新页面部门信息',
     })
       .then(() => {
         console.log('用户确定认证')
-        if(this.data.registed == 0){
+        if (this.data.registed == 0) {
           wx.showToast({
             title: '请先完善个人信息',
-            icon: 'fail',
-            duration:1500
+            icon: 'none',
+            duration: 1500
           })
-        }else{
+        } else {
           wx.navigateTo({
             url: '../../packageB/inputOrg/inputOrg',
           })
@@ -207,7 +207,7 @@ Page({
         this.setData({
           name: null
         })
-      } 
+      }
       if (uid != '' && !util.isUid(parseInt(uid))) {
         console.log(util.isUid(parseInt(uid)))
         wx.showToast({
@@ -240,7 +240,8 @@ Page({
         })
       } else {
         //满足条件判断后，进行更新/写入
-        if(this.data.registed == 0){ //未注册
+        if (this.data.registed == 0) { //未注册
+          let that = this
           user.add({
             data: {
               name: name,
@@ -255,11 +256,15 @@ Page({
               wx.showToast({
                 title: '已成功完善信息',
                 icon: 'success',
-                duration: 3500
-              })
+                duration: 2000
+              });
+              that.setData({
+                registed: 1,
+                role: 0
+              });
             }
           })
-        }else{  //已注册的
+        } else {  //已注册的
           user.where({
             openid: this.data.openid
           }).update({
@@ -278,10 +283,12 @@ Page({
                 icon: 'success',
                 duration: 3500
               })
+              this.setData({
+                registed: 1
+              })
             }
           })
         }
-        
       }
     }
   }
