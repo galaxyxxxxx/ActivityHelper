@@ -11,6 +11,8 @@ const _ = db.command
 Page({
   data: {
     openid: "",
+    nickName: '',
+    avatarUrl: '',
     aid: "",
     comment_input: "",
     comments: [],
@@ -19,6 +21,7 @@ Page({
     reg_id: '',
     activity_detail: {},
     regNum: 0,
+    anonymous: false, // 是否匿名评论 
     defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg',
     type: '', //用于查询该类别的其他活动
     typeActList: [],
@@ -53,6 +56,8 @@ Page({
       // app.getopenid(that.cb);
       this.setData({
         openid: wx.getStorageSync('openid'),
+        nickName : wx.getStorageSync('nickName'),
+        avatarUrl : wx.getStorageSync('avatarUrl')
       });
     }
     let aid = options.aid;
@@ -140,7 +145,9 @@ Page({
     )
   },
 
-  onShow: function () { },
+  onShow: function () {
+    this.getComments(this.data.aid)
+  },
 
   // 一个用来获取openid的回调函数
   // 暂时不再用到
@@ -468,15 +475,9 @@ Page({
         success: (res) => {
           console.log("获取评论成功", res.data)
           var that = this
-          var comments = that.data.comments
           that.setData({
-            comments: [...comments, ...res.data]
+            comments : res.data
           })
-          // res.data.map(active => {
-          //   that.setData({
-          //     comments: [...comments, ...active]
-          //   })
-          // })
         },
       });
   },
@@ -501,9 +502,9 @@ Page({
       success(res) {
         console.log("comment内容安全")
         let data = {
-          openid: that.data.openid,
           aid: that.data.activity_detail._id,
           comment: that.data.comment_input,
+          nickName : that.data.anonymous == false ? wx.getStorageSync('nickName') : '匿名',
           time: util.formatTime(new Date())
         };
 
@@ -515,7 +516,7 @@ Page({
             });
 
             that.setData({
-              comments: [...this.data.comments, data],
+              comments: [data,...that.data.comments],  //改为放至头部
             });
             that.setData({
               comment_input: "",
@@ -546,6 +547,7 @@ Page({
       comment_input: e.detail,
     });
   },
+  //
   // 右上角分享
   onShareAppMessage(options) {
     var that = this;

@@ -102,6 +102,24 @@ page{
   font-weight: 400;
 }
 
+/* 筛选按钮 */
+.divideText {
+  display: inline;
+  font-size: 30rpx;
+  font-weight: 700;
+  position: relative;
+  left: 10rpx;
+}
+
+.selectButton {
+  display: inline;
+  /* margin-left: 76%; */
+  float: right;
+  font-size: 25rpx;
+  position: relative;
+  right: 15rpx;
+}
+
 /* 活动集块 */
 .acts{
   margin-top: var(--font-size-M);

@@ -66,7 +66,7 @@ App({
           var city = userInfo.city
           var country = userInfo.country
 
-          wx.setStorageSync('nickname', nickName)
+          wx.setStorageSync('nickName', nickName)
           wx.setStorageSync('avatarUrl', avatarUrl)
           wx.setStorageSync('gender', gender)
 

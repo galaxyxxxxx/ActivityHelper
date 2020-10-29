@@ -28,8 +28,9 @@
 		<view wx:if="{{comments.length == 0}}" class="noComment"> 暂无评论 快来抢沙发吧~</view>
 		<block wx:for="{{comments}}" wx:key="index">
 			<view class="comment">
-				<view class="comment_time">{{comments[index].time}}</view>
-				<view class="comment_text">{{comments[index].comment}}</view>
+				<view class="comment_time">{{item.time}}</view>
+				<view class="comment_nickName">{{item.nickName}}</view>
+				<view class="comment_text">{{item.comment}}</view>
 			</view>
 		</block>
 	</view>
@@ -37,11 +38,10 @@
 	<van-dialog use-slot title="评论" show="{{ showCommentDialog }}" show-cancel-button
 		confirm-button-open-type="getUserInfo" bind:close="submitComment" bind:getuserinfo="getUserInfo">
 		<van-cell-group style="padding:20rpx !important">
-			<van-field input-class="commentContent" value="{{ comment_input }}" type="textarea" placeholder="请输入留言" autosize
+			<van-field input-class="commentContent" value="{{ comment_input }}" type="textarea" placeholder="分享你的想法吧..." autosize
 				bind:change="onChangeComment" border="{{ false }}" />
 		</van-cell-group>
 	</van-dialog>
-
 
 
 	<!-- 信息列表 -->
