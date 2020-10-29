@@ -48,11 +48,10 @@ Page({
     }).orderBy('actTimeBegin', 'desc')
       .limit(1)
       .get()
-      .then(
-        res => {
+      .then(res => {
           obj = res.data[0]
           db.collection('register').where({
-            aid: res.data._id
+            aid: obj._id
           })
             .get()
             .then(
@@ -63,13 +62,10 @@ Page({
                 })
               },
             )
-        }
-      )
-
+        });
     // 加载列表
     setTimeout(() => {
       console.log("openid ttt", that.data.openid)
-
       act.where({
         actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
       }).orderBy('actTimeBegin', 'desc')
@@ -99,7 +95,6 @@ Page({
                   },
                 )
             })
-
             setTimeout(() => {
               this.setData({
                 acting: res.data, //获取到活动的raw数据 直接赋值给acting
