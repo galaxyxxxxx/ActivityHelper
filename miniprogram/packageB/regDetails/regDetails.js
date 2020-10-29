@@ -37,12 +37,17 @@ Page({
         })
         res.data.map(active => {
           console.log(active._openid)
+          console.log(active.regTime);
+
           db.collection('user').where({
             _openid: active._openid
           }).get({
-            success: res => {
+            success: res1 => {
+              let thisUser = res1.data[0];
+              thisUser.regTime = active.regTime;
+              console.log(thisUser);
               that.setData({
-                regStu: [...that.data.regStu, ...res.data],
+                regStu: [...that.data.regStu, thisUser],
               })
             },
             fail: res => {
@@ -90,6 +95,7 @@ Page({
     console.log(1)
   },
   onClickGenExcel() {
+    var that = this
     Dialog.confirm({
       title: '生成Excel文件链接',
       message: '小程序暂不支持打开外部链接，可点击复制链接后在浏览器中粘贴查看。',
@@ -100,7 +106,6 @@ Page({
         title: '正在导出...',
       });
       console.log(this.data.regStu);
-      let that = this;
       that.saveExcel();
     }).catch(() => {
       // on cancel
