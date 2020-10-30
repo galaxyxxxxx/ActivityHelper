@@ -100,14 +100,14 @@ page {
 
 .actTitle {
   margin-left: 20rpx;
-  font-weight: 800;
-  font-size: 30rpx;
+  font-weight: 500;
+  font-size: 25rpx;
   min-width: 67% !important;
   /* width: 240rpx; */
 }
 
 .actTitle icon {
-  color: yellow-
+  color: yellow
 }
 
 .actAddr {

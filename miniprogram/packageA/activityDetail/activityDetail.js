@@ -588,5 +588,13 @@ Page({
         phoneNumber: contact,
       })
     }
+  }, 
+
+  onClickTypeActList(e) {
+    console.log(e);
+    
+    wx.navigateTo({
+      url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
+    })
   }
 });

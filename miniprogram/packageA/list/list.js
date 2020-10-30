@@ -1,3 +1,4 @@
+
 // packageA/list/list.js
 wx.cloud.init({
   env: 'x1-vgiba'
@@ -46,7 +47,7 @@ Page({
     // 加载列表
     setTimeout(() => {
       act.where({
-        actTimeEnd: _.gte(today), //查找尚未到截止日期的活动
+        // actTimeEnd: _.gte(today), //查找尚未到截止日期的活动
         type: this.data.type_id
       })
         .orderBy('actTimeEnd', 'desc')
@@ -212,13 +213,14 @@ Page({
     let today = this.formatDate(new Date())
     this.setData({
       openid:'',
-      type_id: '',
-      type_name: '',
       acting: [],
       // 标识当前page
     pageId: 0
     })
-    this.onLoad()
+    this.onLoad({
+      type: this.data.type_id
+    });
+    this.onShow();
   },
 
 })

@@ -88,7 +88,7 @@
 		<view class="moreList" bindtap="moreTypeList">查看全部</view>
 		<view class="list">
 			<block wx:for="{{typeActList}}" wx:key="item">
-				<view class="act" bindtap="toActDetail">
+				<view class="act" bindtap="onClickTypeActList" data-id="{{item._id}}">
 					<view class="coverMini">
 						<image src="{{item.cover}}" style="width:100rpx; height:100rpx" />
 					</view>

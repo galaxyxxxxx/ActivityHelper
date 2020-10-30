@@ -79,9 +79,10 @@ Page({
                   icon: 'success',
                   duration: 2000
                 })
+                wx.setStorageSync('role', 2)
                 setTimeout(() => {
-                  wx.navigateBack({
-                    delta: 1,
+                  wx.switchTab({
+                    url: '../../pages/me/me',
                   })
                 }, 2000)
               }
@@ -95,7 +96,7 @@ Page({
           });
         }
       },
-      fail: function(err) {
+      fail: function (err) {
         wx.showToast({
           title: '提交失败',
           icon: 'cancel',
@@ -104,6 +105,5 @@ Page({
         console.log(err);
       }
     });
-    wx.setStorageSync('role', 2)
   }
 })

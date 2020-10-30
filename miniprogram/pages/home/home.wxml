@@ -33,7 +33,7 @@
 		<view class="actPart">
 			<!-- 2.1 筛选按钮 -->
 			<view class="selectLine">
-				<view class="divideText">热门活动<van-icon name="arrow-down" size="40rpx" style="position:relative;top:-3rpx" color="#868688"/></view>
+				<view class="divideText">热门活动</view>
 				<view class="selectButton" bindtap="search"><van-icon name="search" size="50rpx" color="var(--color-theme)"/></view>
 			</view>
 			<!-- 2.2列表渲染各活动 -->
