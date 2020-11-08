@@ -2,30 +2,37 @@
 
 	<view class="formGroup">
 		<van-cell-group>
-			<van-field label="姓名" data-field="name" value="{{ name }}" placeholder="请输入姓名" border="{{ false }}"
+			<van-field label="姓名" data-field="name" value="{{ name }}" placeholder="请输入姓名" border="{{ false }}" 
 				bind:change="onChangeName" />
-			<van-field label="学号" data-field="uid" value="{{ uid }}" placeholder="请输入学号" border="{{ false }}" type="number"
-				bind:change="onChangeUid" />
-			<van-field label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number"
-				bind:change="onChangeTel" />
-			<van-field label="邮箱" data-field="email" value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}"
+			<van-field label="学号" data-field="uid" value="{{ uid }}" placeholder="请输入学号" border="{{ false }}" type="number" clearable="{{true}}" bind:click-icon="tips1"
+				bind:change="onChangeUid" right-icon="info-o" />
+			<van-field label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" clearable="{{true}}" bind:click-icon="tips2"
+				bind:change="onChangeTel" right-icon="info-o"  />
+			<van-field label="邮箱" data-field="email" value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}" clearable="{{true}}"
 				bind:change="onChangeEmail" />
 			<van-field label="部门" data-field="org" value="{{ org }}" placeholder="" border="{{ false }}" disabled
 				wx:if="{{role == 1}}" />
 
+				<van-dialog id="van-dialog"  />
+
 			<!-- 院系选择器 -->
 			<van-cell title="院系" value="{{dep1}} {{dep2}}" data-field="dep" is-link bind:click="onShowDep"
-				bind:change="onChange" bind:cancel="onCancelDep" bind:confirm="onCloseDep" value-class="department"
+				bind:change="onChangeDep" value-class="department"
 				title-width="80rpx" />
-			<van-popup show="{{ showDep }}" position="bottom" bind:close="onCloseDep" round>
-				<van-picker columns="{{ department }}" bind:change="onChangeDep" bind:cancel="onCancelDep"
-					bind:confirm="onCloseDep" />
+			<van-popup show="{{ showDep }}" position="bottom" bind:close="onCloseDep" 	bind:confirm="onConfirmDep" bind:change="onChangeDep" round>
+				<van-picker columns="{{ department }}" bind:change="onChangeDep" show-toolbar title="" bind:cancel="onCancelDep" bind:close="onCloseDep"
+					bind:confirm="onConfirmDep" />
 			</van-popup>
 		</van-cell-group>
 
+		<!-- 提示文本 -->
+		<view class="tips">
+			<view class="p">活动助手将竭力保护您的隐私信息 请放心填写</view>
+			<!-- <view class="p">您的联系方式 仅提供给您所报名的活动主办方</view>
+			<view class="p">学号等信息 用于系统向您优先推荐 适配年级和学院的活动</view> -->
+		</view>
 		<!-- 按钮 -->
 		<view class="btn-area">
-			<!-- 认证功能尚未完成 -->
 			<van-button size="small" round="{{true}}" bindtap="identify" color="var(--color-theme)" plain
 				custom-style="width:180rpx" wx:if="{{role == 0}}">社团认证</van-button>
 			<van-button size="small" round="{{true}}" color="var(--color-theme)" plain

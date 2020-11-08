@@ -31,6 +31,8 @@ Page({
     role: '',
     registed: 0, //标记数据库里是否已有该用户  用以判断该信息修改操作对数据库是add还是update
     change: 0, //标记当前页面数据是否有改动
+    dep1temp:'',
+    dep2temp:'',
 
     department: [{
       values: Object.keys(departments),
@@ -117,39 +119,69 @@ Page({
       index
     } = e.detail
     picker.setColumnValues(1, departments[value[0]]);
-    let dep1 = this.data.dep1
-    let dep2 = this.data.dep2
-    if (dep1 == '') {
+    let dep1temp = this.data.dep1temp
+    let dep2temp = this.data.dep2temp
+    console.log("test dep",e)
+    if (dep1temp == '') {
       this.setData({
-        dep1: e.detail.value[0],
-        dep2: e.detail.value[1]
+        dep1temp: e.detail.value[0],
+        dep2temp: e.detail.value[1]
       })
-    } else if (dep1 != '' && e.detail.value[0] != dep1) {
+    } else if (dep1temp != '' && e.detail.value[0] != dep1temp) {
       this.setData({
-        dep1: e.detail.value[0],
-        dep2: ''
+        dep1temp: e.detail.value[0],
+        dep2temp: ''
       })
     } else {
       this.setData({
-        dep1: e.detail.value[0],
-        dep2: e.detail.value[1]
+        dep1temp: e.detail.value[0],
+        dep2temp: e.detail.value[1]
       })
     }
-    this.setData({
-      change: 1
-    })
   },
   onCancelDep(e){
     this.setData({
-      dep1 : '',
-      dep2 : '',
+      dep1temp:'',
+      dep2temp:'',
       showDep : false,
     })
   },
   onCloseDep(e) {
     this.setData({
+      dep1temp:'',
+      dep2temp:'',
       showDep: false
     })
+  },
+  onConfirmDep(e){
+    console.log("test temp",dep1temp,dep2temp)
+    this.setData({
+      dep1: dep1temp,
+      dep2: dep2temp,
+      change: 1,
+      showDep:false,
+    })
+  },
+
+  //点击学号 / 电话时的提示信息
+  tips1(e){
+    Dialog.alert({
+      message: '该信息仅提供给您所报名活动的主办方😁',
+      confirmButtonText :'ok理解'
+    }).then(() => {
+      // on close
+    });
+  },
+  tips2(e){
+    Dialog.alert({
+      message: '该信息将帮助平台向您个性化推荐😎',
+      confirmButtonText:'ok辛苦啦!'
+    }).then(() => {
+      wx.showToast({
+        title: 'QAQ不客气!!!',
+        duration: 1000
+      })
+    });
   },
 
   //社团身份认证
@@ -212,6 +244,7 @@ Page({
         icon: 'none',
         duration: 1500
       })
+      return;
     } else {
       //格式校验
       if (name != '' && util.haveSpechars(name)) {
@@ -223,8 +256,9 @@ Page({
         this.setData({
           name: null
         })
+        return;
       }
-      if (uid != '' && !util.isUid(parseInt(uid))) {
+      if (uid == '' || uid == null || !/^[0-9]+$/.test(uid) || !util.isUid(parseInt(uid))) {
         console.log(util.isUid(parseInt(uid)))
         wx.showToast({
           title: '请输入正确的学号',
@@ -234,6 +268,7 @@ Page({
         this.setData({
           uid: null
         })
+        return;
       }
       if (tel != '' && !util.isTel(parseInt(tel))) {
         wx.showToast({
@@ -244,6 +279,7 @@ Page({
         this.setData({
           tel: null
         })
+        return;
       }
       if (email != '' && !util.isEmail(email)) {
         wx.showToast({
@@ -254,6 +290,7 @@ Page({
         this.setData({
           email: null
         })
+        return;
       } else {
         //满足条件判断后，进行更新/写入
         if (this.data.registed == 0) { //未注册
