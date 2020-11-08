@@ -27,7 +27,6 @@
 <!-- 活动类别 -->
 <van-cell title="活动类别" value="{{type}}" data-field="type" is-link bind:click="showPopupType" bind:change="onFormChange"
   required />
-
 <van-popup show="{{ showType }}" position="bottom" bind:close="onCloseType" round>
   <van-picker columns="{{ typeCollection }}" bind:change="onChangeType" show-toolbar title="" bind:cancel="onCancelType"
     bind:confirm="onCloseType" />

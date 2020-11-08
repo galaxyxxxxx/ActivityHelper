@@ -11,11 +11,11 @@ var cite = {};
 Page({
   data: {
     openid: '',
-    contact:'',
+    contact: '',
     formData: {
       title: "",
       host: "",
-      contact:'',
+      contact: '',
       numMax: "",
       addr: "",
       addr1: "",
@@ -56,11 +56,10 @@ Page({
     wx.showLoading({
       title: '正在加载',
     });
-    let contact = this.data.formData.contact
     this.setData({
       openid: wx.getStorageSync('openid'),
       host: wx.getStorageSync('org'),
-      contact : wx.getStorageSync('tel')
+      contact: wx.getStorageSync('tel')
     })
 
     let form = this.data.formData
@@ -375,47 +374,43 @@ Page({
     console.log("进入校验")
     var that = this
 
-    // 标题长度校验
+
+
+    // 必填项检查 
     const promise1 = new Promise((resolve, reject) => {
       console.log("进入校验1")
-      if (form.title.length == 0 || form.title.length > 30) {
+      if (form.addr.length == 0 || form.contact.length == 0 ||
+        form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
+        form.description.length == 0) {
         console.log("校验1 出错")
+        wx.showToast({
+          title: '请先完成所有必填项',
+          icon: 'none',
+          duration: 1500
+        })
+        reject();
+      } else {
+        resolve();
+      }
+    })
 
+    // 标题长度校验
+    const promise2 = new Promise((resolve, reject) => {
+      console.log("进入校验2")
+      // if (form.title.length == 0 || form.title.length > 30) {
+      if (form.title.length > 30) {
+        console.log("校验2 出错")
         wx.showToast({
           title: '标题应为1-30个字符',
           icon: 'none',
           duration: 1500
         })
-        setTimeout(function () {
-          wx.hideToast()
-        }, 2000)
         this.setData({
           title: null
         })
         reject(false);
       } else {
         resolve(true);
-      }
-    })
-
-    // 必填项检查 
-    const promise2 = new Promise((resolve, reject) => {
-      console.log("进入校验2")
-      if (form.addr.length == 0 || form.contact.length == 0 ||
-        form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
-        form.description.length == 0) {
-        console.log("校验2 出错")
-        wx.showToast({
-          title: '请完成所有必填项',
-          icon: 'none',
-          duration: 1500
-        })
-        setTimeout(function () {
-          wx.hideToast()
-        }, 2000)
-        reject();
-      } else {
-        resolve();
       }
     })
 
@@ -441,32 +436,33 @@ Page({
       }
     })
 
-        // 联系方式数据检验（检查是否为手机号或邮箱
-        const promise32 = new Promise((resolve, reject) => {
-          console.log("进入校验32")
-          if (!util.isTel(form.contact) && !util.isEmail(form.contact)) {
-            console.log("校验3 出错")
-            wx.showToast({
-              title: '联系方式格式不正确',
-              icon: 'none',
-              duration: 1500
-            })
-            setTimeout(function () {
-              wx.hideToast()
-            }, 2000)
-            this.setData({
-              contact: null
-            })
-            reject(false);
-          } else {
-            resolve(true);
-          }
+    // 联系方式数据检验（检查是否为手机号或邮箱
+    const promise32 = new Promise((resolve, reject) => {
+      console.log("进入校验32")
+      if (!util.isTel(form.contact) && !util.isEmail(form.contact)) {
+        console.log("校验3 出错")
+        wx.showToast({
+          title: '联系方式格式不正确',
+          icon: 'none',
+          duration: 1500
         })
+        setTimeout(function () {
+          wx.hideToast()
+        }, 2000)
+        this.setData({
+          contact: null
+        })
+        reject(false);
+      } else {
+        resolve(true);
+      }
+    })
 
     // UGC安全校验 - title
     const promise4 = new Promise((resolve, reject) => {
+
       console.log("进入校验4")
-      let title = title
+      let title = title;
       wx.cloud.callFunction({
         name: "textsec",
         data: {
@@ -507,7 +503,6 @@ Page({
           resolve(true)
         },
         fail(err) {
-
           wx.showToast({
             title: '概要介绍存在敏感词汇 请修改',
             icon: 'none',
@@ -587,15 +582,14 @@ Page({
         form.coverUrl = this.data.formData.coverUrl
         let openid = this.data.openid
         console.log(form.coverUrl);
-        db.coll
-        ection('activity').add({
+        db.collection('activity').add({
           data: {
             openid: openid,
             title: form.title,
             host: form.host,
             numMax: form.numMax,
             regNum: 0,
-            contact:form.contact,
+            contact: form.contact,
             addr: form.addr,
             addr1: form.addr1_index,
             addr2: form.addr2_index,
