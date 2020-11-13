@@ -1,3 +1,6 @@
+import {
+  TagLog
+} from '../../utils/taggedLog';
 
 // packageA/list/list.js
 wx.cloud.init({
@@ -11,11 +14,13 @@ const type = db.collection('type')
 const app = getApp()
 const collect = db.collection('collect')
 const _ = db.command
+const myLog = (message) => {
+  TagLog("PackageA/list", message);
+};
 
 Page({
-
   data: {
-    openid:'',
+    openid: '',
     type_id: '',
     type_name: '',
     acting: [],
@@ -23,8 +28,47 @@ Page({
     pageId: 0,
   },
 
-  onLoad: function (options) {
-    let that = this;
+  async fetchActivities() {
+    const activities = await act.where({
+        type: this.data.type_id,
+        //actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
+      })
+      .orderBy('actTimeEnd', 'desc')
+      .skip(5 * this.data.pageId)
+      .limit(5)
+      .get();
+    if (activities.length === 0) {
+      return;
+    }
+    wx.showLoading({
+      title: '正在加载活动',
+      mask: true
+    });
+    this.data.pageId = this.data.pageId + 1
+
+    for (const activity of activities.data) {
+      const collected = await collect.where({
+        _openid: this.data.openid,
+        aid: activity._id
+      }).get();
+
+      activity.isCollected = collected.data.length == 1;
+      myLog(`set collection for ${activity.title} at ${Date.now().toString()}`);
+
+      const registedNumber = await db.collection('register').where({
+        aid: activity._id
+      }).get();
+
+      activity.regNum = registedNumber.data.length;
+      myLog(`set regNum for ${activity.title} at ${Date.now().toString()}`);
+    };
+    this.setData({
+      acting: [...this.data.acting, ...activities.data] //获取到活动的raw数据 直接赋值给acting
+    });
+    wx.hideLoading();
+  },
+
+  onLoad: async function (options) {
     this.setData({
       openid: wx.getStorageSync('openid')
     })
@@ -38,121 +82,68 @@ Page({
     type.where({
       _id: type_id
     }).get().then(res => {
-      console.log(res);
+      myLog(res);
       this.setData({
         type_name: res.data[0].type_name
       })
     })
-
-    // 加载列表
-    setTimeout(() => {
-      act.where({
-        // actTimeEnd: _.gte(today), //查找尚未到截止日期的活动
-        type: this.data.type_id
-      })
-        .orderBy('actTimeEnd', 'desc')
-        .limit(5)
-        .get()
-        .then(
-          res => {
-            res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
-              // let that = this
-              collect.where({
-                _openid: that.data.openid,
-                aid: currentValue._id
-              })
-                .get()
-                .then(
-                  res2 => {
-                    currentValue.isCollected = res2.data.length == 1 ? true : false
-                  },
-                )
-
-              db.collection('register').where({
-                aid: currentValue._id
-              })
-                .get()
-                .then(
-                  res3 => {
-                    currentValue.regNum = res3.data.length
-                  },
-                )
-
-            })
-            setTimeout(() => {
-              this.setData({
-                acting: res.data //获取到活动的raw数据 直接赋值给acting
-              })
-            }, 50);
-          }
-        )
-    }, 100);
-
-
+    this.fetchActivities();
+    myLog(`onLoad finished at ${Date.now().toString()}`);
   },
-  //点击收藏按钮的事件
-  collect(e) {
-    if (e.mark.starMark === "star") {
-      console.log("已点击收藏按钮", e)
-      
-      let that = this
-      var aid = e.currentTarget.dataset.collectid
-      var index = e.currentTarget.dataset.index
-      let openid = that.data.openid
-      console.log("Collecting",aid,index)
-      collect.where({
-        _openid: that.data.openid,
-        aid: aid
-      }).get({
-        success: function (res) {
-          console.log("收藏数据库查找成功", res)
-          if (res.data.length == 0) { //如果未收藏，需要改为已收藏
-            collect.add({
-              data: {
-                aid: aid,
-                openid : openid,
-                collectTime: new Date()
-              },
-              success: function(res1) {
-                console.log(res1)
-                wx.showToast({
-                  title: '成功收藏',
-                  icon: 'success',
-                  duration: 1000
-                })
-                let tmp = that.data.acting
-                tmp[index].isCollected = true
-                that.setData({
-                  acting : tmp
-                })
-              }
-            })
-          } else {
-            console.log("已被收藏，即将取消收藏")
-            collect.doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
-              success(res) {
-                console.log(res)
-                console.log('已成功取消该收藏');
-                wx.showToast({
-                  title: '已取消收藏',
-                  icon: 'success',
-                  duration: 1000
-                })
-                let tmp = that.data.acting
-                tmp[index].isCollected = false
-                that.setData({
-                  acting : tmp
-                })
-              }
-            })
-          }
+
+  /**
+   * 点击收藏按钮的事件
+   */
+  async collect(e) {
+    myLog(e);
+    if (e.mark.starMark !== "star") {
+      return;
+    }
+    console.log("已点击收藏按钮", e)
+    var aid = e.currentTarget.dataset.collectid
+    var index = e.currentTarget.dataset.index
+    let openid = this.data.openid
+    myLog("Collecting", aid, index)
+    const collectionInfo = await collect.where({
+      _openid: this.data.openid,
+      aid: aid
+    }).get();
+    myLog("收藏数据库查找成功", collectionInfo)
+    if (collectionInfo.data.length == 0) { //如果未收藏，需要改为已收藏
+      await collect.add({
+        data: {
+          aid: aid,
+          openid: openid,
+          collectTime: new Date()
         }
+      });
+      wx.showToast({
+        title: '成功收藏',
+        icon: 'success',
+        duration: 1000
+      });
+      let tmp = this.data.acting
+      tmp[index].isCollected = true
+      this.setData({
+        acting: tmp
+      })
+    } else {
+      console.log("已被收藏，即将取消收藏")
+      const res = await collect.doc(collectionInfo.data[0]._id)
+        .remove();
+      myLog(res);
+      console.log('已成功取消该收藏');
+      wx.showToast({
+        title: '已取消收藏',
+        icon: 'success',
+        duration: 1000
+      })
+      let tmp = this.data.acting
+      tmp[index].isCollected = false
+      this.setData({
+        acting: tmp
       })
     }
-  },
-
-  onShow: function () {
-
   },
 
   viewMore(e) {
@@ -174,48 +165,20 @@ Page({
   },
 
   // 滚动触底加载下一页活动
-  onReachBottom() {
-    let today = this.formatDate(new Date())
-    this.data.pageId = this.data.pageId + 1
-    act.where({
-      type: this.data.type_id,
-        actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
-      })
-      .orderBy('actTimeEnd', 'desc')
-      .skip(5 * this.data.pageId)
-      .limit(5)
-      .get()
-      .then(
-        res => {
-          res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
-            collect.where({
-                openid: currentValue.openid,
-                aid: currentValue._id
-              })
-              .get()
-              .then(
-                res2 => {
-                  currentValue.isCollected = res2.data.length > 0 ? true : false
-                },
-              )
-          })
-          setTimeout(() => {
-            this.setData({
-              acting: [...this.data.acting, ...res.data] //获取到活动的raw数据 直接赋值给acting
-            })
-          }, 700);
-        }
-      )
+  async onReachBottom() {
+    myLog('reached bottom');
+    this.fetchActivities();
+    myLog(this.data.acting);
   },
 
   // 下拉刷新
   onPullDownRefresh() {
     let today = this.formatDate(new Date())
     this.setData({
-      openid:'',
+      openid: '',
       acting: [],
       // 标识当前page
-    pageId: 0
+      pageId: 0
     })
     this.onLoad({
       type: this.data.type_id
