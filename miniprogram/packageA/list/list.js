@@ -2,7 +2,11 @@ import {
   TagLog
 } from '../../utils/taggedLog';
 
-// packageA/list/list.js
+import {
+  fetchActivities,
+  collectOrUncollectActivity
+} from '../../utils/common';
+
 wx.cloud.init({
   env: 'x1-vgiba'
 })
@@ -25,71 +29,46 @@ Page({
     type_name: '',
     acting: [],
     // 标识当前page
-    pageId: 0,
+    pageId: 0
   },
 
-  async fetchActivities() {
-    const activities = await act.where({
-        type: this.data.type_id,
-        //actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
-      })
-      .orderBy('actTimeEnd', 'desc')
-      .skip(5 * this.data.pageId)
-      .limit(5)
-      .get();
-    if (activities.data.length === 0) {
-      return;
+  activityQueryConfig: function () {
+    return {
+      filter: {
+        type: this.data.type_id
+      },
+      limit: 5,
+      skip: 5 * this.data.pageId,
+      orderBy: {
+        field: 'actTimeEnd',
+        order: 'desc'
+      }
     }
-    wx.showLoading({
-      title: '正在加载活动',
-      mask: true
-    });
-    this.data.pageId = this.data.pageId + 1
-
-    for (const activity of activities.data) {
-      const collected = await collect.where({
-        _openid: this.data.openid,
-        aid: activity._id
-      }).get();
-
-      myLog(collected.data);
-      activity.isCollected = collected.data.length > 0;
-      myLog(`set collection to ${collected.data.length > 0} for ${activity.title} at ${Date.now().toString()}`);
-
-      const registedNumber = await db.collection('register').where({
-        aid: activity._id
-      }).get();
-
-      activity.regNum = registedNumber.data.length;
-      myLog(`set regNum for ${activity.title} at ${Date.now().toString()}`);
-    };
-    this.setData({
-      acting: [...this.data.acting, ...activities.data] //获取到活动的raw数据 直接赋值给acting
-    });
-    wx.hideLoading();
   },
 
   onLoad: async function (options) {
     this.setData({
       openid: wx.getStorageSync('openid'),
-      pageId: 0
-    })
-    let today = this.formatDate(new Date())
-
-    let type_id = options.type
-    this.setData({
-      type_id: type_id
-    })
+      pageId: 0,
+      type_id: options.type
+    });
 
     type.where({
-      _id: type_id
+      _id: this.data.type_id
     }).get().then(res => {
       myLog(res);
       this.setData({
         type_name: res.data[0].type_name
       })
     })
-    this.fetchActivities();
+    const activities = await fetchActivities(db, this.data.openid, this.activityQueryConfig());
+    this.setData({
+      pageId: this.data.pageId + 1
+    });
+    const tmp = this.data.acting;
+    this.setData({
+      acting: [...tmp, ...activities]
+    });
     myLog(`onLoad finished at ${Date.now().toString()}`);
   },
 
@@ -98,50 +77,15 @@ Page({
    */
   async collect(e) {
     myLog(e);
-    const aid = e.detail.activityId
-    const index = e.detail.index
-    const openid = this.data.openid
-    myLog("Collecting", aid, index)
-    const collectionInfo = await collect.where({
-      _openid: this.data.openid,
-      aid: aid
-    }).get();
-    myLog(collectionInfo)
-    if (collectionInfo.data.length == 0) { //如果未收藏，需要改为已收藏
-      await collect.add({
-        data: {
-          aid: aid,
-          openid: openid,
-          collectTime: new Date()
-        }
-      });
-      wx.showToast({
-        title: '成功收藏',
-        icon: 'success',
-        duration: 1000
-      });
-      let tmp = this.data.acting
-      tmp[index].isCollected = true
-      this.setData({
-        acting: tmp
-      })
-    } else {
-      console.log("已被收藏，即将取消收藏")
-      const res = await collect.doc(collectionInfo.data[0]._id)
-        .remove();
-      myLog(res);
-      console.log('已成功取消该收藏');
-      wx.showToast({
-        title: '已取消收藏',
-        icon: 'success',
-        duration: 1000
-      })
-      let tmp = this.data.acting
-      tmp[index].isCollected = false
-      this.setData({
-        acting: tmp
-      })
-    }
+    const result = await collectOrUncollectActivity(db, e.detail.activityId, this.data.openid);
+    myLog(result);
+    myLog(e.detail.index);
+    let tmp = this.data.acting
+    tmp[e.detail.index].isCollected = result;
+    this.setData({
+      acting: tmp
+    })
+
   },
 
   formatDate(date) {
@@ -156,7 +100,14 @@ Page({
   // 滚动触底加载下一页活动
   async onReachBottom() {
     myLog('reached bottom');
-    this.fetchActivities();
+    const activities = await fetchActivities(db, this.data.openid, this.activityQueryConfig());
+    this.setData({
+      pageId: this.data.pageId + 1
+    });
+    const tmp = this.data.acting;
+    this.setData({
+      acting: [...tmp, ...activities]
+    });
     myLog(this.data.acting);
   },
 
