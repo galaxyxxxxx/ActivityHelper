@@ -14,26 +14,26 @@ const collect = db.collection('collect')
 const user = db.collection('user')
 const _ = db.command
 
-const watcher = user.where({
-  openid: wx.getStorageSync('openid')
-}).watch({
-  onChange(event) {
-    console.log('userInfo change', event);
-    if (event.docChanges !== undefined && event.docChanges[0].dataType === 'update') {
-      if (event.docChanges[0].updatedFields.role == 1) {
-        wx.cloud.callFunction({
-          name: 'sendAuditMsg',
-          data: {
-            openid: wx.getStorageSync('openid')
-          }
-        }).then(() => {
-          wx.setStorageSync('role', 1);
-        })
-      }
-    }
-  },
-  onError(err) {}
-});
+// const watcher = user.where({
+//   openid: wx.getStorageSync('openid')
+// }).watch({
+//   onChange(event) {
+//     console.log('userInfo change', event);
+//     if (event.docChanges !== undefined && event.docChanges[0].dataType === 'update') {
+//       if (event.docChanges[0].updatedFields.role == 1) {
+//         wx.cloud.callFunction({
+//           name: 'sendAuditMsg',
+//           data: {
+//             openid: wx.getStorageSync('openid')
+//           }
+//         }).then(() => {
+//           wx.setStorageSync('role', 1);
+//         })
+//       }
+//     }
+//   },
+//   onError(err) {}
+// });
 
 Page({
   data: {
