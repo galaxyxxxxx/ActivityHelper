@@ -28,8 +28,8 @@ const watcher = user.where({
         })
       }
     }
-  }, onError(err) {
-  }
+  },
+  onError(err) {}
 });
 
 Page({
@@ -66,15 +66,15 @@ Page({
     var obj = {}
     // 加载主图
     act.where({
-      actTimeEnd: _.gte(today)
-    }).orderBy('actTimeBegin', 'desc')
+        actTimeEnd: _.gte(today)
+      }).orderBy('actTimeBegin', 'desc')
       .limit(1)
       .get()
       .then(res => {
         obj = res.data[0]
         db.collection('register').where({
-          aid: obj._id
-        })
+            aid: obj._id
+          })
           .get()
           .then(
             res3 => {
@@ -89,8 +89,8 @@ Page({
     setTimeout(() => {
       console.log("openid ttt", that.data.openid)
       act.where({
-        actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
-      }).orderBy('actTimeBegin', 'desc')
+          actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
+        }).orderBy('actTimeBegin', 'desc')
         .skip(1)
         .limit(5)
         .get()
@@ -99,17 +99,17 @@ Page({
             res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
               // let that = this
               collect.where({
-                _openid: that.data.openid,
-                aid: currentValue._id
-              }).get()
+                  _openid: that.data.openid,
+                  aid: currentValue._id
+                }).get()
                 .then(
                   res2 => {
                     currentValue.isCollected = res2.data.length == 1 ? true : false
                   },
                 )
               db.collection('register').where({
-                aid: currentValue._id
-              }).get()
+                  aid: currentValue._id
+                }).get()
                 .then(
                   res3 => {
                     console.log("tttttt", currentValue, res3.data.length)
@@ -134,16 +134,15 @@ Page({
       openid: res
     })
   },
-  onShow: function () {
-  },
+  onShow: function () {},
 
   // 滚动触底加载下一页活动
   onReachBottom() {
     let today = this.formatDate(new Date())
     this.data.pageId = this.data.pageId + 1
     act.where({
-      actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
-    })
+        actTimeEnd: _.gte(today) //查找尚未到截止日期的活动
+      })
       .orderBy('actTimeBegin', 'desc')
       .skip(1 + 5 * this.data.pageId)
       .limit(5)
@@ -152,9 +151,9 @@ Page({
         res => {
           res.data.forEach(function (currentValue, index, arr) { // 对获取到的活动集一一添加是否收藏的属性
             collect.where({
-              openid: currentValue.openid,
-              aid: currentValue._id
-            })
+                openid: currentValue.openid,
+                aid: currentValue._id
+              })
               .get()
               .then(
                 res2 => {
@@ -206,63 +205,61 @@ Page({
 
   //点击收藏按钮的事件
   collect(e) {
-    if (e.mark.starMark === "star") {
-      console.log("已点击收藏按钮", e)
+    console.log("已点击收藏按钮", e)
 
-      let that = this
-      var aid = e.currentTarget.dataset.collectid
-      var index = e.currentTarget.dataset.index
-      let openid = that.data.openid
-      console.log("Collecting", aid, index)
-      collect.where({
-        _openid: that.data.openid,
-        aid: aid
-      }).get({
-        success: function (res) {
-          console.log("收藏数据库查找成功", res)
-          if (res.data.length == 0) { //如果未收藏，需要改为已收藏
-            collect.add({
-              data: {
-                aid: aid,
-                openid: openid,
-                collectTime: new Date()
-              },
-              success: function (res1) {
-                console.log(res1)
-                wx.showToast({
-                  title: '成功收藏',
-                  icon: 'success',
-                  duration: 1000
-                })
-                let tmp = that.data.acting
-                tmp[index].isCollected = true
-                that.setData({
-                  acting: tmp
-                })
-              }
-            })
-          } else {
-            console.log("已被收藏，即将取消收藏")
-            collect.doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
-              success(res) {
-                console.log(res)
-                console.log('已成功取消该收藏');
-                wx.showToast({
-                  title: '已取消收藏',
-                  icon: 'success',
-                  duration: 1000
-                })
-                let tmp = that.data.acting
-                tmp[index].isCollected = false
-                that.setData({
-                  acting: tmp
-                })
-              }
-            })
-          }
+    let that = this
+    var aid = e.detail.activityId;
+    var index = e.detail.index
+    let openid = that.data.openid
+    console.log("Collecting", aid, index)
+    collect.where({
+      _openid: that.data.openid,
+      aid: aid
+    }).get({
+      success: function (res) {
+        console.log("收藏数据库查找成功", res)
+        if (res.data.length == 0) { //如果未收藏，需要改为已收藏
+          collect.add({
+            data: {
+              aid: aid,
+              openid: openid,
+              collectTime: new Date()
+            },
+            success: function (res1) {
+              console.log(res1)
+              wx.showToast({
+                title: '成功收藏',
+                icon: 'success',
+                duration: 1000
+              })
+              let tmp = that.data.acting
+              tmp[index].isCollected = true
+              that.setData({
+                acting: tmp
+              })
+            }
+          })
+        } else {
+          console.log("已被收藏，即将取消收藏")
+          collect.doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
+            success(res) {
+              console.log(res)
+              console.log('已成功取消该收藏');
+              wx.showToast({
+                title: '已取消收藏',
+                icon: 'success',
+                duration: 1000
+              })
+              let tmp = that.data.acting
+              tmp[index].isCollected = false
+              that.setData({
+                acting: tmp
+              })
+            }
+          })
         }
-      })
-    }
+      }
+    })
   },
   //点击查看更多(MORE)，跳转至活动详情页
   viewMoreMain(e) {
@@ -306,7 +303,7 @@ Page({
       url: '../../packageA/info/info?openid=' + this.data.openid,
     })
   },
-  search(){
+  search() {
     wx.navigateTo({
       url: '../../packageA/search/search',
     })

@@ -1,0 +1,86 @@
+.actPart {
+    margin-top: 45rpx;
+    font-size: var(--font-size-S);
+    color: black;
+    font-weight: 400;
+}
+
+/* 活动集块 */
+.acts {
+    margin-top: var(--font-size-M);
+    /* margin-bottom: 70rpx; */
+}
+
+.act {
+    border-radius: var(--font-size-M);
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 40rpx;
+    padding: 40rpx 40rpx 30rpx 40rpx;
+    box-shadow: 10rpx 10rpx 40rpx rgba(150, 150, 150, 0.35);
+}
+
+.act .actIcon {
+    vertical-align: middle;
+}
+
+.act .actLable {
+    letter-spacing: 1rpx;
+    display: inline;
+    font-weight: 300;
+    color: #868688;
+}
+
+.act .actAddr {
+    margin-top: 5rpx;
+    display: inline;
+    float: right;
+    /* font-weight: 580; */
+    letter-spacing: 5rpx;
+    color: #868688;
+}
+
+.act .actTitle {
+    display: inline-block;
+    width: 70%;
+    letter-spacing: 2rpx;
+    margin-top: 30rpx;
+    font-weight: 800;
+    font-size: var(--font-size-M);
+    height: 75rpx;
+}
+
+.actCover {
+    float: right;
+    margin-top: 30rpx;
+}
+
+.act .actIntro {
+    margin-top: 100rpx;
+    font-size: var(--font-size-S);
+}
+
+.act .regNum {
+    display: inline;
+    color: #868688;
+}
+
+.act .actHost {
+    display: inline;
+    margin-left: 10%;
+    color: #868688;
+}
+
+.act .collect {
+    display: inline;
+    float: right;
+    position: relative;
+    top: -10rpx;
+}
+
+.act .collect::after {
+    left: -20rpx;
+    top: -20rpx;
+    right: -20rpx;
+    bottom: -20rpx;
+}

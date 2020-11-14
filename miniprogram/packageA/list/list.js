@@ -37,7 +37,7 @@ Page({
       .skip(5 * this.data.pageId)
       .limit(5)
       .get();
-    if (activities.length === 0) {
+    if (activities.data.length === 0) {
       return;
     }
     wx.showLoading({
@@ -52,8 +52,9 @@ Page({
         aid: activity._id
       }).get();
 
-      activity.isCollected = collected.data.length == 1;
-      myLog(`set collection for ${activity.title} at ${Date.now().toString()}`);
+      myLog(collected.data);
+      activity.isCollected = collected.data.length > 0;
+      myLog(`set collection to ${collected.data.length > 0} for ${activity.title} at ${Date.now().toString()}`);
 
       const registedNumber = await db.collection('register').where({
         aid: activity._id
@@ -70,7 +71,8 @@ Page({
 
   onLoad: async function (options) {
     this.setData({
-      openid: wx.getStorageSync('openid')
+      openid: wx.getStorageSync('openid'),
+      pageId: 0
     })
     let today = this.formatDate(new Date())
 
@@ -96,19 +98,15 @@ Page({
    */
   async collect(e) {
     myLog(e);
-    if (e.mark.starMark !== "star") {
-      return;
-    }
-    console.log("已点击收藏按钮", e)
-    var aid = e.currentTarget.dataset.collectid
-    var index = e.currentTarget.dataset.index
-    let openid = this.data.openid
+    const aid = e.detail.activityId
+    const index = e.detail.index
+    const openid = this.data.openid
     myLog("Collecting", aid, index)
     const collectionInfo = await collect.where({
       _openid: this.data.openid,
       aid: aid
     }).get();
-    myLog("收藏数据库查找成功", collectionInfo)
+    myLog(collectionInfo)
     if (collectionInfo.data.length == 0) { //如果未收藏，需要改为已收藏
       await collect.add({
         data: {
@@ -142,15 +140,6 @@ Page({
       tmp[index].isCollected = false
       this.setData({
         acting: tmp
-      })
-    }
-  },
-
-  viewMore(e) {
-    if (e.mark.starMark !== "star") {
-      console.log("已点击查看更多按钮 列表", e)
-      wx.navigateTo({
-        url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
       })
     }
   },
