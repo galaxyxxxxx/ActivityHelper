@@ -1,4 +1,3 @@
-var util = require('../../utils/util.js');
 wx.cloud.init({
     env: 'x1-vgiba'
 });
@@ -6,7 +5,6 @@ const db = wx.cloud.database({
     env: 'x1-vgiba'
 });
 const user = db.collection('user');
-const app = getApp();
 Page({
     data: {
         tabbar: 0,
@@ -38,7 +36,7 @@ Page({
         emptyImg: '',
     },
 
-    onLoad: function (options) {
+    onLoad: function () {
         // 从缓存获取openid & role
         let that = this;
         that.setData({
@@ -343,7 +341,6 @@ Page({
             console.log('taaaaaab', e.detail.index);
             setTimeout(() => {
                 let that = this;
-                let tabbar = that.data.tabbar;
                 that.setData({
                     tabbar: e.detail.index
                 });

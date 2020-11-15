@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js .",
     "precommit": "lint-staged"
   },
   "author": "",
@@ -14,13 +14,11 @@
   },
   "devDependencies": {
     "eslint": "^7.13.0",
-    "husky": "^4.3.0",
-    "lint-staged": "^10.5.1"
+    "husky": "^4.3.0"
   },
-  "lint-staged": {
-    "./**/*.js": [
-      "eslint --fix --ext .js",
-      "git add"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo 'Running eslint' && npm run lint"
+    }
   }
 }
