@@ -160,7 +160,7 @@ Page({
 
   // 报名
   onClickRegister() {
-    // 查询user表
+    // 查询user表 是否已注册个人信息 若无则先注册 跳转至个人信息页
     if (!this.data.isRegister) {
       wx.showToast({
         title: '请先完善个人信息',
@@ -222,7 +222,7 @@ Page({
           });
           return;
         }
-        if (this.data.activity_detail.numMax <= this.data.regNum && this.data.activity_detail.numMax != '') {
+        if (this.data.activity_detail.numMax == this.data.regNum && this.data.activity_detail.numMax != '') {
           wx.showToast({
             title: "报名人数已满",
             icon: "none",
