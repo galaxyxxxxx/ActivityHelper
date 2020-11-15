@@ -83,8 +83,8 @@ Page({
         let today = this.formatDate(new Date());
         // 加载主图
         const mainActivity = await act.where({
-                actTimeEnd: _.gte(today)
-            }).orderBy('actTimeBegin', 'desc')
+            actTimeEnd: _.gte(today)
+        }).orderBy('actTimeBegin', 'desc')
             .limit(1).get();
 
         const actMain = mainActivity.data[0];
@@ -113,7 +113,6 @@ Page({
 
     // 滚动触底加载下一页活动
     async onReachBottom() {
-
         const config = this.activityQueryConfig();
         const activities = await fetchActivities(db, this.data.openid, config);
         const newActing = [...this.data.acting, ...activities];
