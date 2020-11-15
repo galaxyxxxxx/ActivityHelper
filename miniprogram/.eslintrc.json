@@ -19,7 +19,17 @@
         "Behavior": true,
         "wx": true,
         "getApp": true,
-        "getCurrentPages": true
+        "getCurrentPages": true,
+        "$1": true,
+        "$2": true,
+        "$3": true,
+        "$4": true,
+        "$5": true,
+        "$6": true,
+        "$7": true,
+        "$8": true,
+        "$9": true,
+        "lastMatch": true
     },
     "rules": {
         "indent": [
@@ -37,6 +47,7 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-unused-vars": "warn"
     }
 }

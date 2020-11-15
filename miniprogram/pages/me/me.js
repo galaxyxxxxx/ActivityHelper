@@ -39,7 +39,7 @@ Page({
     },
 
     onLoad: function (options) {
-    // 从缓存获取openid & role
+        // 从缓存获取openid & role
         let that = this;
         that.setData({
             openid: wx.getStorageSync('openid'),
@@ -67,7 +67,7 @@ Page({
     },
 
     onShow: function () {
-    // tabbar
+        // tabbar
         if (typeof this.getTabBar === 'function' && this.getTabBar()) {
             this.getTabBar().setData({
                 active: 2
@@ -376,16 +376,17 @@ Page({
         }
     },
 
-    // 查看活动详情
-    viewMore(e) {
-        console.log(e);
-        if (e.mark == null) {
-            console.log('已点击查看更多按钮 列表', e);
-            wx.navigateTo({
-                url: '../../packageA/activityDetail/activityDetail?aid=' + e.target.dataset.id,
-            });
-        }
-    },
+    // 不知道为什么有两个viewMore，于是注释掉了第一个
+    // // 查看活动详情
+    // viewMore(e) {
+    //     console.log(e);
+    //     if (e.mark == null) {
+    //         console.log('已点击查看更多按钮 列表', e);
+    //         wx.navigateTo({
+    //             url: '../../packageA/activityDetail/activityDetail?aid=' + e.target.dataset.id,
+    //         });
+    //     }
+    // },
 
     // 点击发布列表 形成弹窗
     showPopupRelease(e) {
@@ -432,11 +433,9 @@ Page({
     },
 
     // 修改活动
-    editActivity(e) {
-    },
+    editActivity(e) {},
     // 查看报名统计
-    reg(e) {
-    },
+    reg(e) {},
     // 查看活动详情
     viewMore(e) {
         if (e.mark.moreMark !== 'more' && e.mark.starMark !== 'star') {
