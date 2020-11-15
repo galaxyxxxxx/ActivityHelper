@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@vant/weapp": "^1.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0"
   }
 }

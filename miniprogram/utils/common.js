@@ -41,7 +41,7 @@ export const fetchActivities = async (db, openId, config) => {
         }).get();
 
         activity.regNum = registedNumber.data.length;
-    };
+    }
     wx.hideLoading();
     return activities.data;
 };
@@ -82,7 +82,7 @@ export const collectOrUncollectActivity = async (db, activityId, openId) => {
             title: '已取消收藏',
             icon: 'success',
             duration: 1000
-        })
+        });
         return false;
     }
 };

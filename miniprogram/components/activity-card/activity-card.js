@@ -3,7 +3,7 @@ import {
 } from '../../utils/taggedLog';
 
 const log = (message) => {
-    TagLog("activity-card: ", message);
+    TagLog('activity-card: ', message);
 };
 
 Component({
@@ -29,7 +29,7 @@ Component({
 
         onTap: function (event) {
             log(event);
-            if (event.mark.starMark !== "star") {
+            if (event.mark.starMark !== 'star') {
                 this.toActivityDetail();
             } else {
                 log('emit collect event');
