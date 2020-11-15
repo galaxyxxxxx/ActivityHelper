@@ -302,10 +302,10 @@ Page({
             showActDate: false
         });
     },
-    formatDate(date) {
-        date = new Date(date);
-        return `${date.getMonth() + 1}/${date.getDate()}`;
-    },
+    // formatDate(date) {
+    //     date = new Date(date);
+    //     return `${date.getMonth() + 1}/${date.getDate()}`;
+    // },
     onConfirmActDate(event) {
         const [start, end] = event.detail;
         this.setData({
@@ -380,8 +380,8 @@ Page({
         const promise1 = new Promise((resolve, reject) => {
             console.log('进入校验1');
             if (form.addr.length == 0 || form.contact.length == 0 ||
-        form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
-        form.description.length == 0) {
+                form.actTimeBegin.length == 0 || form.regTimeBegin.length == 0 ||
+                form.description.length == 0) {
                 console.log('校验1 出错');
                 wx.showToast({
                     title: '请先完成所有必填项',

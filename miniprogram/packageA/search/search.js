@@ -22,7 +22,7 @@ Page({
     onLoad: function (options) {
         this.setData({
             isEmpty: false,
-            searchRes: null,
+            //searchRes: null,
             searchRes: [],
             searchInput: '',
             emptyImg: wx.getStorageSync('emptyImg')
@@ -32,7 +32,7 @@ Page({
     onShow() {
         this.setData({
             isEmpty: false,
-            searchRes: null,
+            //searchRes: null,
             searchInput: '',
             searchRes: [],
             searchHistory: [],

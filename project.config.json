@@ -36,14 +36,7 @@
             "pages/home/home": {}
         }
     },
-    "packOptions": {
-        "ignore": [
-            {
-                "type": "folder",
-                "value": "node_modules"
-            }
-        ]
-    },
+    "packOptions": {},
     "setting": {
         "urlCheck": false,
         "es6": true,

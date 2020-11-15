@@ -430,9 +430,9 @@ Page({
     },
 
     // 修改活动
-    editActivity(e) {},
+    editActivity() {},
     // 查看报名统计
-    reg(e) {},
+    reg() {},
     // 查看活动详情
     viewMore(e) {
         if (e.mark.moreMark !== 'more' && e.mark.starMark !== 'star') {
@@ -449,7 +449,6 @@ Page({
             let that = this;
             var aid = e.currentTarget.dataset.collectid;
             var index = e.currentTarget.dataset.index;
-            let openid = that.data.openid;
             console.log('Collecting', aid, index);
             db.collection('collect').where({
                 _openid: that.data.openid,

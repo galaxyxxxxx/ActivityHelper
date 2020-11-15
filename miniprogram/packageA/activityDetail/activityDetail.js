@@ -32,9 +32,9 @@ Page({
         console.log('type！', a);
         let today = new Date();
         db.collection('activity').where({
-            type: a,
-            _id: _.neq(this.data.aid)
-        })
+                type: a,
+                _id: _.neq(this.data.aid)
+            })
             .orderBy('actTimeBegin', 'desc')
             .limit(3)
             .get()
@@ -49,7 +49,7 @@ Page({
     },
 
     onLoad: function (options) {
-    // 设置回调，防止小程序globalData拿到空数据
+        // 设置回调，防止小程序globalData拿到空数据
         let that = this;
         // 单页模式
         if (options.scene != 1154) {
@@ -108,9 +108,9 @@ Page({
         // 查询报名情况
         console.log(aid);
         db.collection('register').where({
-            aid: aid,
-            openid: this.data.openid
-        }).get()
+                aid: aid,
+                openid: this.data.openid
+            }).get()
             .then(
                 res => {
                     console.log('tset', res);
@@ -160,7 +160,7 @@ Page({
 
     // 报名
     onClickRegister() {
-    // 查询user表 是否已注册个人信息 若无则先注册 跳转至个人信息页
+        // 查询user表 是否已注册个人信息 若无则先注册 跳转至个人信息页
         if (!this.data.isRegister) {
             wx.showToast({
                 title: '请先完善个人信息',
@@ -476,21 +476,21 @@ Page({
                     console.log('获取评论成功', res.data);
                     var that = this;
                     that.setData({
-                        comments : res.data
+                        comments: res.data
                     });
 
                 },
             });
     },
-    cancelComment(e){
+    cancelComment(e) {
         this.setData({
-            showCommentDialog : false,
-            comment_input : ''
+            showCommentDialog: false,
+            comment_input: ''
         });
     },
     // 填写评论
     submitComment() {
-    // 空值检测
+        // 空值检测
         if (!this.data.comment_input) {
             wx.showToast({
                 title: '您还没有输入',
@@ -512,7 +512,7 @@ Page({
                     aid: that.data.activity_detail._id,
                     comment: that.data.comment_input,
                     nickName: that.data.anonymous == false ? wx.getStorageSync('nickName') : '匿名',
-                    time: util.formatTime(new Date()).substring(0,16)
+                    time: util.formatTime(new Date()).substring(0, 16)
                 };
 
                 db.collection('comment').add({
@@ -588,11 +588,11 @@ Page({
                 phoneNumber: contact,
             });
         }
-    }, 
+    },
 
     onClickTypeActList(e) {
         console.log(e);
-    
+
         wx.navigateTo({
             url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
         });

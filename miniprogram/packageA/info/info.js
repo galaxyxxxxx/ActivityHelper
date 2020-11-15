@@ -13,8 +13,8 @@ const departments = {
     经管学院: ['', '信息管理与信息系统', '文化产业管理', '工商管理', '会计', '金融'],
     机电学院: ['', '机械工程', '自动化', '测控'],
     艺设学院: ['', '美术', '数字媒体艺术', '雕塑', '工业设计', '广告'],
-    数理学院: ['', '应用数学','应用物理','计算与信息科学'],
-    文法学部: ['' , '英语','法学','社会学'],
+    数理学院: ['', '应用数学', '应用物理', '计算与信息科学'],
+    文法学部: ['', '英语', '法学', '社会学'],
 };
 
 Page({
@@ -31,18 +31,18 @@ Page({
         role: '',
         registed: 0, //标记数据库里是否已有该用户  用以判断该信息修改操作对数据库是add还是update
         change: 0, //标记当前页面数据是否有改动
-        dep1temp:'',
-        dep2temp:'',
+        dep1temp: '',
+        dep2temp: '',
 
         department: [{
-            values: Object.keys(departments),
-            className: 'column1',
-        },
-        {
-            values: departments['计算机学院'],
-            className: 'column2',
-            defaultIndex: 0,
-        },
+                values: Object.keys(departments),
+                className: 'column1',
+            },
+            {
+                values: departments['计算机学院'],
+                className: 'column2',
+                defaultIndex: 0,
+            },
         ],
 
         showDep: false,
@@ -121,7 +121,7 @@ Page({
         picker.setColumnValues(1, departments[value[0]]);
         let dep1temp = this.data.dep1temp;
         let dep2temp = this.data.dep2temp;
-        console.log('test dep',e);
+        console.log('test dep', e);
         if (dep1temp == '') {
             this.setData({
                 dep1temp: e.detail.value[0],
@@ -139,43 +139,43 @@ Page({
             });
         }
     },
-    onCancelDep(e){
+    onCancelDep(e) {
         this.setData({
-            dep1temp:'',
-            dep2temp:'',
-            showDep : false,
+            dep1temp: '',
+            dep2temp: '',
+            showDep: false,
         });
     },
     onCloseDep(e) {
         this.setData({
-            dep1temp:'',
-            dep2temp:'',
+            dep1temp: '',
+            dep2temp: '',
             showDep: false
         });
     },
-    onConfirmDep(e){
-        console.log('test temp',dep1temp,dep2temp);
+    onConfirmDep(e) {
+        console.log('test temp', this.data.dep1temp, this.data.dep2temp);
         this.setData({
-            dep1: dep1temp,
-            dep2: dep2temp,
+            dep1: this.data.dep1temp,
+            dep2: this.data.dep2temp,
             change: 1,
-            showDep:false,
+            showDep: false,
         });
     },
 
     //点击学号 / 电话时的提示信息
-    tips1(e){
+    tips1(e) {
         Dialog.alert({
             message: '该信息仅提供给您所报名活动的主办方😁',
-            confirmButtonText :'ok理解'
+            confirmButtonText: 'ok理解'
         }).then(() => {
             // on close
         });
     },
-    tips2(e){
+    tips2(e) {
         Dialog.alert({
             message: '该信息将帮助平台向您个性化推荐😎',
-            confirmButtonText:'ok辛苦啦!'
+            confirmButtonText: 'ok辛苦啦!'
         }).then(() => {
             wx.showToast({
                 title: 'QAQ不客气!!!',
@@ -187,25 +187,25 @@ Page({
     //社团身份认证
     identify(e) {
         Dialog.confirm({
-            context: this,
-            customStyle: 'font-size: var(--font-size-S);line-height: 50rpx;',
-            closeOnClickOverlay: 'true',
-            messageAlign: 'left',
-            customStyle: 'font-size:var(--font-size-S)',
-            confirmButtonText: '申请认证',
-            cancelButtonText: '暂不申请',
-            message: '认证社团身份后可代表社团发布活动:D\n\n认证方法\n1 填写并提交当前页个人信息 \n2 点击申请认证按钮\n3 填写新页面部门信息',
-        })
+                context: this,
+                customStyle: 'font-size: var(--font-size-S);line-height: 50rpx;',
+                closeOnClickOverlay: 'true',
+                messageAlign: 'left',
+                // customStyle: 'font-size:var(--font-size-S)',
+                confirmButtonText: '申请认证',
+                cancelButtonText: '暂不申请',
+                message: '认证社团身份后可代表社团发布活动:D\n\n认证方法\n1 填写并提交当前页个人信息 \n2 点击申请认证按钮\n3 填写新页面部门信息',
+            })
             .then(() => {
                 console.log('用户确定认证');
-                if (this.data.registed == 0 ) {
-                    if( this.data.change == 1){
+                if (this.data.registed == 0) {
+                    if (this.data.change == 1) {
                         wx.showToast({
                             title: '请先对已更改的信息进行提交',
                             icon: 'none',
                             duration: 1500
                         });
-                    }else{
+                    } else {
                         wx.showToast({
                             title: '请先完善个人信息 并提交',
                             icon: 'none',
@@ -318,7 +318,7 @@ Page({
                             });
                         }
                     });
-                } else {  //已注册的
+                } else { //已注册的
                     user.where({
                         openid: this.data.openid
                     }).update({
