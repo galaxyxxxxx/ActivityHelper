@@ -1,6 +1,32 @@
 # BJUT活动助手开发文档 :)
 ____
 
+## 使用eslint和husky
+
+### 安装eslint和husky
+如果想要使用eslint和husky规范代码格式，需要安装npm。
+
+将项目代码克隆到本地后打开命令行执行以下命令
+```powershell
+cd miniprogram # 假定你已经进入活动助手的项目根目录
+npm i
+```
+安装完成后，`miniprogram`文件夹中会出现一个新的文件夹`node_modules`(该文件夹在提交时会被忽略)
+
+### 使用
+
+#### 在命令行中使用
+
+每次使用命令行提交代码时会触发husky的钩子自动进行代码检测，也可以在命令行中输入`npm run lint`手动检测代码。
+
+#### 在开发者工具中使用
+
+根据[官方教程](https://developers.weixin.qq.com/miniprogram/dev/devtools/editorextensions.html)安装[eslint扩展](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)，启用后即可支持eslint。
+
+但是不知道为什么，在开发者工具中提交代码不会触发husky的pre-commit钩子。
+
+
+
 ## 前端页面目录
 * ### 一级页面
    |  页面名 	   |    文件路径   			 | 																		    |
