@@ -176,7 +176,7 @@ Page({
                     this.setData({
                         actReleased: [...this.data.actReleased, ...res.data],
                     });
-                    console.log('加载后的发布管理', actReleased);
+                    console.log('加载后的发布管理', this.data.actReleased);
                 },
                 fail(err) {
                     console.log('fail', err);
@@ -316,7 +316,7 @@ Page({
                     this.setData({
                         actReleased: res.data
                     });
-                    console.log('加载后的发布管理', actReleased);
+                    console.log('加载后的发布管理', this.data.actReleased);
                 },
                 fail(err) {
                     console.log('fail', err);
@@ -461,26 +461,27 @@ Page({
                 success: function (res) {
                     console.log('收藏数据库查找成功', res);
                     if (res.data.length == 0) { //如果未收藏，需要改为已收藏
-                        collect.add({
-                            data: {
-                                aid: aid,
-                                openid: openid,
-                                collectTime: new Date()
-                            },
-                            success: function (res1) {
-                                console.log(res1);
-                                wx.showToast({
-                                    title: '成功收藏',
-                                    icon: 'success',
-                                    duration: 1000
-                                });
-                                let tmp = that.data.actCollected;
-                                tmp[index].isCollected = true;
-                                that.setData({
-                                    actCollected: tmp
-                                });
-                            }
-                        });
+                        // 没用
+                        // collect.add({
+                        //     data: {
+                        //         aid: aid,
+                        //         openid: openid,
+                        //         collectTime: new Date()
+                        //     },
+                        //     success: function (res1) {
+                        //         console.log(res1);
+                        //         wx.showToast({
+                        //             title: '成功收藏',
+                        //             icon: 'success',
+                        //             duration: 1000
+                        //         });
+                        //         let tmp = that.data.actCollected;
+                        //         tmp[index].isCollected = true;
+                        //         that.setData({
+                        //             actCollected: tmp
+                        //         });
+                        //     }
+                        // });
                     } else {
                         console.log('已被收藏，即将取消收藏');
                         db.collection('collect').doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
