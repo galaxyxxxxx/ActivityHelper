@@ -1,207 +1,210 @@
 {
-  "description": "项目配置文件",
-  "skeleton-config": {
-    "global": {
-      "loading": "spin",
-      "text": {
-        "color": "#EEEEEE"
-      },
-      "image": {
-        "shape": "",
-        "color": "#EFEFEF",
-        "shapeOpposite": []
-      },
-      "button": {
-        "color": "#EFEFEF",
-        "excludes": []
-      },
-      "pseudo": {
-        "color": "#EFEFEF",
-        "shape": "circle",
-        "shapeOpposite": []
-      },
-      "excludes": [],
-      "remove": [],
-      "empty": [],
-      "hide": [],
-      "grayBlock": [],
-      "showNative": false,
-      "backgroundColor": "transparent",
-      "mode": "fullscreen",
-      "templateName": "skeleton",
-      "cssUnit": "rpx",
-      "decimal": 4
-    },
-    "pages": {
-      "pages/home/home": {}
-    }
-  },
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "es6": true,
-    "enhance": true,
-    "postcss": true,
-    "preloadBackgroundData": false,
-    "minified": true,
-    "newFeature": true,
-    "coverView": true,
-    "nodeModules": true,
-    "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
-    "useApiHook": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    },
-    "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": []
-  },
-  "compileType": "miniprogram",
-  "libVersion": "2.13.1",
-  "appid": "wx1f240f5ecbee02ea",
-  "projectname": "CAX",
-  "miniprogramRoot": "miniprogram/",
-  "cloudfunctionRoot": "cloudfunctions/",
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
-  "watchOptions": {
-    "ignore": []
-  },
-  "debugOptions": {
-    "hidedInDevtools": []
-  },
-  "scripts": {},
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
-  "condition": {
-    "plugin": {
-      "list": []
-    },
-    "game": {
-      "list": []
-    },
-    "gamePlugin": {
-      "list": []
-    },
-    "miniprogram": {
-      "list": [
-        {
-          "id": -1,
-          "name": "db guide",
-          "pathName": "pages/databaseGuide/databaseGuide",
-          "query": ""
+    "description": "项目配置文件",
+    "skeleton-config": {
+        "global": {
+            "loading": "spin",
+            "text": {
+                "color": "#EEEEEE"
+            },
+            "image": {
+                "shape": "",
+                "color": "#EFEFEF",
+                "shapeOpposite": []
+            },
+            "button": {
+                "color": "#EFEFEF",
+                "excludes": []
+            },
+            "pseudo": {
+                "color": "#EFEFEF",
+                "shape": "circle",
+                "shapeOpposite": []
+            },
+            "excludes": [],
+            "remove": [],
+            "empty": [],
+            "hide": [],
+            "grayBlock": [],
+            "showNative": false,
+            "backgroundColor": "transparent",
+            "mode": "fullscreen",
+            "templateName": "skeleton",
+            "cssUnit": "rpx",
+            "decimal": 4
         },
-        {
-          "id": 1,
-          "name": "canlendar",
-          "pathName": "packageA/calendar/canlendar",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": 2,
-          "name": "newActivity",
-          "pathName": "packageB/newActivity/newActivity",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": 3,
-          "name": "me",
-          "pathName": "pages/me/me",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": 4,
-          "name": "regDetails",
-          "pathName": "packageB/regDetails/regDetails",
-          "query": "aid=8e5be7055f670211002c6f6c55974c70",
-          "scene": null
-        },
-        {
-          "id": 5,
-          "name": "editActivity",
-          "pathName": "packageB/editActivity/editActivity",
-          "query": "aid=d81cd5415f88644c0153ccc427737aea",
-          "scene": null
-        },
-        {
-          "id": 6,
-          "name": "home",
-          "pathName": "pages/home/home",
-          "query": "",
-          "scene": 1001
-        },
-        {
-          "id": -1,
-          "name": "info",
-          "pathName": "packageA/info/info",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": -1,
-          "name": "Discovery",
-          "pathName": "pages/discovery/discovery",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": -1,
-          "name": "setting",
-          "pathName": "packageB/setting/setting",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": 10,
-          "name": "activityDetail",
-          "pathName": "packageA/activityDetail/activityDetail",
-          "query": "aid=d782d4875f6742df0021350d306345d6",
-          "scene": null
-        },
-        {
-          "name": "list",
-          "pathName": "packageA/list/list",
-          "query": "type=d81cd5415f8675cb0144741275a25900",
-          "scene": null
-        },
-        {
-          "id": -1,
-          "name": "packageB/inputOrg/inputOrg",
-          "pathName": "packageB/inputOrg/inputOrg",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": -1,
-          "name": "search",
-          "pathName": "packageA/search/search",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": -1,
-          "name": "inputOrg",
-          "pathName": "packageB/inputOrg/inputOrg",
-          "query": "",
-          "scene": null
+        "pages": {
+            "pages/home/home": {}
         }
-      ]
+    },
+    "packOptions": {},
+    "setting": {
+        "urlCheck": false,
+        "es6": true,
+        "enhance": true,
+        "postcss": true,
+        "preloadBackgroundData": false,
+        "minified": true,
+        "newFeature": true,
+        "coverView": true,
+        "nodeModules": true,
+        "autoAudits": false,
+        "showShadowRootInWxmlPanel": true,
+        "scopeDataCheck": false,
+        "uglifyFileName": false,
+        "checkInvalidKey": true,
+        "checkSiteMap": true,
+        "uploadWithSourceMap": true,
+        "compileHotReLoad": false,
+        "useMultiFrameRuntime": false,
+        "useApiHook": true,
+        "babelSetting": {
+            "ignore": [],
+            "disablePlugins": [],
+            "outputPath": ""
+        },
+        "useIsolateContext": true,
+        "useCompilerModule": true,
+        "userConfirmedUseCompilerModuleSwitch": false,
+        "packNpmManually": true,
+        "packNpmRelationList": [
+            {
+                "packageJsonPath": "./miniprogram/package.json",
+                "miniprogramNpmDistDir": "./miniprogram/"
+            }
+        ]
+    },
+    "compileType": "miniprogram",
+    "libVersion": "2.13.1",
+    "appid": "wx1f240f5ecbee02ea",
+    "projectname": "CAX",
+    "miniprogramRoot": "miniprogram/",
+    "cloudfunctionRoot": "cloudfunctions/",
+    "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+    "watchOptions": {
+        "ignore": []
+    },
+    "debugOptions": {
+        "hidedInDevtools": []
+    },
+    "scripts": {},
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "condition": {
+        "plugin": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "gamePlugin": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": [
+                {
+                    "id": -1,
+                    "name": "db guide",
+                    "pathName": "pages/databaseGuide/databaseGuide",
+                    "query": ""
+                },
+                {
+                    "id": 1,
+                    "name": "canlendar",
+                    "pathName": "packageA/calendar/canlendar",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": 2,
+                    "name": "newActivity",
+                    "pathName": "packageB/newActivity/newActivity",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": 3,
+                    "name": "me",
+                    "pathName": "pages/me/me",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": 4,
+                    "name": "regDetails",
+                    "pathName": "packageB/regDetails/regDetails",
+                    "query": "aid=8e5be7055f670211002c6f6c55974c70",
+                    "scene": null
+                },
+                {
+                    "id": 5,
+                    "name": "editActivity",
+                    "pathName": "packageB/editActivity/editActivity",
+                    "query": "aid=d81cd5415f88644c0153ccc427737aea",
+                    "scene": null
+                },
+                {
+                    "id": 6,
+                    "name": "home",
+                    "pathName": "pages/home/home",
+                    "query": "",
+                    "scene": 1001
+                },
+                {
+                    "id": -1,
+                    "name": "info",
+                    "pathName": "packageA/info/info",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "Discovery",
+                    "pathName": "pages/discovery/discovery",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "setting",
+                    "pathName": "packageB/setting/setting",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": 10,
+                    "name": "activityDetail",
+                    "pathName": "packageA/activityDetail/activityDetail",
+                    "query": "aid=d782d4875f6742df0021350d306345d6",
+                    "scene": null
+                },
+                {
+                    "name": "list",
+                    "pathName": "packageA/list/list",
+                    "query": "type=d81cd5415f8675cb0144741275a25900",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "packageB/inputOrg/inputOrg",
+                    "pathName": "packageB/inputOrg/inputOrg",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "search",
+                    "pathName": "packageA/search/search",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "id": -1,
+                    "name": "inputOrg",
+                    "pathName": "packageB/inputOrg/inputOrg",
+                    "query": "",
+                    "scene": null
+                }
+            ]
+        }
     }
-  }
 }

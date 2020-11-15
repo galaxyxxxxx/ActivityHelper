@@ -1,15 +1,15 @@
 
 Page({
 
-  data: {
+    data: {
     
 
-  },
+    },
 
  
-  onLoad: function (options) {
+    onLoad: function (options) {
 
-  },
+    },
 
  
-})
+});
