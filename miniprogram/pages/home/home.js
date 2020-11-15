@@ -113,6 +113,7 @@ Page({
 
     // 滚动触底加载下一页活动
     async onReachBottom() {
+
         const config = this.activityQueryConfig();
         const activities = await fetchActivities(db, this.data.openid, config);
         const newActing = [...this.data.acting, ...activities];
