@@ -10,8 +10,8 @@ const db = wx.cloud.database({
 });
 const app = getApp();
 const act = db.collection('activity');
-const collect = db.collection('collect');
-const user = db.collection('user');
+// const collect = db.collection('collect');
+// const user = db.collection('user');
 const _ = db.command;
 
 // const watcher = user.where({
@@ -72,7 +72,7 @@ Page({
     },
 
     onLoad: async function (options) {
-    //设置回调，防止小程序globalData拿到空数据
+        //设置回调，防止小程序globalData拿到空数据
         let that = this;
         app.getopenid(that.cb);
         app.getAllPlace();
@@ -83,8 +83,8 @@ Page({
         let today = this.formatDate(new Date());
         // 加载主图
         const mainActivity = await act.where({
-            actTimeEnd: _.gte(today)
-        }).orderBy('actTimeBegin', 'desc')
+                actTimeEnd: _.gte(today)
+            }).orderBy('actTimeBegin', 'desc')
             .limit(1).get();
 
         const actMain = mainActivity.data[0];
@@ -147,7 +147,7 @@ Page({
     },
 
     onShow: function () {
-    // 控制tabbar
+        // 控制tabbar
         if (typeof this.getTabBar === 'function' && this.getTabBar()) {
             this.getTabBar().setData({
                 active: 0
