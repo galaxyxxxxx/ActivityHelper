@@ -12,38 +12,38 @@
  * }} config 查询条件
  */
 export const fetchActivities = async (db, openId, config) => {
-    const activityDB = db.collection('activity');
-    const collectDB = db.collection('collect');
-    const registerDB = db.collection('register');
-    const activities = await activityDB.where(config.filter)
-        .orderBy(config.orderBy.field, config.orderBy.order)
-        .skip(config.skip)
-        .limit(config.limit)
-        .get();
-    if (activities.data.length === 0) {
-        return [];
-    }
-    wx.showLoading({
-        title: '正在加载活动',
-        mask: true
-    });
+  const activityDB = db.collection('activity');
+  const collectDB = db.collection('collect');
+  const registerDB = db.collection('register');
+  const activities = await activityDB.where(config.filter)
+    .orderBy(config.orderBy.field, config.orderBy.order)
+    .skip(config.skip)
+    .limit(config.limit)
+    .get();
+  if (activities.data.length === 0) {
+    return [];
+  }
+  wx.showLoading({
+    title: '正在加载活动',
+    mask: true
+  });
 
-    for (const activity of activities.data) {
-        const collected = await collectDB.where({
-            _openid: openId,
-            aid: activity._id
-        }).get();
+  for (const activity of activities.data) {
+    const collected = await collectDB.where({
+      _openid: openId,
+      aid: activity._id
+    }).get();
 
-        activity.isCollected = collected.data.length > 0;
+    activity.isCollected = collected.data.length > 0;
 
-        const registedNumber = await registerDB.where({
-            aid: activity._id
-        }).get();
+    const registedNumber = await registerDB.where({
+      aid: activity._id
+    }).get();
 
-        activity.regNum = registedNumber.data.length;
-    }
-    wx.hideLoading();
-    return activities.data;
+    activity.regNum = registedNumber.data.length;
+  }
+  wx.hideLoading();
+  return activities.data;
 };
 
 /**
@@ -57,32 +57,32 @@ export const fetchActivities = async (db, openId, config) => {
  * @returns 返回当前活动的收藏状态
  */
 export const collectOrUncollectActivity = async (db, activityId, openId) => {
-    const collect = db.collection('collect');
-    const collectionInfo = await collect.where({
-        _openid: openId,
-        aid: activityId
-    }).get();
-    if (collectionInfo.data.length == 0) { //如果未收藏，需要改为已收藏
-        await collect.add({
-            data: {
-                aid: activityId,
-                openid: openId,
-                collectTime: new Date()
-            }
-        });
-        wx.showToast({
-            title: '成功收藏',
-            icon: 'success',
-            duration: 1000
-        });
-        return true;
-    } else {
-        await collect.doc(collectionInfo.data[0]._id).remove();
-        wx.showToast({
-            title: '已取消收藏',
-            icon: 'success',
-            duration: 1000
-        });
-        return false;
-    }
+  const collect = db.collection('collect');
+  const collectionInfo = await collect.where({
+    _openid: openId,
+    aid: activityId
+  }).get();
+  if (collectionInfo.data.length == 0) { //如果未收藏，需要改为已收藏
+    await collect.add({
+      data: {
+        aid: activityId,
+        openid: openId,
+        collectTime: new Date()
+      }
+    });
+    wx.showToast({
+      title: '成功收藏',
+      icon: 'success',
+      duration: 1000
+    });
+    return true;
+  } else {
+    await collect.doc(collectionInfo.data[0]._id).remove();
+    wx.showToast({
+      title: '已取消收藏',
+      icon: 'success',
+      duration: 1000
+    });
+    return false;
+  }
 };

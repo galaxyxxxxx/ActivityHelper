@@ -4,5 +4,5 @@
  * @param {any} message 打印到控制台的信息
  */
 export const TagLog = (tag, message) => {
-    console.log(tag + ': ', message);
+  console.log(tag + ': ', message);
 };
