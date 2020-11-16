@@ -6,10 +6,13 @@
   <!-- 活动名称 -->
   <van-field value="{{ title }}" data-field="title" label="活动名称" placeholder="请输入30字符以内的活动名称" bind:change="onFormChange"
     required />
+
   <!-- 举办部门 -->
-  <van-field value="{{ host }}" data-field="host" label="举办部门" placeholder="" bind:change="onFormChange" disabled required/>
+  <van-field value="{{ host }}" data-field="host" label="举办部门" placeholder="" bind:change="onFormChange" disabled
+    required />
   <!-- 联系方式 -->
-  <van-field value="{{ contact }}" data-field="contact" label="联系方式" placeholder="请输入活动联系方式(电话或邮箱)" bind:change="onFormChange" required />
+  <van-field value="{{ contact }}" data-field="contact" label="联系方式" placeholder="请输入活动联系方式(电话或邮箱)"
+    bind:change="onFormChange" required />
 
   <!-- 人数上限 -->
   <van-field value="{{ numMax }}" data-field="numMax" label="人数上限" placeholder="若无人数要求 可不填"
@@ -32,6 +35,13 @@
     bind:confirm="onCloseType" />
 </van-popup>
 
+<!-- 活动形式 -->
+<van-cell title="活动形式" value="{{actForm}}" data-field="actForm" is-link bind:click="showPopupActForm"
+  bind:change="onFormChange" required />
+<van-popup show="{{ showActForm }}" position="bottom" bind:close="onCloseActForm" round>
+  <van-picker columns="{{ actAvaliableForms }}" bind:change="onChangeActForm" show-toolbar title=""
+    bind:cancel="hideActForm" bind:confirm="hideActForm" />
+</van-popup>
 
 <!-- 活动起止时间 -->
 <van-cell title="活动起止时间" value="{{actDate}}" data-field="actDate" bind:click="onDisplayActDate"
