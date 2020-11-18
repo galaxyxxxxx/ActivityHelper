@@ -1,3 +1,4 @@
+<view bind:deleteImage="deleteImage" />
 <view class="uploader_wraper">
   <van-uploader file-list="{{ imageList }}" bind:after-read="displayAndUploadImage" use-before-read
     bind:before-read="checkImageSizeAndType" accept="image/*" class="uploader" bind:delete="deleteImage"

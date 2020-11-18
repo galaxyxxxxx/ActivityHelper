@@ -8,29 +8,13 @@ const Log = (...message) => {
 
 Component({
   properties: {
-    title: String,
-    host: String,
-    contact: String,
-    regNum: String,
-    numMax: String,
-    addr: String,
-    addr1: Number,
-    addr2: Number,
-    type: String,
-    actForm: String,
-    actTimeBegin: String,
-    actTimeEnd: String,
-    regTimeBegin: String,
-    regTimeEnd: String,
-    description: String,
-    coverUrl: String,
+    host: String, // 举办部门
+    contact: String, // 联系方式
   },
 
   data: {
     // 表单数据
     title: '', // 活动名称
-    host: '', // 举办部门
-    contact: '', // 联系方式
     regNum: '', // 报名人数
     numMax: '', // 人数上限
     addr: '', // 活动地址
@@ -101,6 +85,44 @@ Component({
   },
 
   methods: {
+    setFormData(form) {
+      this.setData({
+        title: form.title, // 活动名称
+        host: form.host, // 举办部门
+        contact: form.contact, // 联系方式
+        regNum: form.regNum, // 报名人数
+        numMax: form.numMax, // 人数上限
+        addr: form.addr, // 活动地址
+        addr1: form.addr1, // 活动地址下标（校区）
+        addr2: form.addr2, // 活动地址下标（具体地址）
+        type: form.type, // 活动类别id
+        actForm: form.actForm, // 活动形式
+        actTimeBegin: form.actTimeBegin, // 活动开始时间
+        actTimeEnd: form.actTimeEnd, // 活动结束时间
+        regTimeBegin: form.regTimeBegin, // 报名开始时间（仅当活动类型为报名时有效）
+        regTimeEnd: form.regTimeEnd, // 报名结束时间（仅当活动类型为报名时有效）
+        description: form.description, // 活动概要介绍
+        coverUrl: form.coverUrl, // 活动封面链接
+      });
+      const typeIds = this.data.allTypes.map(t => t._id);
+      const typeIndex = typeIds.indexOf(this.data.type);
+      this.setData({
+        actDateStr: `${form.actTimeBegin} - ${form.actTimeEnd}`,
+        typeName: typeIndex === -1 ? '' : this.data.allTypeNames[typeIndex],
+        imageList: [{
+          url: form.coverUrl,
+          isImage: true,
+          deletable: true
+        }]
+      });
+      if (this.data.regTimeBegin === '') {
+        return;
+      }
+      this.setData({
+        regDateStr: `${form.regTimeBegin} - ${form.regTimeEnd}`,
+      });
+    },
+
     checkImageSizeAndType(e) {
       const {
         file,
@@ -127,7 +149,7 @@ Component({
       callback(isImage && lessThan2mb);
     },
 
-    async displayAndUploadImage(e) { // 看起来不能使用async函数
+    async displayAndUploadImage(e) {
       Log('afterRead', e);
       const file = e.detail.file;
       this.setData({
@@ -156,6 +178,7 @@ Component({
     },
 
     deleteImage() {
+      Log('delete image', this.data.imageList);
       this.setData({
         imageList: []
       });
@@ -377,11 +400,11 @@ Component({
     async checkTextUGC(form, field, onFailToastTitle) {
       Log('UGC安全校验', form[field]);
       await wx.cloud.callFunction({
-          name: 'textsec',
-          data: {
-            text: form[field]
-          }
-        })
+        name: 'textsec',
+        data: {
+          text: form[field]
+        }
+      })
         .catch(() => {
           let data = {};
           data[field] = '';
@@ -398,11 +421,11 @@ Component({
     async checkImageUGC(coverUrl) {
       console.log('图片校验');
       await wx.cloud.callFunction({
-          name: 'imagesec',
-          data: {
-            img: coverUrl
-          }
-        })
+        name: 'imagesec',
+        data: {
+          img: coverUrl
+        }
+      })
         .catch(() => {
           wx.cloud.deleteFile({
             fileList: [coverUrl],
@@ -426,7 +449,7 @@ Component({
       await this.checkImageUGC(form.coverUrl);
     },
 
-    async getFormData() {
+    async getFormData(secureCheck) {
       const form = {
         title: this.data.title,
         host: this.data.host,
@@ -444,12 +467,14 @@ Component({
         description: this.data.description,
         coverUrl: this.data.coverUrl,
       };
-      try {
-        await this.checkForm(form);
-      } catch (error) {
-        return {
-          err: error.message
-        };
+      if (secureCheck) {
+        try {
+          await this.checkForm(form);
+        } catch (error) {
+          return {
+            err: error.message
+          };
+        }
       }
       Log('getFormData', this.data);
       return form;
