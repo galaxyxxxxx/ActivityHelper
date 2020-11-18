@@ -1,0 +1,75 @@
+<view class="uploader_wraper">
+  <van-uploader file-list="{{ imageList }}" bind:after-read="displayAndUploadImage" use-before-read
+    bind:before-read="checkImageSizeAndType" accept="image/*" class="uploader" bind:delete="deleteImage"
+    deletable="{{ true }}" multiple="{{false}}" max-count="1" preview-size="550rpx" image-fit="widthFix"
+    upload-text="上传活动封面" style="text-align: center;" />
+</view>
+<van-cell-group>
+  <!-- 活动名称 -->
+  <van-field value="{{ title }}" data-field="title" label="活动名称" placeholder="请输入30字符以内的活动名称" bind:change="onFormChange"
+    required />
+
+  <!-- 举办部门 -->
+  <van-field value="{{ host }}" data-field="host" label="举办部门" placeholder="" bind:change="onFormChange" disabled
+    required />
+
+  <!-- 报名人数 -->
+  <van-field wx:if="{{regNum!==''}}" value="{{ regNum }}" data-field="regNum" label="报名人数" placeholder="报名人数"
+    bind:change="onFormChange" disabled />
+
+  <!-- 人数上限 -->
+  <van-field value="{{ numMax }}" data-field="numMax" label="人数上限" placeholder="若无人数要求 可不填"
+    bind:change="onFormChange" />
+
+  <!-- 联系方式 -->
+  <van-field value="{{ contact }}" data-field="contact" label="联系方式" placeholder="请输入活动联系方式(电话或邮箱)"
+    bind:change="onFormChange" required />
+</van-cell-group>
+
+<!-- 活动地址 -->
+<van-cell title="活动地址" value="{{addr}}" data-field="addr" is-link bind:click="showPopupAddr" bind:change="onFormChange"
+  required />
+<van-popup show="{{ showAddr }}" position="bottom" bind:close="onCloseAddr" round>
+  <van-picker columns="{{ popupAddressList }}" bind:change="onChangeAddr" show-toolbar title=""
+    bind:cancel="onCancelAddr" bind:confirm="onCloseAddr" />
+</van-popup>
+
+<!-- 活动类别 -->
+<van-cell title="活动类别" value="{{typeName}}" data-field="type" is-link bind:click="showPopupType"
+  bind:change="onFormChange" required />
+<van-popup show="{{ showType }}" position="bottom" bind:close="onCloseType" round>
+  <van-picker columns="{{ allTypeNames }}" bind:change="onChangeType" show-toolbar title="" bind:cancel="onCancelType"
+    bind:confirm="onCloseType" />
+</van-popup>
+
+<!-- 活动形式 -->
+<van-cell title="活动形式" value="{{actForm}}" data-field="actForm" is-link bind:click="showPopupActForm"
+  bind:change="onFormChange" required />
+<van-popup show="{{ showActForm }}" position="bottom" bind:close="onCloseActForm" round>
+  <van-picker columns="{{ allActForms }}" bind:change="onChangeActForm" show-toolbar title=""
+    bind:cancel="onCancelActForm" bind:confirm="onCloseActForm" />
+</van-popup>
+
+<!-- 活动起止时间 -->
+<van-cell title="活动起止时间" value="{{actDateStr}}" data-field="actDate" bind:click="showPopupActDate"
+  bind:change="onFormChange" is-link required title-width="25%" />
+<van-calendar show="{{ showActDate }}" type="range" bind:close="onCloseActDate" bind:confirm="onConfirmActDate"
+  allow-same-day="{{ true }}" />
+
+<!-- 报名起止时间 -->
+<view wx:if="{{actForm !== '打卡'}}">
+  <!-- 打卡活动没有报名时间 -->
+  <van-cell title="报名起止时间" value="{{regDateStr}}" data-field="actDate" bind:click="showPopupRegDate"
+    bind:change="onFormChange" is-link required title-width="25%" />
+  <van-calendar show="{{ showRegDate }}" type="range" bind:close="onCloseRegDate" bind:confirm="onConfirmRegDate"
+    allow-same-day="{{ true }}" />
+</view>
+
+<!-- 活动概要 -->
+<van-cell-group class="intro">
+  <van-cell title="活动概要介绍" required border="{{false}}" />
+  <van-field value="{{ description }}" data-field="description" title-size="0px" type="textarea"
+    placeholder="请输入500字以内的活动概要" rows="10" maxlength="500" bind:change="onFormChange" autosize show-word-limit
+    z-index="1">
+  </van-field>
+</van-cell-group>
