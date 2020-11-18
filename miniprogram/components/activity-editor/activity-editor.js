@@ -28,6 +28,8 @@ Component({
     regTimeEnd: '', // 报名结束时间（仅当活动类型为报名时有效）
     description: '', // 活动概要介绍
     coverUrl: '', // 活动封面链接
+    clockinTimeBegin: ['00:00'], // 打卡开始时间(时间段)
+    clockinTimeEnd: ['23:59'], // 打卡结束时间(时间段)
 
     // 展示数据
     imageList: [], // 活动封面，van-uploader要求是一个数组，其实只有一个元素
@@ -37,7 +39,6 @@ Component({
     allCampusAddress: [], // 所有校区地址
     allDetailedAddress: {}, // 所有具体地址，以<校区，校区对应具体地址>的键值对形式存储
     allActForms: ['报名', '打卡'], // 所有活动形式，以后可能也会从服务器获取
-
     popupAddressList: [{
       values: [],
       defaultIndex: 0
@@ -45,17 +46,22 @@ Component({
       values: [],
       defaultIndex: 0
     }], // 活动地址选择器中显示的地址，第0号元素为所有校区地址，第1号元素为选中的校区对应的具体地址
-
     actDateStr: '', // 活动起止时间，如：2020/11/18 - 2020/11/19
     regDateStr: '', // 报名起止时间，同上。
 
-    // 选择框控制变量
+    // 临时变量
+    tmpDateBegin: new Date(), // 用于选择打卡时间段时设置选择器的起始时间
+    tmpDateEnd: new Date(), // 用于选择打卡时间段时设置选择器的结束时间
+    tmpIndex: 0, // 用于记录是第几个时间段触发事件使打卡时间选择器显示(showTimePicker = true)
+    setToBegin: true, // 用于标识从选择器中获取的事件赋给开始时间还是结束时间
+
+    // 控制变量
     showAddr: false, // 显示活动地址选择器
     showType: false, // 显示活动类别选择器
     showActForm: false, // 显示活动形式选择器
     showActDate: false, // 显示活动起止时间选择器
-    showRegDate: false // 显示报名起止时间选择器
-
+    showRegDate: false, // 显示报名起止时间选择器
+    showTimePicker: false // 显示打卡时间段选择器
   },
 
   lifetimes: {
@@ -83,7 +89,6 @@ Component({
 
     }
   },
-
   methods: {
     setFormData(form) {
       this.setData({
@@ -101,6 +106,8 @@ Component({
         actTimeEnd: form.actTimeEnd, // 活动结束时间
         regTimeBegin: form.regTimeBegin, // 报名开始时间（仅当活动类型为报名时有效）
         regTimeEnd: form.regTimeEnd, // 报名结束时间（仅当活动类型为报名时有效）
+        clockinTimeBegin: form.clockinTimeBegin, // 打卡时间段
+        clockinTimeEnd: form.clockinTimeEnd, // 打卡时间段
         description: form.description, // 活动概要介绍
         coverUrl: form.coverUrl, // 活动封面链接
       });
@@ -256,6 +263,11 @@ Component({
     onCloseRegDate() {
       this.hidePopup('showRegDate');
     },
+    onCloseClockinTimePicker() {
+      this.setData({
+        showTimePicker: false
+      });
+    },
     onCancelAddr() {
       this.setData({
         addr: '',
@@ -309,6 +321,119 @@ Component({
         actTimeEnd: end,
         showActDate: false
       });
+    },
+    IncreaseClockinTimeRegion() {
+      const beg = this.data.clockinTimeBegin;
+      const end = this.data.clockinTimeEnd;
+      const lastEndTime = end[end.length - 1];
+      Log('increase region', beg, end, lastEndTime);
+      if (lastEndTime === '23:59') {
+        wx.showToast({
+          title: '时间段已达到今日上限',
+          icon: 'none',
+          duration: 3000
+        });
+
+        return;
+      }
+      const timeInfo = lastEndTime.split(':').map(t => parseInt(t));
+      const newBeginTime = new Date();
+      newBeginTime.setHours(timeInfo[0], timeInfo[1] + 1);
+      Log('new time', timeInfo, newBeginTime);
+      beg.push(util.formatNumber(newBeginTime.getHours()) + ':' + util.formatNumber(newBeginTime.getMinutes()));
+      end.push('23:59');
+      this.setData({
+        clockinTimeBegin: beg,
+        clockinTimeEnd: end
+      });
+    },
+    DecreaseClockinTimeRegion() {
+      const beg = this.data.clockinTimeBegin;
+      const end = this.data.clockinTimeEnd;
+      beg.pop();
+      end.pop();
+      this.setData({
+        clockinTimeBegin: beg,
+        clockinTimeEnd: end
+      });
+    },
+    onClockinRegionChanged(e) {
+      Log(e);
+    },
+    pickBeginTime(e) {
+      Log('pickBeginTime', e);
+      const index = e.target.dataset.index;
+      const pickerBegin = this.data.clockinTimeEnd[index - 1] || '00:00';
+      const pickerEnd = this.data.clockinTimeEnd[index];
+      const lowBound = pickerBegin.split(':').map(t => parseInt(t));
+      const highBound = pickerEnd.split(':').map(t => parseInt(t));
+      const beginDate = new Date();
+      const endDate = new Date();
+      beginDate.setHours(lowBound[0], lowBound[1]);
+      endDate.setHours(highBound[0], highBound[1]);
+      Log('set picker limit', pickerBegin, pickerEnd);
+      this.setData({
+        showTimePicker: true,
+        tmpIndex: index,
+        setToBegin: true,
+        tmpDateBegin: beginDate,
+        tmpDateEnd: endDate
+      });
+
+    },
+    pickEndTime(e) {
+      Log('pickEndTime', e);
+      const index = e.target.dataset.index;
+      const pickerBegin = this.data.clockinTimeBegin[index];
+      const pickerEnd = this.data.clockinTimeBegin[index + 1] || '23:59';
+      const lowBound = pickerBegin.split(':').map(t => parseInt(t));
+      const highBound = pickerEnd.split(':').map(t => parseInt(t));
+      const beginDate = new Date();
+      const endDate = new Date();
+      beginDate.setHours(lowBound[0], lowBound[1]);
+      endDate.setHours(highBound[0], highBound[1]);
+      Log('set picker limit', pickerBegin, pickerEnd);
+      this.setData({
+        showTimePicker: true,
+        tmpIndex: index,
+        setToBegin: false,
+        tmpDateBegin: beginDate,
+        tmpDateEnd: endDate
+      });
+
+    },
+    onConfirmClockinTimePicker(e) {
+      Log('confirm', e);
+      const confirmedDate = new Date();
+      const value = e.detail;
+      const timeInfos = value.split(':').map(t => parseInt(t));
+      confirmedDate.setHours(timeInfos[0], timeInfos[1]);
+      if (confirmedDate < this.data.tmpDateBegin) {
+        const time = `${util.formatNumber(this.data.tmpDateBegin.getHours())}:${util.formatNumber(this.data.tmpDateBegin.getMinutes())}`;
+        wx.showToast({
+          title: `您所选定的时间应大于${time}`,
+          icon: 'none',
+          duration: 3000
+        });
+        return;
+      }
+      if (this.data.tmpDateEnd < confirmedDate) {
+        const time = `${util.formatNumber(this.data.tmpDateEnd.getHours())}:${util.formatNumber(this.data.tmpDateEnd.getMinutes())}`;
+        wx.showToast({
+          title: `您所选定的时间应小于${time}`,
+          icon: 'none',
+          duration: 3000
+        });
+        return;
+      }
+      const dataKey = this.data.setToBegin ? 'clockinTimeBegin' : 'clockinTimeEnd';
+      const array = this.data[dataKey];
+      array[this.data.tmpIndex] = value;
+      const toSet = {
+        showTimePicker: false
+      };
+      toSet[dataKey] = array;
+      this.setData(toSet);
     },
     onConfirmRegDate(e) {
       Log(e);
@@ -458,12 +583,16 @@ Component({
         addr: this.data.addr,
         addr1: this.data.addr1,
         addr2: this.data.addr2,
+        addr1_index: this.data.addr1, // 有些云函数的参数是addr1_index(updateActivity)
+        addr2_index: this.data.addr2,
         type: this.data.type,
         actForm: this.data.actForm,
         actTimeBegin: this.data.actTimeBegin,
         actTimeEnd: this.data.actTimeEnd,
         regTimeBegin: this.data.regTimeBegin,
         regTimeEnd: this.data.regTimeEnd,
+        clockinTimeBegin: this.data.clockinTimeBegin,
+        clockinTimeEnd: this.data.clockinTimeEnd,
         description: this.data.description,
         coverUrl: this.data.coverUrl,
       };

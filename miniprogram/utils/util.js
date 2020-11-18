@@ -3,7 +3,7 @@ const formatDate = date => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
   return [year, month, day].map(formatNumber).join('/');
-}
+};
 
 const formatTime = date => {
   const hour = date.getHours();
@@ -83,7 +83,7 @@ const today = date => {
 };
 
 //在书里看到的时间转换方法
-// 根据哭护短的时间信息得到发表评论的时间格式
+// 根据客户端的时间信息得到发表评论的时间格式
 // 多少分钟前，多少小时前，昨天，月日
 // Para:
 //  recordTime - {float}  时间戳
@@ -208,6 +208,7 @@ function checkRate(number) {
 module.exports = {
   formatDate: formatDate,
   formatTime: formatTime,
+  formatNumber: formatNumber,
   formatTimeMessage: formatTimeMessage,
   isNumber: isNumber,
   checkRate: checkRate,

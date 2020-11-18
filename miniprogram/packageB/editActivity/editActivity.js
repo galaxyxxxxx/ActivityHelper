@@ -1,4 +1,3 @@
-var util = require('../../utils/util.js');
 import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
 import {
   TagLog
@@ -13,10 +12,6 @@ const db = wx.cloud.database({
   env: 'x1-vgiba'
 });
 const act = db.collection('activity');
-
-var cite = {};
-var actType = [];
-var allAddr1 = [];
 
 Page({
   data: {
@@ -56,6 +51,8 @@ Page({
       actTimeEnd: activityForm.actTimeEnd,
       regTimeBegin: activityForm.regTimeBegin,
       regTimeEnd: activityForm.regTimeEnd,
+      clockinTimeBegin: activityForm.clockinTimeBegin,
+      clockinTimeEnd: activityForm.clockinTimeEnd,
       description: activityForm.description,
       coverUrl: activityForm.cover
     };
@@ -67,7 +64,7 @@ Page({
   },
 
   //删除
-  delete: async function (e) {
+  delete: async function () {
     const form = await this.selectComponent('#editor').getFormData(false);
     const regNum = form.regNum;
     let dontDelete = (regNum > 0) ? `已有${regNum}同学报名了，请谨慎删除！\n如确认撤销，将向这${regNum}名同学推送通知` : '';
@@ -106,6 +103,16 @@ Page({
       title: '正在检查表单'
     });
     const form = await this.selectComponent('#editor').getFormData(true);
+    if (form.err) {
+      wx.hideLoading();
+      wx.showToast({
+        title: form.err,
+        icon: 'none',
+        duration: 3000
+      });
+      return;
+    }
+    form.id = this.data.aid;
     Log('new form', form);
     wx.hideLoading();
     const regNum = form.regNum;
@@ -120,7 +127,7 @@ Page({
       await wx.cloud.callFunction({
         name: 'updateActivity',
         data: {
-          form: form
+          form
         }
       });
       wx.hideLoading();

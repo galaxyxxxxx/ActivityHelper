@@ -66,6 +66,8 @@ Page({
         actTimeEnd: form.actTimeEnd,
         regTimeBegin: form.regTimeBegin,
         regTimeEnd: form.regTimeEnd,
+        clockinTimeBegin: form.clockinTimeBegin,
+        clockinTimeEnd: form.clockinTimeEnd,
         description: form.description,
         cover: form.coverUrl,
         actForm: form.actForm

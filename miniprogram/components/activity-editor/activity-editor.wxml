@@ -65,6 +65,25 @@
   <van-calendar show="{{ showRegDate }}" type="range" bind:close="onCloseRegDate" bind:confirm="onConfirmRegDate"
     allow-same-day="{{ true }}" />
 </view>
+<view wx:else>
+  <van-cell-group>
+    <van-cell title="打卡时间段" required>
+      <van-stepper value="{{clockinTimeBegin.length}}" disable-input
+        disable-plus="{{clockinTimeEnd[clockinTimeEnd.length-1]==='23:59'}}" bind:plus="IncreaseClockinTimeRegion"
+        bind:minus="DecreaseClockinTimeRegion" />
+    </van-cell>
+    <view wx:for="{{clockinTimeBegin}}" wx:key="*this">
+      <van-cell title="时间段{{index+1}}">
+        <span bindtap="pickBeginTime" data-index="{{index}}">{{clockinTimeBegin[index]}}</span> -
+        <span bindtap="pickEndTime" data-index="{{index}}">{{clockinTimeEnd[index]}}</span>
+      </van-cell>
+    </view>
+  </van-cell-group>
+  <van-popup show="{{ showTimePicker }}" position="bottom" bind:close="onCloseClockinTimePicker" round>
+    <van-datetime-picker type="time" bind:cancel="onCloseClockinTimePicker" bind:confirm="onConfirmClockinTimePicker" />
+  </van-popup>
+</view>
+
 
 <!-- 活动概要 -->
 <van-cell-group class="intro">
