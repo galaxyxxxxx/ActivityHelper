@@ -27,6 +27,9 @@ Page({
 
     onLoad: function () {
         this.getTypes();
+        this.onSelect({
+            detail: new Date()
+        });
     // this.actInit();
     },
 
@@ -93,9 +96,7 @@ Page({
                 active: 1
             });
         }
-        this.onSelect({
-            detail: new Date()
-        });
+        
     },
     //切换顶部tab
     onChangeTab(event) {
