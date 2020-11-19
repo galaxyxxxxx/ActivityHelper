@@ -1,0 +1,194 @@
+page{
+  background-color: white;
+}
+van-icon {
+  vertical-align: middle;
+}
+/* 封面 */
+.cover {
+  display: flex;
+  width  : 100%;
+}
+/* 文字部分 */
+.content{
+  padding: var(--font-size-M);
+  font-size: var(--font-size-S);
+}
+/* 活动时间 */
+.time{
+  color: var(--color-theme);
+  letter-spacing: 2px;
+  margin-bottom: 10rpx;
+}
+/* 标题 */
+.title {
+  color: black;
+  font-size: 45rpx;
+  font-weight: 800;
+  width: 92%;
+  display: inline-block;
+}
+/* 报名按钮 */
+.registration {
+  align-items : center;
+  display: flex;
+  float: right;
+}
+
+/* 活动详情 */
+.description {
+  display: block;
+  color: #868688;
+  margin-top: var(--font-size-M);
+  margin-bottom: var(--font-size-M);
+  font-size: 26rpx;
+  line-height: 45rpx;
+  width: 100%;
+  text-align: justify;
+}
+
+.info{
+  margin: 30rpx 0 30rpx 0;
+  color: #868688;
+}
+
+.infoTitle{
+  font-size: var(--font-size-M);
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 20rpx;
+}
+.van-cell{
+  padding: 10rpx 0 10rpx 0 !important;
+  /* position: relative;
+  left: -26rpx; */
+  /* font-size: var(--font-size-S); */
+}
+
+.noComment{
+  /* text-align: center; */
+  color: #868688;
+  margin-top: 50rpx;
+  margin-bottom: 50rpx;
+}
+
+.comment{
+  background-color: #F2F1F6;
+  margin-top: var(--font-size-M);
+  padding: var(--font-size-S);
+  border-radius: var(--font-size-S);
+}
+
+.comment_time{
+  color: #868688;
+  display: inline-block;
+  float: right;
+}
+
+.comment_nickName{
+  display: inline-block;
+  color: #868688;
+}
+
+.comment_text{
+  font-size: 25rpx;
+  color: #454547;
+}
+
+.commentShell {
+  margin-top: 50rpx;
+  height: var(--font-size-M);
+  margin-bottom: 100rpx;
+}
+
+.inputComment{
+  /* display: inline-block; */
+  /* background-color: aqua; */
+  border: var(--color-theme) 1px solid;
+  border-radius: var(--font-size-S);
+  overflow: hidden;
+  width: 95%;
+}
+
+/* 评论按钮 */
+.submitComment{
+  display: inline-block;
+  /* align-items : center; */
+  /* display: flex; */
+  /* float: right; */ 
+}
+
+.moreTitle{
+  display: inline;
+  font-size: var(--font-size-M);
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 40rpx;
+}
+
+.moreList{
+  display: inline;
+  float: right;
+  color: var(--color-link);
+  position: relative;
+  top: 5rpx;
+}
+.act{
+  margin: 20rpx 0 20rpx 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.coverMini{
+  display: inline-block;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  overflow: hidden;
+  border: rgb(170, 170, 170) 1rpx solid;
+}
+.mini{
+  width: 580rpx;
+  display: inline-flexbox;
+  flex-direction: column;
+  margin: 5rpx 20rpx 5rpx 30rpx;
+  vertical-align: top;
+}
+.titleMini{
+  font-size: 30rpx;
+  font-weight: 600;
+  vertical-align: top;
+  letter-spacing: 3rpx;
+}
+.tagMini{
+  display: inline-block;
+  margin-top: 5rpx;
+}
+van-tag{
+  margin-right: 10rpx;
+}
+.contact{
+  color: var(--color-link) !important;
+}
+
+.activity-time {
+  display        : flex;
+  flex-wrap      : wrap;
+  justify-content: space-around;
+}
+.commentContent{
+  margin: 40rpx !important;
+}
+.null{
+  background-color: transparent;
+  height: 150rpx;
+  width: 100%;
+  color: #cfcfcf;
+  text-align: center;
+}
+.van-dialog__header{
+  padding: 20rpx !important;
+}
+.van-field textarea{
+  padding: 20rpx;
+}

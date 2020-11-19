@@ -17,14 +17,22 @@ Component({
         regNum: Number,
         host: String,
         isCollected: Boolean,
-        index: Number
+        index: Number,
+        activityType: String
     },
 
     methods: {
         toActivityDetail: function () {
-            wx.navigateTo({
-                url: '/packageA/activityDetail/activityDetail?aid=' + this.data.activityId
-            });
+            if(this.data.activityType=="clockin"){
+                wx.navigateTo({
+                    url: '/packageA/clockinDetail/clockinDetail?aid=' + this.data.activityId
+                });
+            }
+            else{
+                wx.navigateTo({
+                    url: '/packageA/activityDetail/activityDetail?aid=' + this.data.activityId
+                });
+            }     
         },
 
         onTap: function (event) {

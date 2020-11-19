@@ -48,7 +48,7 @@
 				<activity-card wx:for="{{acting}}" wx:key="item" activityId="{{item._id}}" addr="{{item.addr}}"
 					title="{{item.title}}" actTimeBegin="{{item.actTimeBegin}}" actTimeEnd="{{item.actTimeEnd}}"
 					cover="{{item.cover}}" regNum="{{item.regNum}}" host="{{item.host}}" index="{{index}}"
-					isCollected="{{item.isCollected}}" bind:collect="collect" />
+					isCollected="{{item.isCollected}}" activityType="{{item.activityType}}" bind:collect="collect" />
 				<!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
 				<view class="null" wx:if="{{acting.length != 0}}">— 滑到底啦 真的没有了qwq —</view>
 			</view>
