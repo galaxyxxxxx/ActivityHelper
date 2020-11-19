@@ -1,11 +1,15 @@
-const formatTime = date => {
+const formatDate = date => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
+  return [year, month, day].map(formatNumber).join('/');
+};
+
+const formatTime = date => {
   const hour = date.getHours();
   const minute = date.getMinutes();
   const second = date.getSeconds();
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':');
+  return formatDate(date) + ' ' + [hour, minute, second].map(formatNumber).join(':');
 };
 
 const formatTimeMessage = date => {
@@ -80,10 +84,10 @@ const today = date => {
 
 /**
  * 在书里看到的时间转换方法
- * 根据哭护短的时间信息得到发表评论的时间格式
+ * 根据客户端的时间信息得到发表评论的时间格式
  * 多少分钟前，多少小时前，昨天，月日
- * @param {float} recordTime 时间戳
- * @param {boolean} yearsFlag 是否要年份
+ *  @param {number} recordTime 时间戳
+ *  @param {boolean} yearsFlag 是否要年份
  */
 function getDiffTime(recordTime, yearsFlag) {
   if (recordTime) {
@@ -174,22 +178,12 @@ function isUid(val) {
 }
 //手机号验证
 function isTel(num) {
-  const myreg = /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/;
-  if (myreg.test(num)) {
-    return true;
-  } else {
-    return false;
-  }
+  return /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/.test(num);
 }
 
 //邮箱验证
 function isEmail(val) {
-  const regu = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-  if (regu.test(val)) {
-    return true;
-  } else return false;
-
-
+  return /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(val);
 }
 
 
@@ -198,11 +192,7 @@ function isNumber(val) {
   const regPos = /^\d+(\.\d+)?$/; //非负浮点数
   const regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
 
-  if (regPos.test(val) || regNeg.test(val)) {
-    return true;
-  } else {
-    return false;
-  }
+  return (regPos.test(val) || regNeg.test(val));
 }
 
 // 表单验证时用  检验是否为正整数
@@ -218,7 +208,9 @@ function checkRate(number) {
 }
 
 module.exports = {
+  formatDate: formatDate,
   formatTime: formatTime,
+  formatNumber: formatNumber,
   formatTimeMessage: formatTimeMessage,
   isNumber: isNumber,
   checkRate: checkRate,

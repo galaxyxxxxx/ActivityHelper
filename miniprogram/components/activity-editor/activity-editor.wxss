@@ -1,0 +1,11 @@
+.uploader_wraper {
+  display: flex;
+}
+
+.uploader {
+  margin-left: auto;
+  margin-right: auto;
+}
+.intro {
+  line-height: 5rem;
+}

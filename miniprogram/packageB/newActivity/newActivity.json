@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "van-switch": "../../miniprogram_npm/@vant/weapp/switch/index"
+    "van-switch": "../../miniprogram_npm/@vant/weapp/switch/index",
+    "activity-editor": "../../components/activity-editor/activity-editor"
   }
 }

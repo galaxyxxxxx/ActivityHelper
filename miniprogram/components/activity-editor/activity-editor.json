@@ -1,0 +1,15 @@
+{
+  "component": true,
+  "usingComponents": {
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-calendar": "@vant/weapp/calendar/index",
+    "van-switch": "@vant/weapp/switch/index",
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-datetime-picker":"@vant/weapp/datetime-picker/index"
+  }
+}
