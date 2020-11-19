@@ -1,20 +1,20 @@
 var util = require('../../utils/util.js');
 wx.cloud.init({
-  env: "x1-vgiba",
+  env: 'x1-vgiba',
 });
 const db = wx.cloud.database({
-  env: "x1-vgiba",
+  env: 'x1-vgiba',
 });
-const app = getApp()
-const collect = db.collection("collect")
-const _ = db.command
+const app = getApp();
+const collect = db.collection('collect');
+const _ = db.command;
 Page({
   data: {
-    openid: "",
+    openid: '',
     nickName: '',
     avatarUrl: '',
-    aid: "",
-    comment_input: "",
+    aid: '',
+    comment_input: '',
     comments: [],
     isCollected: false,
     alreadyTaken: false, //是否已报名
@@ -29,23 +29,23 @@ Page({
   },
 
   getTypeActList(a) {
-    console.log("type！", a)
-    let today = new Date()
+    console.log('type！', a);
+    let today = new Date();
     db.collection('activity').where({
-        type: a,
-        _id: _.neq(this.data.aid)
-      })
+      type: a,
+      _id: _.neq(this.data.aid)
+    })
       .orderBy('actTimeBegin', 'desc')
       .limit(3)
       .get()
       .then(
         res => {
-          console.log("同类别活动查询", res);
+          console.log('同类别活动查询', res);
           this.setData({
             typeActList: res.data
-          })
+          });
         }
-      )
+      );
   },
 
   onLoad: function (options) {
@@ -63,8 +63,8 @@ Page({
     let aid = options.aid;
     if (!aid) {
       wx.showToast({
-        title: "活动不存在",
-        icon: "none",
+        title: '活动不存在',
+        icon: 'none',
       });
       setTimeout(() => {
         wx.navigateBack();
@@ -73,14 +73,14 @@ Page({
     }
     this.setData({
       aid: aid
-    })
+    });
     this.getComments(aid);
-    db.collection("activity").where({
+    db.collection('activity').where({
       _id: aid,
     }).get({
       success: (res) => {
-        console.log(res)
-        var raw = res.data[0] || {}
+        console.log(res);
+        var raw = res.data[0] || {};
         this.setData({
           activity_detail: raw || {},
           type: res.data[0].type
@@ -97,40 +97,40 @@ Page({
         if (res.data.length === 0) {
           this.setData({
             isRegister: false
-          })
+          });
         } else {
           this.setData({
             isRegister: true
-          })
+          });
         }
       }
     );
     // 查询报名情况
-    console.log(aid)
-    db.collection("register").where({
-        aid: aid,
-        openid: this.data.openid
-      }).get()
+    console.log(aid);
+    db.collection('register').where({
+      aid: aid,
+      openid: this.data.openid
+    }).get()
       .then(
         res => {
-          console.log("tset", res)
+          console.log('tset', res);
           if (res.data.length > 0) { //数据大于零 说明被报名过了
             this.setData({
               alreadyTaken: true,
               reg_id: res.data[0]._id
-            })
+            });
           }
         }
-      )
+      );
     db.collection('collect').where({
       aid: aid,
       openid: this.data.openid
     }).get().then(res => {
-      console.log("collect", res);
+      console.log('collect', res);
       if (res.data.length > 0) {
         this.setData({
           isCollected: true
-        })
+        });
       }
     });
     db.collection('register').where({
@@ -140,22 +140,22 @@ Page({
         let regNum = res.data.length;
         this.setData({
           regNum: regNum
-        })
+        });
       },
-    )
+    );
   },
 
   onShow: function () {
-    this.getComments(this.data.aid)
+    this.getComments(this.data.aid);
   },
 
   // 一个用来获取openid的回调函数
   // 暂时不再用到
   cb: function (res) {
-    let that = this
+    let that = this;
     that.setData({
       openid: res
-    })
+    });
   },
 
   // 报名
@@ -167,7 +167,7 @@ Page({
         time: 1500
       });
       setTimeout(() => {
-        wx.hideToast()
+        wx.hideToast();
         wx.navigateTo({
           url: `../info/info?openid=${this.data.openid}`,
         });
@@ -179,7 +179,7 @@ Page({
         wx.showLoading({
           title: '正在取消...',
         });
-        db.collection("register").doc(this.data.reg_id).remove({
+        db.collection('register').doc(this.data.reg_id).remove({
           success: () => {
             this.setData({
               reg_id: '',
@@ -192,44 +192,44 @@ Page({
                 let regNum = res.data.length;
                 this.setData({
                   regNum: regNum
-                })
+                });
               },
             );
             db.collection('message').where({
               aid: this.data.activity_detail._id,
               touser: this.data.openid
             }).remove();
-            wx.hideLoading()
+            wx.hideLoading();
             wx.showToast({
-              title: "已取消报名",
-              icon: "success",
+              title: '已取消报名',
+              icon: 'success',
               duration: 1500
             });
           }
-        })
+        });
       } else {
         let that = this;
         wx.showLoading({
           title: '正在报名...',
         });
         let today = new Date();
-        today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? "0" + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? "0" + today.getDate() : today.getDate()}`;
-        console.log("today", today, this.data.activity_detail)
+        today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? '0' + today.getDate() : today.getDate()}`;
+        console.log('today', today, this.data.activity_detail);
         if (this.data.activity_detail.regTimeBegin > today || this.data.activity_detail.regTimeEnd < today) {
           wx.showToast({
-            title: "不在报名时间",
-            icon: "none",
+            title: '不在报名时间',
+            icon: 'none',
           });
           return;
         }
         if (this.data.activity_detail.numMax == this.data.regNum && this.data.activity_detail.numMax != '') {
           wx.showToast({
-            title: "报名人数已满",
-            icon: "none",
+            title: '报名人数已满',
+            icon: 'none',
           });
           return;
         }
-        console.log("regular Add");
+        console.log('regular Add');
         let lessonTmplId = ['w-vPBajcx_ej4CQ6QtmXduAbQT2scKZfN74E67Jj2ZQ', '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA', 'CJpRUgZOMZEJVNUIc3-CfXiJXOoZzgd0qKynIeTu0wg']; // 开始、取消、报名成功
 
         wx.requestSubscribeMessage({
@@ -264,8 +264,8 @@ Page({
                   }
                 }).then(() => {
                   resolve();
-                })
-              })
+                });
+              });
               const promise2 = new Promise((resolve, reject) => {
                 wx.cloud.callFunction({
                   name: 'subscribe',
@@ -288,8 +288,8 @@ Page({
                   }
                 }).then(() => {
                   resolve();
-                })
-              })
+                });
+              });
               const promise3 = new Promise((resolve, reject) => {
                 wx.cloud.callFunction({
                   name: 'subscribe',
@@ -312,18 +312,18 @@ Page({
                   }
                 }).then(() => {
                   resolve();
-                })
-              })
+                });
+              });
               Promise.all([promise1, promise2, promise3]).then(() => {
-                console.log("all Promise");
-                db.collection("register").add({
+                console.log('all Promise');
+                db.collection('register').add({
                   data: {
                     aid: acting._id,
                     openid: that.data.openid,
                     regTime: new Date()
                   },
                   success: (res) => {
-                    console.log("success reg res", res);
+                    console.log('success reg res', res);
                     this.setData({
                       reg_id: res._id,
                       alreadyTaken: true,
@@ -334,7 +334,7 @@ Page({
                   aid: acting._id
                 }).get().then(
                   res => {
-                    console.log("get regNum", res);
+                    console.log('get regNum', res);
                     let regNum = res.data.length;
                     that.setData({
                       regNum: regNum,
@@ -353,9 +353,9 @@ Page({
                           duration: 2000,
                         });
                       }
-                    })
-                  })
-              })
+                    });
+                  });
+              });
             } else {
               wx.showToast({
                 title: '报名失败',
@@ -371,7 +371,7 @@ Page({
   // 分享按钮
   onShareAppMessage(options) {
     var that = this;
-    var form = this.data.activity_detail
+    var form = this.data.activity_detail;
     return {
       title: form.title,
       imageUrl: form.cover,
@@ -381,12 +381,12 @@ Page({
       fail: function (res) {
         // 转发失败
       }
-    }
+    };
   },
   // 分享到朋友圈
   onShareTimeline(options) {
     var that = this;
-    var form = this.data.activity_detail
+    var form = this.data.activity_detail;
     return {
       title: form.title,
       imageUrl: form.cover,
@@ -394,20 +394,20 @@ Page({
         // 转发成功
         wx.showToast({
           title: '分享成功',
-        })
+        });
       },
       fail: function (res) {
         // 转发失败
       }
-    }
+    };
   },
   //点击收藏按钮的事件
   onClickStar(e) {
-    let that = this
-    let aid = that.data.aid
-    let openid = that.data.openid
+    let that = this;
+    let aid = that.data.aid;
+    let openid = that.data.openid;
     if (this.data.isCollected === false) {
-      console.log("已点击收藏按钮", e)
+      console.log('已点击收藏按钮', e);
       wx.showLoading({
         title: '正在收藏...',
       });
@@ -418,7 +418,7 @@ Page({
           collectTime: new Date()
         },
         success: function (res1) {
-          console.log(res1)
+          console.log(res1);
           wx.hideLoading();
           wx.showToast({
             title: '收藏成功',
@@ -427,21 +427,21 @@ Page({
           });
           that.setData({
             isCollected: true
-          })
+          });
         }
-      })
+      });
     } else {
       wx.showLoading({
         title: '正在取消...',
       });
-      console.log("已被收藏，即将取消收藏")
+      console.log('已被收藏，即将取消收藏');
       collect.where({
         aid: aid,
         _openid: openid
       }).get().then(res => {
         collect.doc(res.data[0]._id).remove({ //先查到该收藏记录的_id 再删除
           success(res) {
-            console.log(res)
+            console.log(res);
             console.log('已成功取消该收藏');
             wx.hideLoading();
             wx.showToast({
@@ -451,17 +451,17 @@ Page({
             });
             that.setData({
               isCollected: false
-            })
+            });
           }
-        })
-      })
+        });
+      });
     }
   },
   //点击评论按钮
   onClickComment(e) {
     this.setData({
       showCommentDialog: true
-    })
+    });
   },
   //获取评论
   getComments(id) {
@@ -473,60 +473,60 @@ Page({
       .limit(5)
       .get({
         success: (res) => {
-          console.log("获取评论成功", res.data)
-          var that = this
-         that.setData({
-           comments : res.data
-         })
+          console.log('获取评论成功', res.data);
+          var that = this;
+          that.setData({
+            comments: res.data
+          });
 
         },
       });
   },
-  cancelComment(e){
+  cancelComment(e) {
     this.setData({
-      showCommentDialog : false,
-      comment_input : ''
-    })
+      showCommentDialog: false,
+      comment_input: ''
+    });
   },
   // 填写评论
   submitComment() {
     // 空值检测
     if (!this.data.comment_input) {
       wx.showToast({
-        title: "您还没有输入",
-        icon: "none",
+        title: '您还没有输入',
+        icon: 'none',
       });
       return;
     }
     // 安全校验
-    var comment = this.data.comment_input
-    let that = this
+    var comment = this.data.comment_input;
+    let that = this;
     wx.cloud.callFunction({
-      name: "textsec",
+      name: 'textsec',
       data: {
         text: comment
       },
       success(res) {
-        console.log("comment内容安全")
+        console.log('comment内容安全');
         let data = {
           aid: that.data.activity_detail._id,
           comment: that.data.comment_input,
           nickName: that.data.anonymous == false ? wx.getStorageSync('nickName') : '匿名',
-          time: util.formatTime(new Date()).substring(0,16)
+          time: util.formatTime(new Date()).substring(0, 16)
         };
 
-        db.collection("comment").add({
+        db.collection('comment').add({
           data,
           success: (res) => {
             wx.showToast({
-              title: "评论成功",
+              title: '评论成功',
             });
 
             that.setData({
               comments: [data, ...that.data.comments], //改为放至头部
             });
             that.setData({
-              comment_input: "",
+              comment_input: '',
             });
           },
         });
@@ -538,15 +538,15 @@ Page({
           title: '评论存在敏感词汇 请修改',
           icon: 'none',
           duration: 3000
-        })
+        });
         setTimeout(function () {
-          wx.hideToast()
-        }, 2000)
+          wx.hideToast();
+        }, 2000);
         that.setData({
           comment_input: ''
-        })
+        });
       }
-    })
+    });
 
   },
   onChangeComment(e) {
@@ -558,7 +558,7 @@ Page({
   // 右上角分享
   onShareAppMessage(options) {
     var that = this;
-    var form = this.data.activity_detail
+    var form = this.data.activity_detail;
     return {
       title: form.title,
       imageUrl: form.coverUrl,
@@ -569,32 +569,32 @@ Page({
       fail: function (res) {
         // 转发失败
       }
-    }
+    };
   },
 
   moreTypeList() {
-    let type = this.data.type
+    let type = this.data.type;
     wx.navigateTo({
       url: '../../packageA/list/list?type=' + type,
-    })
+    });
   },
 
   call() {
-    let contact = this.data.activity_detail.contact
+    let contact = this.data.activity_detail.contact;
     if (contact == null || !util.isTel(contact)) {
       return;
     } else {
       wx.makePhoneCall({
         phoneNumber: contact,
-      })
+      });
     }
-  }, 
+  },
 
   onClickTypeActList(e) {
     console.log(e);
-    
+
     wx.navigateTo({
       url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
-    })
+    });
   }
 });

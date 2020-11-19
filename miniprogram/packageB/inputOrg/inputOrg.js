@@ -2,11 +2,11 @@ import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
 
 wx.cloud.init({
   env: 'x1-vgiba'
-})
+});
 const db = wx.cloud.database({
   env: 'x1-vgiba'
-})
-const user = db.collection('user')
+});
+const user = db.collection('user');
 
 Page({
   data: {
@@ -17,22 +17,22 @@ Page({
   onLoad: function (options) {
     this.setData({
       openid: wx.getStorageSync('openid')
-    })
+    });
   },
 
   onChangeOrg(e) {
-    console.log(e)
+    console.log(e);
     this.setData({
       org: e.detail
-    })
+    });
   },
 
   submit(e) {
     let that = this;
     wx.showLoading({
       title: '提交中',
-    })
-    const lessonTmplId = ['KWaC5p8fORBoPKNS04b__FdXVoQwLXcVc1R6NLP38o0']
+    });
+    const lessonTmplId = ['KWaC5p8fORBoPKNS04b__FdXVoQwLXcVc1R6NLP38o0'];
     wx.requestSubscribeMessage({
       // 传入订阅消息的模板id，模板 id 可在小程序管理后台申请
       tmplIds: lessonTmplId,
@@ -62,7 +62,7 @@ Page({
               }
             }).then(() => {
               resolve();
-            })
+            });
           }).then(() => {
             user.where({
               openid: that.data.openid
@@ -72,22 +72,22 @@ Page({
                 role: 2
               },
               success: function (res) {
-                console.log("已成功将角色置2 并记录其部门信息")
+                console.log('已成功将角色置2 并记录其部门信息');
                 wx.hideLoading();
                 wx.showToast({
                   title: '已成功提交申请',
                   icon: 'success',
                   duration: 2000
-                })
-                wx.setStorageSync('role', 2)
+                });
+                wx.setStorageSync('role', 2);
                 setTimeout(() => {
                   wx.switchTab({
                     url: '../../pages/me/me',
-                  })
-                }, 2000)
+                  });
+                }, 2000);
               }
-            })
-          })
+            });
+          });
         } else {
           wx.showToast({
             title: '提交失败',
@@ -106,4 +106,4 @@ Page({
       }
     });
   }
-})
+});

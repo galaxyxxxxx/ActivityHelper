@@ -1,13 +1,13 @@
-var util = require('../../utils/util.js')
+var util = require('../../utils/util.js');
 import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
 
 wx.cloud.init({
   env: 'x1-vgiba'
-})
+});
 const db = wx.cloud.database({
   env: 'x1-vgiba'
-})
-const register = db.collection('register')
+});
+const register = db.collection('register');
 
 Page({
   data: {
@@ -22,11 +22,11 @@ Page({
   },
 
   onLoad: function (options) {
-    var that = this
-    let actID = options.aid
+    var that = this;
+    let actID = options.aid;
     this.setData({
       aid: actID
-    })
+    });
     //加载报名人数 和列表
     register.where({
       aid: actID
@@ -34,9 +34,9 @@ Page({
       success: res => {
         that.setData({
           reg_number: res.data.length
-        })
+        });
         res.data.map(active => {
-          console.log(active._openid)
+          console.log(active._openid);
           console.log(active.regTime);
 
           db.collection('user').where({
@@ -48,18 +48,18 @@ Page({
               console.log(thisUser);
               that.setData({
                 regStu: [...that.data.regStu, thisUser],
-              })
+              });
             },
             fail: res => {
-              console.log("fail", res)
+              console.log('fail', res);
             }
-          })
-        })
+          });
+        });
       },
       fail: res => {
-        console.log("fail", res)
+        console.log('fail', res);
       }
-    })
+    });
     // 加载人数上限
     db.collection('activity').where({
       _id: actID
@@ -67,15 +67,15 @@ Page({
       success: res => {
         this.setData({
           max_number: res.data[0].numMax
-        })
+        });
       },
       fail(res) {
-        console.log("fail", res)
+        console.log('fail', res);
       }
-    })
+    });
   },
   onChangeUser(event) {
-    console.log("twet", event)
+    console.log('twet', event);
     this.setData({
       activeNames: event.detail,
     });
@@ -92,14 +92,14 @@ Page({
     Toast(`关闭: ${event.detail}`);
   },
   onSearch() {
-    console.log(1)
+    console.log(1);
   },
   onClickGenExcel() {
-    var that = this
+    var that = this;
     Dialog.confirm({
       title: '生成Excel文件链接',
       message: '小程序暂不支持打开外部链接，可点击复制链接后在浏览器中粘贴查看。',
-      confirmButtonText: "复制链接"
+      confirmButtonText: '复制链接'
     }).then(() => {
       // on confirm
       wx.showLoading({
@@ -112,21 +112,21 @@ Page({
     });
   },
   saveExcel() {
-    let that = this
+    let that = this;
     wx.cloud.callFunction({
-      name: "genExcelFile",
+      name: 'genExcelFile',
       data: {
         aid: that.data.aid,
         dataList: that.data.regStu
       },
       success(res) {
-        console.log("保存成功", res)
+        console.log('保存成功', res);
         that.getFileUrl(res.result.fileID);
       },
       fail(res) {
-        console.log("保存失败", res)
+        console.log('保存失败', res);
       }
-    })
+    });
   },
   getFileUrl(fileID) {
     let that = this;
@@ -134,7 +134,7 @@ Page({
       fileList: [fileID],
       success: res => {
         // get temp file URL
-        console.log("文件下载链接", res.fileList[0].tempFileURL)
+        console.log('文件下载链接', res.fileList[0].tempFileURL);
         that.setData({
           fileUrl: res.fileList[0].tempFileURL
         });
@@ -143,16 +143,16 @@ Page({
       fail: err => {
         // handle error
       }
-    })
+    });
   },
   copyFileUrl() {
-    let that = this
+    let that = this;
     wx.setClipboardData({
       data: that.data.fileUrl,
       success(res) {
         wx.getClipboardData({
           success(res) {
-            console.log("复制成功", res.data) // data
+            console.log('复制成功', res.data); // data
           }
         });
         wx.hideLoading();
@@ -162,6 +162,6 @@ Page({
           duration: 2000
         });
       }
-    })
+    });
   },
-})
+});

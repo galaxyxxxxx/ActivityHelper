@@ -9,17 +9,17 @@ import {
 
 wx.cloud.init({
   env: 'x1-vgiba'
-})
+});
 const db = wx.cloud.database({
   env: 'x1-vgiba'
-})
-const act = db.collection('activity')
-const type = db.collection('type')
-const app = getApp()
-const collect = db.collection('collect')
-const _ = db.command
+});
+const act = db.collection('activity');
+const type = db.collection('type');
+const app = getApp();
+const collect = db.collection('collect');
+const _ = db.command;
 const myLog = (message) => {
-  TagLog("PackageA/list", message);
+  TagLog('PackageA/list', message);
 };
 
 Page({
@@ -43,7 +43,7 @@ Page({
         field: 'actTimeEnd',
         order: 'desc'
       }
-    }
+    };
   },
 
   onLoad: async function (options) {
@@ -59,8 +59,8 @@ Page({
       myLog(res);
       this.setData({
         type_name: res.data[0].type_name
-      })
-    })
+      });
+    });
     const activities = await fetchActivities(db, this.data.openid, this.activityQueryConfig());
     this.setData({
       pageId: this.data.pageId + 1
@@ -80,11 +80,11 @@ Page({
     const result = await collectOrUncollectActivity(db, e.detail.activityId, this.data.openid);
     myLog(result);
     myLog(e.detail.index);
-    let tmp = this.data.acting
+    let tmp = this.data.acting;
     tmp[e.detail.index].isCollected = result;
     this.setData({
       acting: tmp
-    })
+    });
 
   },
 
@@ -93,7 +93,7 @@ Page({
     var year = date.getFullYear();
     var month = (date.getMonth() + 1).toString().padStart(2, '0');
     var day = (date.getDate()).toString().padStart(2, '0');
-    var time = year + "/" + month + "/" + day;
+    var time = year + '/' + month + '/' + day;
     return time;
   },
 
@@ -113,17 +113,17 @@ Page({
 
   // 下拉刷新
   onPullDownRefresh() {
-    let today = this.formatDate(new Date())
+    let today = this.formatDate(new Date());
     this.setData({
       openid: '',
       acting: [],
       // 标识当前page
       pageId: 0
-    })
+    });
     this.onLoad({
       type: this.data.type_id
     });
     this.onShow();
   },
 
-})
+});

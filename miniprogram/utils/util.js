@@ -49,7 +49,7 @@ function showTime(str) {
 function sameWeek(str) {
   const date1 = new Date(str.replace(/-/g, '/')); //传入时间标准化    
   const date2 = new Date(); //当前时间  
-  const curWeek = date2.getDay(); //获取当前星期几    
+  // const curWeek = date2.getDay(); //获取当前星期几    
   const day = date2.getDay() || 7;
   const monday = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate() + 1 - day); //计算出星期一    
   const sunday = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate() + 7 - day); //计算出星期天
@@ -82,12 +82,13 @@ const today = date => {
   return [year, month, day, week];
 };
 
-//在书里看到的时间转换方法
-// 根据客户端的时间信息得到发表评论的时间格式
-// 多少分钟前，多少小时前，昨天，月日
-// Para:
-//  recordTime - {float}  时间戳
-//  yearsFlag - {bool}  是否要年份
+/**
+ * 在书里看到的时间转换方法
+ * 根据客户端的时间信息得到发表评论的时间格式
+ * 多少分钟前，多少小时前，昨天，月日
+ *  @param {number} recordTime 时间戳
+ *  @param {boolean} yearsFlag 是否要年份
+ */
 function getDiffTime(recordTime, yearsFlag) {
   if (recordTime) {
     recordTime = new Date(parseFloat(recordTime) * 1000);
@@ -105,7 +106,7 @@ function getDiffTime(recordTime, yearsFlag) {
     var hourC = diff / hour;
     var minC = diff / minute;
     if (weekR >= 1) {
-      var formate = 'MM-dd hh:mm';
+      let formate = 'MM-dd hh:mm';
       if (yearsFlag) {
         formate = 'yyyy-MM-dd hh:mm';
       }
@@ -114,7 +115,7 @@ function getDiffTime(recordTime, yearsFlag) {
       result = '昨天' + recordTime.format('hh:mm');
       return result;
     } else if (dayC > 1) {
-      formate = 'MM-dd hh:mm';
+      let formate = 'MM-dd hh:mm';
       if (yearsFlag) {
         formate = 'yyyy-MM-dd hh:mm';
       }
@@ -148,7 +149,8 @@ function getDiffTime(recordTime, yearsFlag) {
       'q+': Math.floor((this.getMonth() + 3) / 3),
       'S': this.getMilliseconds()
     };
-    if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    if (/(y+)/.test(format))
+      format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
     for (var k in o)
       if (new RegExp('(' + k + ')').test(format))
         format = format.replace(RegExp.$1, RegExp, $1.length == 1 ? o[k] : ('00' + o[k].substr('' + o[k]).length));

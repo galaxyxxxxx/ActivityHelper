@@ -36,9 +36,7 @@
       "pages/home/home": {}
     }
   },
-  "packOptions": {
-    "ignore": []
-  },
+  "packOptions": {},
   "setting": {
     "urlCheck": false,
     "es6": true,
@@ -67,8 +65,13 @@
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": []
+    "packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./miniprogram/package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
+      }
+    ]
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.1",
