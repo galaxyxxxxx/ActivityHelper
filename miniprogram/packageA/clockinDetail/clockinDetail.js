@@ -210,26 +210,58 @@ Page({
                 // let lessonTmplId = ['w-vPBajcx_ej4CQ6QtmXduAbQT2scKZfN74E67Jj2ZQ', '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA', 'CJpRUgZOMZEJVNUIc3-CfXiJXOoZzgd0qKynIeTu0wg']; // 开始、取消、报名成功
                 let that = this
                 let acting = that.data.activity_detail;
-                db.collection('clockinList').add({
-                    data: {
-                        aid: acting._id,
-                        openid: that.data.openid,
-                        regTime: new Date()
+                let now = new Date();
+                // 让用户选择一张图片
+                wx.chooseImage({
+                    success: chooseResult => {
+                    wx.showToast({
+                        title: '正在上传',
+                        icon: 'loading',
+                        duration: 1500,
+                    });
+                    // 将图片上传至云存储空间
+                    wx.cloud.uploadFile({
+                        // 指定上传到的云路径
+                        cloudPath: '光盘行动/'+this.timeToString(now)+'.png',
+                        // 指定要上传的文件的小程序临时文件路径
+                        filePath: chooseResult.tempFilePaths[0],
+                        // 成功回调
+                        success: res => {
+                            console.log('上传成功', res)
+                            db.collection('clockinList').add({
+                                data: {
+                                    aid: acting._id,
+                                    openid: that.data.openid,
+                                    regTime: now
+                                },
+                                success: (res) => {
+                                    console.log('success reg res', res);
+                                    this.setData({
+                                        reg_id: res._id,
+                                        alreadyClockin: true,
+                                        alreadyClockinText: '已经打过啦:)'
+                                    });
+                                    wx.showToast({
+                                        title: '报名成功',
+                                        icon: 'success',
+                                        duration: 1500,
+                                    });
+                                },
+                            });
+                        },
+                        fail: err => {
+                            // handle error
+                            console.log(err);
+                            wx.showToast({
+                                title: '打卡失败',
+                                icon: 'cancel',
+                                duration: 1500,
+                            });
+                          }
+                    })
                     },
-                    success: (res) => {
-                        console.log('success reg res', res);
-                        this.setData({
-                            reg_id: res._id,
-                            alreadyClockin: true,
-                            alreadyClockinText: '已经打过啦:)'
-                        });
-                        wx.showToast({
-                            title: '报名成功',
-                            icon: 'success',
-                            duration: 1500,
-                        });
-                    },
-                });
+                })
+
                 // wx.showToast({
                 //     title: '报名失败',
                 //     icon: 'cancel',
@@ -474,6 +506,18 @@ Page({
     //     if (this.data.activity_detail.regTimeBegin > today || this.data.activity_detail.regTimeEnd < today) return false
     //     else return true
     // },
+
+    //定义将Date对象转换为字符串函数
+    timeToString:function(timeObj){
+        var str = "";
+        var year = timeObj.getFullYear();
+        var month = timeObj.getMonth();
+        var date = timeObj.getDate();
+        var time = timeObj.toTimeString().split(" ")[0];
+        var rex = new RegExp(/:/g);
+        str = year+"-"+month+"-"+date+"-"+time.replace(rex,"-");
+        return str;
+    },
 
     clockinTimeJudge:function(){
         var myTime = util.formatTime(new Date())
