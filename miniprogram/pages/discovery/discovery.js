@@ -15,7 +15,7 @@ Page({
     tabbar: 0,
 
     // 搜索栏输入内容
-    searchInput:'',
+    searchInput: '',
 
     // 有id的type
     actType: [],
@@ -27,6 +27,9 @@ Page({
 
   onLoad: function () {
     this.getTypes();
+    this.onSelect({
+      detail: new Date()
+    });
     // this.actInit();
   },
 
@@ -66,7 +69,7 @@ Page({
   },
   // 查看某类别的所有信息
   moreTypeList(e) {
-    console.log('tappppasda',e);
+    console.log('tappppasda', e);
     if (e.mark.subscribeMark == null) {
       let id = e.currentTarget.dataset.id;
       wx.navigateTo({
@@ -93,9 +96,7 @@ Page({
         active: 1
       });
     }
-    this.onSelect({
-      detail: new Date()
-    });
+
   },
   //切换顶部tab
   onChangeTab(event) {
@@ -156,28 +157,28 @@ Page({
       }
     });
   },
-  
+
   // search line
-  onFocus(e){
-    console.log('focus',e);
+  onFocus(e) {
+    console.log('focus', e);
     wx.navigateTo({
       url: '../../packageA/search/search',
     });
   },
-  onBlur(e){
+  onBlur(e) {
     // console.log("blur",e)
   },
-  onClear(e){
-    console.log('clear',e);
+  onClear(e) {
+    console.log('clear', e);
   },
-  onChange(e){
-    console.log('change',e);
+  onChange(e) {
+    console.log('change', e);
     this.setData({
-      searchInput : e.detail 
+      searchInput: e.detail
     });
   },
-  onSearch(e){
-    console.log('search',e);
+  onSearch(e) {
+    console.log('search', e);
   }
 
 });

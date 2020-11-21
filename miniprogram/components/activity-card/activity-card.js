@@ -17,20 +17,27 @@ Component({
     regNum: Number,
     host: String,
     isCollected: Boolean,
-    index: Number
+    index: Number,
+    actForm: String
   },
 
   methods: {
-    toActivityDetail: function () {
-      wx.navigateTo({
-        url: '/packageA/activityDetail/activityDetail?aid=' + this.data.activityId
-      });
+    toDetailPage: function () {
+      if (this.data.actForm == '打卡') {
+        wx.navigateTo({
+          url: '/packageA/clockinDetail/clockinDetail?aid=' + this.data.activityId
+        });
+      } else {
+        wx.navigateTo({
+          url: '/packageA/activityDetail/activityDetail?aid=' + this.data.activityId
+        });
+      }
     },
 
     onTap: function (event) {
       log(event);
       if (event.mark.starMark !== 'star') {
-        this.toActivityDetail();
+        this.toDetailPage();
       } else {
         log('emit collect event');
         this.triggerEvent('collect', {

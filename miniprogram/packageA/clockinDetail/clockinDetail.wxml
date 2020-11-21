@@ -1,0 +1,120 @@
+<!-- 封面图 -->
+<view>
+	<image src="{{activity_detail.cover==''? defaultPic: activity_detail.cover}}" mode="widthFix" class="cover"></image>
+</view>
+<view class="content">
+	<!-- 活动时间 -->
+	<!-- <view class="time">{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}</view> -->
+	<!-- 标题 -->
+	<view class="title">{{activity_detail.title}}</view>
+	<!-- 报名&分享 按钮 -->
+	<view class="registration">
+		<!-- <van-button color="var(--color-theme)" size="small" round disabled="{{alreadyTaken}}" bind:click="submit">
+			{{alreadyTaken?"已报名":"报名"}}
+		</van-button> -->
+		<van-button open-type="share" bind:click="onShareAppMessage"
+			custom-style="border: 1px transparent;height:60rpx;padding:0">
+			<van-icon name="share" size="50rpx"
+				style="vertical-align: middle;height:var(--font-size-S);color:var(--color-theme)" />
+		</van-button>
+	</view>
+	<!-- 活动介绍 -->
+	<view class="description">{{activity_detail.description}}</view>
+
+	<!-- 评论区 -->
+	<view class="comments">
+		<van-divider />
+		<view class="infoTitle">评论</view>
+		<view wx:if="{{comments.length == 0}}" class="noComment"> 暂无评论 快来抢沙发吧~</view>
+		<block wx:for="{{comments}}" wx:key="index">
+			<view class="comment">
+				<view class="comment_nickName">{{item.nickName}}</view>
+				<view class="comment_time">{{item.time}}</view>
+				<view class="comment_text">{{item.comment}}</view>
+			</view>
+		</block>
+	</view>
+
+	<van-dialog use-slot title="评论" show="{{ showCommentDialog }}" show-cancel-button
+		confirm-button-open-type="getUserInfo" bind:confirm="submitComment" bind:cancel="cancelComment" bind:getuserinfo="getUserInfo">
+		<van-cell-group style="padding:20rpx !important">
+			<van-field input-class="commentContent" value="{{ comment_input }}" type="textarea" placeholder="分享你的想法吧..." autosize
+				bind:change="onChangeComment" border="{{ false }}" />
+		</van-cell-group>
+	</van-dialog>
+
+
+	<!-- 信息列表 -->
+	<view class="info">
+		<van-divider />
+		<view class="infoTitle">信息</view>
+		<van-cell-group class="infoBox" border="{{false}}">
+			<van-cell title="举办部门" title-width="160rpx" value="{{activity_detail.host}}" border="{{false}}" />
+			<van-cell title="报名人数" title-width="160rpx"
+				value="{{regNum}}{{activity_detail.numMax >0 ? '/':''}}{{activity_detail.numMax}}" border="{{false}}" />
+			<van-cell title="活动地点" title-width="160rpx" value="{{activity_detail.addr}}" border="{{false}}" />
+			<van-cell title="活动时间" title-width="160rpx"
+				value="{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}" border="{{false}}" />
+			<van-cell title="报名时间" title-width="160rpx"
+				value="{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}" border="{{false}}" />
+			<van-cell title="联系方式" title-width="160rpx" value="{{activity_detail.contact}}" border="{{false}}"
+				value-class="contact" bindtap="call" />
+		</van-cell-group>
+	</view>
+
+	<!-- 评论输入框 -->
+	<!-- <view class="commentShell">
+		<van-row> -->
+	<!-- 评论输入框 -->
+	<!-- <van-col span="19">
+				<view class="inputComment">
+					<van-field custom-style="widthFix" value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}"
+						type="textarea" autosize fixed="true" bind:change="onChange" />
+				</view>
+			</van-col> -->
+	<!-- 评论按钮 -->
+	<!-- <van-col span="5">
+				<view class="submitComment">
+					<van-button color="var(--color-theme)" size="small" round bind:click="submitComment">评论</van-button>
+				</view>
+			</van-col>
+		</van-row> -->
+	<!-- </view> -->
+
+	<!-- 类似活动 -->
+	<view class="youMayLike" wx:if="{{typeActList.length > 0}}">
+		<van-divider />
+		<view class="moreTitle">更多该类别的活动</view>
+		<view class="moreList" bindtap="moreTypeList">查看全部</view>
+		<view class="list">
+			<block wx:for="{{typeActList}}" wx:key="item">
+				<view class="act" bindtap="onClickTypeActList" data-id="{{item._id}}">
+					<view class="coverMini">
+						<image src="{{item.cover}}" style="width:100rpx; height:100rpx" />
+					</view>
+					<view class="mini">
+						<view class="titleMini">{{item.title}}</view>
+						<view class="tagMini">
+							<van-tag round plain color="var(--color-theme)">{{item.addr}}</van-tag>
+							<van-tag round plain color="var(--color-theme)">{{item.host}}</van-tag>
+						</view>
+					</view>
+				</view>
+			</block>
+		</view>
+	</view>
+
+	<!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
+	<view class="null" wx:if="{{acting.length != 0}}"></view>
+</view>
+
+<!-- 底部栏 -->
+<view style="z-index:5">
+	<van-goods-action>
+		<van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickComment" />
+		<van-goods-action-button color="var(--color-theme)" text="{{isCollected? '取消收藏': '收藏'}}" type="warning" plain
+			bind:click="onClickStar" />
+		<van-goods-action-button color="var(--color-theme)" text="{{alreadyTaken? '取消报名': '立即报名'}}" type="warning"
+			bind:click="onClickRegister" />
+	</van-goods-action>
+</view>

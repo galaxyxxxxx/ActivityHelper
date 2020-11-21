@@ -12,7 +12,8 @@
         "list/list",
         "info/info",
         "activityDetail/activityDetail",
-        "search/search"
+        "search/search",
+        "clockinDetail/clockinDetail"
       ]
     },
     {

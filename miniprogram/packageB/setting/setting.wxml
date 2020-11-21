@@ -2,39 +2,44 @@
   <view class="inForm">
     <view class="intro">
       <view class="title">BJUT活动助手是什么</view>
-      　　《活动助手》是基于北京工业大学的校园活动数据的一款活动助手小程序。目标用户为工大社团部门的活动发布者和有意向参与校园活动的各位同学。
+      　　《活动助手》是基于北京工业大学的校园活动数据的一款活动助手小程序。目标用户为<text class="emphasize">举办活动的学生组织</text>和<text class="emphasize">愿意参与校园活动的各位同学</text>。
     </view>
     <van-divider />
 
     <view class="intro">
-    <view class="title">普通学生该如何使用它呢</view>
-    　　 首页为大家展示了学校当下热门活动；发现页支持同学们通过分区和日期等检索方式对活动进行查询；个人页为大家记录其活动收藏与报名列表。大家可以对每个活动进行查阅/收藏/评论/报名/订阅/分享给好友/分享到朋友圈等操作。
+      <view class="title">普通学生该如何使用它呢</view>
+      <view>　　 首页进行热门活动的展示(支持关键词查询)；发现页提供分区和日期两种检索方式；个人页为同学们记录其收藏与报名列表。</view>
+      <view>　　 大家可以对每个活动进行<text class="emphasize">查阅/收藏/评论/报名/订阅/分享至好友/群聊/朋友圈</text>等操作。</view>
     </view>
     <van-divider />
 
     <view class="intro">
-      <view class="title">作为活动发布者 它能帮我做什么</view>
-      当活动发布者身份认证成功后，你将在小程序原有功能上增加活动发布及管理的权限。可代表其部门发布活动，并支持活动删改，及活动报名统计的实时查看与导出。活动管理功能在个人页的发布列表里进行实现。
+      <view class="title">作为活动组织者 它能帮我做什么</view>
+      　　 原有功能上，增加活动发布及管理的权限。可代表所在部门发布活动，并支持活动删改，及实时查看报名统计或导出表格。
     </view>
     <van-divider />
 
     <view class="intro">
       <view class="title">如何认证活动发布者的身份</view>
-      同学们可以从个人页进入个人资料管理页，补充完善个人信息后，可申请社团管理员认证，并填写部门信息。认证申请将于24h内完成后台审核认证，并发送认证结果反馈。
-    </view>
-    <van-divider />
+      <view>　　 个人页->编辑资料->完善个人信息->提交信息->社团认证按钮->填写部门信息->提交 </view>
+  </view>
+  <van-divider />
 
-    <view class="developer">
-      开发者 | 李金星 李泊岩
-    </view>
-    <view class="version">
-      ActivityHelper 3.1.0
-    </view>
-    
+  
+  <view class="feedback">
+    <van-button open-type="feedback" color="var(--color-link)" plain round>欢迎同学们的意见反馈</van-button>
 
-    <view class="feedback">
-      <van-button open-type="feedback" color="var(--color-link)" plain round>欢迎大家的意见反馈</van-button>
-    </view>
+  <view class="developer">
+    <view style="letter-spacing:10rpx">- 开发团队 -</view>
+    <view>李金星 李泊岩 初雨墨 刘思诚 刘泽华 赵一阳</view>
+    <view>董京伟 傅延赫 周子延 葛中正 高瑞莲 韩志蕾</view>
+  </view>
+
+  <view class="version">
+    ActivityHelper 3.0.1
+  </view>
 
   </view>
+
+</view>
 </view>
