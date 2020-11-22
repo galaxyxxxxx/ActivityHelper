@@ -119,7 +119,7 @@ Page({
                             if(!this.clockinJudge(res)){                                          //这段时间已经打卡
                                 this.setData({
                                 alreadyClockin: true,
-                                reg_id: res.data[0]._id,
+                                // reg_id: res.data[0]._id,
                                 alreadyClockinText: "已经打过啦"
                                 // alreadyText: "取消打卡"                                      //有机会可以改成完成打卡
                                 })
@@ -129,7 +129,7 @@ Page({
                         else{                                                                 //这段时间不能打卡
                             this.setData({
                                 alreadyClockin: true,
-                                reg_id: res.data[0]._id,
+                                // reg_id: res.data[0]._id,
                                 alreadyClockinText: "现在不能打哦"
                             })
                         }
@@ -237,12 +237,12 @@ Page({
                                 success: (res) => {
                                     console.log('success reg res', res);
                                     this.setData({
-                                        reg_id: res._id,
+                                        // reg_id: res._id,
                                         alreadyClockin: true,
-                                        alreadyClockinText: '已经打过啦:)'
+                                        alreadyClockinText: '已经打过啦'
                                     });
                                     wx.showToast({
-                                        title: '报名成功',
+                                        title: '上传成功',
                                         icon: 'success',
                                         duration: 1500,
                                     });
