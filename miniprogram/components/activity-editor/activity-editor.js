@@ -53,6 +53,7 @@ Component({
     tmpDateBegin: new Date(), // 用于选择打卡时间段时设置选择器的起始时间
     tmpDateEnd: new Date(), // 用于选择打卡时间段时设置选择器的结束时间
     tmpIndex: 0, // 用于记录是第几个时间段触发事件使打卡时间选择器显示(showTimePicker = true)
+    oldCampus: '', // 上次选择的校区地址，用于在onChangeAddr中分辨是否修改了校区地址
     setToBegin: true, // 用于标识从选择器中获取的事件赋给开始时间还是结束时间
 
     // 控制变量
@@ -294,11 +295,19 @@ Component({
         picker,
         value
       } = e.detail;
-      picker.setColumnValues(1, this.data.allDetailedAddress[value[0]]);
+      let detailed = value[1];
+      if (value[0] !== this.data.oldCampus) {
+        picker.setColumnValues(1, this.data.allDetailedAddress[value[0]]);
+        this.setData({
+          oldCampus: value[0]
+        });
+        detailed = '';
+      }
+
       this.setData({
-        addr: value[0] + value[1],
+        addr: value[0] + detailed,
         addr1: this.data.allCampusAddress.indexOf(value[0]),
-        addr2: this.data.allDetailedAddress[value[0]].indexOf(value[1])
+        addr2: this.data.allDetailedAddress[value[0]].indexOf(detailed)
       });
     },
     onChangeType(e) {
