@@ -10,6 +10,7 @@ wx.cloud.init({
 const db = wx.cloud.database({
   env: 'x1-vgiba'
 });
+var util = require('../../utils/util.js');
 
 Page({
   data: {
@@ -80,8 +81,12 @@ Page({
       icon: 'success',
       duration: 1000
     });
+    // wx.redirectTo({
+    //   url: `../../packageA/activityDetail/activityDetail?aid=${addResult._id}`,
+    // });
+    var flag = await util.checkActivityType(addResult._id)
     wx.redirectTo({
-      url: `../../packageA/activityDetail/activityDetail?aid=${addResult._id}`,
+        url: '../../packageA/' + flag,
     });
   },
 });

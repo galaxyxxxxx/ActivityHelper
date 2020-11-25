@@ -492,11 +492,10 @@ Page({
         }
     },
 
-    onClickTypeActList(e) {
-        console.log(e);
-
+    async onClickTypeActList(e) {
+        var flag = await util.checkActivityType(e.currentTarget.dataset.id)
         wx.navigateTo({
-            url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
+            url: '../../packageA/' + flag,
         });
     },
 /*---------------------------------------------------------------------------------------------------------------------------------*/

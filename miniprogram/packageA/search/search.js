@@ -6,6 +6,7 @@ const db = wx.cloud.database({
 });
 const act = db.collection('activity');
 const _ = db.command;
+var util = require('../../utils/util.js');
 
 Page({
 
@@ -195,10 +196,10 @@ Page({
       });
   },
   // 查看活动详情
-  viewMore(e) {
-    console.log(e);
+  async viewMore(e) {
+    var flag = await util.checkActivityType(e.currentTarget.dataset.id)
     wx.navigateTo({
-      url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
+        url: '../../packageA/' + flag,
     });
   }
 

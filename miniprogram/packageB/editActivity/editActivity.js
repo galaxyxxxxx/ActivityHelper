@@ -12,6 +12,7 @@ const db = wx.cloud.database({
   env: 'x1-vgiba'
 });
 const act = db.collection('activity');
+var util = require('../../utils/util.js');
 
 Page({
   data: {
@@ -99,6 +100,7 @@ Page({
 
   //提交键 检查数据格式并上传至云数据库
   submit: async function () {
+    let that = this
     wx.showLoading({
       title: '正在检查表单'
     });
@@ -138,13 +140,18 @@ Page({
       });
       wx.hideToast({
         success: () => {
-          wx.redirectTo({
-            url: '../../packageA/activityDetail/activityDetail?aid=' + this.data.aid,
-          });
+          that.redirectToDetail()
         },
       });
     }).catch((e) => {
       Log('update cancled', e);
+    });
+  },
+
+  redirectToDetail:async function(){
+    var flag = await util.checkActivityType(this.data.aid)
+    wx.redirectTo({
+      url: '../../packageA/' + flag,
     });
   },
 });

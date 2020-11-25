@@ -590,11 +590,12 @@ Page({
     }
   },
 
-  onClickTypeActList(e) {
-    console.log(e);
-
+  async onClickTypeActList(e) {
+    // console.log(e);
+    var flag = await util.checkActivityType(e.currentTarget.dataset.id)
+    // console.log(flag)
     wx.navigateTo({
-      url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
+      url: '../../packageA/' + flag,
     });
   }
 });

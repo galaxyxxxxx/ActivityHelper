@@ -207,6 +207,25 @@ function checkRate(number) {
   return true;
 }
 
+async function checkActivityType(aid){
+  var ans = "activityDetail/activityDetail?aid=" + aid
+  wx.cloud.init({
+    env: 'x1-vgiba',
+  });
+  const db = wx.cloud.database({
+    env: 'x1-vgiba',
+  });
+  await db.collection('activity').where({
+    _id: aid,
+  }).get().then(res=>{
+    if(res.data[0].actForm=="打卡"){
+      console.log("yes",res.data[0].actForm)
+      ans="clockinDetail/clockinDetail?aid=" + aid
+    } 
+  });
+  return ans
+}
+
 module.exports = {
   formatDate: formatDate,
   formatTime: formatTime,
@@ -222,5 +241,6 @@ module.exports = {
   showTime: showTime,
   sameWeek: sameWeek,
   sameYear: sameYear,
-  getDiffTime: getDiffTime
+  getDiffTime: getDiffTime,
+  checkActivityType: checkActivityType
 };
