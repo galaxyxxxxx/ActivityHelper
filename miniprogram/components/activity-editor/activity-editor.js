@@ -131,21 +131,13 @@ Component({
       });
     },
 
-    checkImageSizeAndType(e) {
+    checkImageSize(e) {
       const {
         file,
         callback
       } = e.detail;
       Log(e);
-      const isImage = file.type === 'image';
       const lessThan2mb = file.size < 2048 * 1024;
-      if (!isImage) {
-        wx.showToast({
-          title: '该文件不是图片，请重新选择',
-          icon: 'none',
-          duration: 3000
-        });
-      }
       // 直接使用max-size属性不会有任何提示，所以使用before-read事件
       if (!lessThan2mb) {
         wx.showToast({
@@ -534,11 +526,11 @@ Component({
     async checkTextUGC(form, field, onFailToastTitle) {
       Log('UGC安全校验', form[field]);
       await wx.cloud.callFunction({
-        name: 'textsec',
-        data: {
-          text: form[field]
-        }
-      })
+          name: 'textsec',
+          data: {
+            text: form[field]
+          }
+        })
         .catch(() => {
           let data = {};
           data[field] = '';
@@ -555,11 +547,11 @@ Component({
     async checkImageUGC(coverUrl) {
       console.log('图片校验');
       await wx.cloud.callFunction({
-        name: 'imagesec',
-        data: {
-          img: coverUrl
-        }
-      })
+          name: 'imagesec',
+          data: {
+            img: coverUrl
+          }
+        })
         .catch(() => {
           wx.cloud.deleteFile({
             fileList: [coverUrl],

@@ -1,7 +1,7 @@
 <view bind:deleteImage="deleteImage" />
 <view class="uploader_wraper">
   <van-uploader file-list="{{ imageList }}" bind:after-read="displayAndUploadImage" use-before-read
-    bind:before-read="checkImageSizeAndType" accept="image/*" class="uploader" bind:delete="deleteImage"
+    bind:before-read="checkImageSize" accept="image" class="uploader" bind:delete="deleteImage"
     deletable="{{ true }}" multiple="{{false}}" max-count="1" preview-size="550rpx" image-fit="widthFix"
     upload-text="上传活动封面" style="text-align: center;" />
 </view>
