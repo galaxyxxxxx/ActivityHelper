@@ -39,8 +39,9 @@ export const fetchActivities = async (db, openId, config) => {
     const registedNumber = await registerDB.where({
       aid: activity._id
     }).get();
-
-    activity.regNum = registedNumber.data.length;
+    if(activity.actForm!="打卡"){
+      activity.regNum = registedNumber.data.length;
+    }
   }
   wx.hideLoading();
   return activities.data;

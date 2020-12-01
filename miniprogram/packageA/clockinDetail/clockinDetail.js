@@ -246,6 +246,29 @@ Page({
                                         icon: 'success',
                                         duration: 1500,
                                     });
+                                    db.collection('clockinList').where({
+                                        aid: acting._id,
+                                        openid: that.data.openid
+                                    }).count({
+                                        success: function(res) {
+                                            if(res.total == 1){console.log("restotal",that.data.activity_detail.regNum)
+                                                var wt = that.data.activity_detail.regNum + 1
+                                                db.collection('activity').where({
+                                                    _id: acting._id
+                                                }).update({
+                                                    data:{
+                                                        regNum: wt
+                                                    },
+                                                    success: res=>{
+                                                        console.log(res)
+                                                    },
+                                                    fail: err => {
+                                                        console.error('[数据库] [更新记录] 失败：', err)
+                                                    }
+                                                })
+                                            }
+                                        }
+                                    })
                                 },
                             });
                         },

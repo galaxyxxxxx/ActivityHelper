@@ -96,6 +96,7 @@ Page({
       actMain
     });
     const activities = await fetchActivities(db, this.data.openid, this.activityQueryConfig());
+    console.log("acting",activities)
     this.setData({
       acting: activities,
       loading: true,
