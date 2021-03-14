@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "activity-editor": "../../components/activity-editor/activity-editor"
+  }
 }

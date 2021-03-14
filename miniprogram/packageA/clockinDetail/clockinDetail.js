@@ -1,4 +1,4 @@
-var util = require('../../utils/util.js');
+let util = require('../../utils/util.js');
 wx.cloud.init({
     env: 'x1-vgiba',
 });
@@ -17,10 +17,12 @@ Page({
         comment_input: '',
         comments: [],
         isCollected: false,
-        alreadyTaken: false, //是否已报名
+        // alreadyTaken: false, //是否已报名
+        alreadyClockin: false,
+        alreadyClockinText: "",
         reg_id: '',
         activity_detail: {},
-        regNum: 0,
+        // regNum: 0,
         anonymous: false, // 是否匿名评论 
         defaultPic: 'cloud://x1-vgiba.7831-x1-vgiba-1302076395/activityCover/default.jpg',
         type: '', //用于查询该类别的其他活动
@@ -29,7 +31,6 @@ Page({
     },
 
     getTypeActList(a) {
-        console.log('type！', a);
         let today = new Date();
         db.collection('activity').where({
                 type: a,
@@ -80,7 +81,7 @@ Page({
         }).get({
             success: (res) => {
                 console.log(res);
-                var raw = res.data[0] || {};
+                let raw = res.data[0] || {};
                 this.setData({
                     activity_detail: raw || {},
                     type: res.data[0].type
@@ -106,25 +107,39 @@ Page({
             }
         );
         // 查询报名情况
-        console.log(aid);
-        db.collection('register').where({
+        db.collection('clockinList').where({
                 aid: aid,
-                openid: this.data.openid
+                openid: this.data.openid,
+                regTime: _.gte(new Date(new Date().setHours(0,0,0)))   //获取当天的报名单
             }).get()
             .then(
                 res => {
-                    console.log('tset', res);
-                    if (res.data.length > 0) { //数据大于零 说明被报名过了
-                        this.setData({
-                            alreadyTaken: true,
-                            reg_id: res.data[0]._id
-                        });
-                    }
+                    setTimeout(() => {
+                        if (this.clockinTimeJudge()) { //时间段校验 | 成功时
+                            if (!this.clockinJudge(res)) { //再检查是否已经打过卡
+                                this.setData({
+                                    alreadyClockin: true,
+                                    alreadyClockinText: "已经打过啦" //有机会可以改成完成打卡
+                                })
+                            } else {
+                                this.setData({
+                                    alreadyClockin: false,
+                                    alreadyClockinText: "立即打卡"
+                                })
+                            }
+                        } else { //这段时间不能打卡
+                            this.setData({
+                                alreadyClockin: true,
+                                alreadyClockinText: "现在不能打哦"
+                            })
+                        }
+                    }, 200);
                 }
             );
         db.collection('collect').where({
             aid: aid,
-            openid: this.data.openid
+            openid: this.data.openid,
+            regTime: _.gte(new Date())
         }).get().then(res => {
             console.log('collect', res);
             if (res.data.length > 0) {
@@ -133,16 +148,6 @@ Page({
                 });
             }
         });
-        db.collection('register').where({
-            aid: aid
-        }).get().then(
-            res => {
-                let regNum = res.data.length;
-                this.setData({
-                    regNum: regNum
-                });
-            },
-        );
     },
 
     onShow: function () {
@@ -174,204 +179,105 @@ Page({
             }, 1500);
         } else {
             // 检测是否已报名
-            if (this.data.alreadyTaken === true) {
-                let that = this;
-                wx.showLoading({
-                    title: '正在取消...',
+            if (!this.clockinTimeJudge()) {
+                wx.showToast({
+                    title: '请在饭点打卡哦',
+                    icon: 'error',
+                    duration: 1500,
                 });
-                db.collection('register').doc(this.data.reg_id).remove({
-                    success: () => {
-                        this.setData({
-                            reg_id: '',
-                            alreadyTaken: false
-                        });
-                        db.collection('register').where({
-                            aid: that.data.activity_detail._id
-                        }).get().then(
-                            res => {
-                                let regNum = res.data.length;
-                                this.setData({
-                                    regNum: regNum
-                                });
-                            },
-                        );
-                        db.collection('message').where({
-                            aid: this.data.activity_detail._id,
-                            touser: this.data.openid
-                        }).remove();
-                        wx.hideLoading();
-                        wx.showToast({
-                            title: '已取消报名',
-                            icon: 'success',
-                            duration: 1500
-                        });
-                    }
+            } else if (this.data.alreadyClockin === true) {
+                wx.showToast({
+                    title: '已经打过啦:)',
+                    icon: 'error',
+                    duration: 1500,
                 });
             } else {
-                let that = this;
-                wx.showLoading({
-                    title: '正在报名...',
-                });
-                let today = new Date();
-                today = `${today.getFullYear()}/${today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1}/${today.getDate() < 10 ? '0' + today.getDate() : today.getDate()}`;
-                console.log('today', today, this.data.activity_detail);
-                if (this.data.activity_detail.regTimeBegin > today || this.data.activity_detail.regTimeEnd < today) {
-                    wx.showToast({
-                        title: '不在报名时间',
-                        icon: 'none',
-                    });
-                    return;
-                }
-                if (this.data.activity_detail.numMax == this.data.regNum && this.data.activity_detail.numMax != '') {
-                    wx.showToast({
-                        title: '报名人数已满',
-                        icon: 'none',
-                    });
-                    return;
-                }
-                console.log('regular Add');
-                let lessonTmplId = ['w-vPBajcx_ej4CQ6QtmXduAbQT2scKZfN74E67Jj2ZQ', '8Dki6a-8B4bfGKfCgN2gUD9A4OFsb2c_hKoUv5gs2yA', 'CJpRUgZOMZEJVNUIc3-CfXiJXOoZzgd0qKynIeTu0wg']; // 开始、取消、报名成功
-
-                wx.requestSubscribeMessage({
-                    // 传入订阅消息的模板id，模板 id 可在小程序管理后台申请
-                    tmplIds: lessonTmplId,
-                    success(res) {
-                        console.log(res);
-                        // 申请订阅成功
-                        if (res.errMsg === 'requestSubscribeMessage:ok') {
-                            // 这里将订阅的课程信息调用云函数存入云开发数据
-                            let acting = that.data.activity_detail;
-                            console.log(acting);
-                            const promise1 = new Promise((resolve, reject) => {
-                                wx.cloud.callFunction({
-                                    name: 'subscribe',
-                                    data: {
-                                        openid: that.data.openid,
-                                        aid: acting._id,
-                                        data: {
-                                            thing4: {
-                                                value: acting.title
-                                            },
-                                            thing6: {
-                                                value: acting.addr
-                                            },
-                                            date3: {
-                                                value: util.formatTimeMessage(new Date(acting.actTimeBegin))
-                                            },
-                                        },
-                                        date: new Date(),
-                                        templateId: lessonTmplId[0],
-                                    }
-                                }).then(() => {
-                                    resolve();
-                                });
-                            });
-                            const promise2 = new Promise((resolve, reject) => {
-                                wx.cloud.callFunction({
-                                    name: 'subscribe',
-                                    data: {
-                                        openid: that.data.openid,
-                                        aid: acting._id,
-                                        data: {
-                                            thing1: {
-                                                value: acting.title
-                                            },
-                                            thing3: {
-                                                value: acting.addr
-                                            },
-                                            date2: {
-                                                value: util.formatTimeMessage(new Date(acting.actTimeBegin))
-                                            }
-                                        },
-                                        date: new Date(),
-                                        templateId: lessonTmplId[1],
-                                    }
-                                }).then(() => {
-                                    resolve();
-                                });
-                            });
-                            const promise3 = new Promise((resolve, reject) => {
-                                wx.cloud.callFunction({
-                                    name: 'subscribe',
-                                    data: {
-                                        openid: that.data.openid,
-                                        aid: acting._id,
-                                        data: {
-                                            thing1: {
-                                                value: acting.title
-                                            },
-                                            thing3: {
-                                                value: acting.addr
-                                            },
-                                            date5: {
-                                                value: util.formatTimeMessage(new Date(acting.actTimeBegin))
-                                            },
-                                        },
-                                        date: new Date(),
-                                        templateId: lessonTmplId[2],
-                                    }
-                                }).then(() => {
-                                    resolve();
-                                });
-                            });
-                            Promise.all([promise1, promise2, promise3]).then(() => {
-                                console.log('all Promise');
-                                db.collection('register').add({
+                let that = this
+                let acting = that.data.activity_detail;
+                let now = new Date();
+                // 让用户选择一张图片
+                wx.chooseImage({
+                    success: chooseResult => {
+                        wx.showToast({
+                            title: '正在上传',
+                            icon: 'loading',
+                            duration: 1500,
+                        });
+                        // 将图片上传至云存储空间
+                        let url = '光盘行动/' + this.timeToString(now) + '.png'
+                        wx.cloud.uploadFile({
+                            // 指定上传到的云路径
+                            cloudPath: url,
+                            // 指定要上传的文件的小程序临时文件路径
+                            filePath: chooseResult.tempFilePaths[0],
+                            // 成功回调
+                            success: res => {
+                                console.log('上传成功', res)
+                                db.collection('clockinList').add({
                                     data: {
                                         aid: acting._id,
                                         openid: that.data.openid,
-                                        regTime: new Date()
+                                        regTime: now,
+                                        imgUrl: url,
                                     },
                                     success: (res) => {
                                         console.log('success reg res', res);
                                         this.setData({
-                                            reg_id: res._id,
-                                            alreadyTaken: true,
+                                            // reg_id: res._id,
+                                            alreadyClockin: true,
+                                            alreadyClockinText: '已经打过啦'
                                         });
-                                    }
-                                });
-                                db.collection('register').where({
-                                    aid: acting._id
-                                }).get().then(
-                                    res => {
-                                        console.log('get regNum', res);
-                                        let regNum = res.data.length;
-                                        that.setData({
-                                            regNum: regNum,
-                                            alreadyTaken: true
+                                        wx.showToast({
+                                            title: '上传成功',
+                                            icon: 'success',
+                                            duration: 1500,
                                         });
-                                        wx.cloud.callFunction({
-                                            name: 'sendNewMsg',
-                                            data: {
-                                                aid: acting._id
-                                            },
-                                            success: () => {
-                                                wx.hideLoading();
-                                                wx.showToast({
-                                                    title: '报名成功',
-                                                    icon: 'success',
-                                                    duration: 2000,
-                                                });
+                                        db.collection('clockinList').where({
+                                            aid: acting._id,
+                                            openid: that.data.openid
+                                        }).count({
+                                            success: function (res) {
+                                                if (res.total == 1) {
+                                                    console.log("restotal", that.data.activity_detail.regNum)
+                                                    let wt = that.data.activity_detail.regNum + 1
+                                                    db.collection('activity').where({
+                                                        _id: acting._id
+                                                    }).update({
+                                                        data: {
+                                                            regNum: wt
+                                                        },
+                                                        success: res => {
+                                                            console.log(res)
+                                                        },
+                                                        fail: err => {
+                                                            console.error('[数据库] [更新记录] 失败：', err)
+                                                        }
+                                                    })
+                                                }
                                             }
-                                        });
-                                    });
-                            });
-                        } else {
-                            wx.showToast({
-                                title: '报名失败',
-                                icon: 'cancel',
-                                duration: 2000,
-                            });
-                        }
+                                        })
+                                    },
+                                });
+                            },
+                            fail: err => {
+                                // handle error
+                                console.log(err);
+                                wx.showToast({
+                                    title: '打卡失败',
+                                    icon: 'cancel',
+                                    duration: 1500,
+                                });
+                            }
+                        })
                     },
-                });
+                })
             }
         }
     },
     // 分享按钮
     onShareAppMessage(options) {
-        var that = this;
-        var form = this.data.activity_detail;
+        let that = this;
+        let form = this.data.activity_detail;
         return {
             title: form.title,
             imageUrl: form.cover,
@@ -385,8 +291,8 @@ Page({
     },
     // 分享到朋友圈
     onShareTimeline(options) {
-        var that = this;
-        var form = this.data.activity_detail;
+        let that = this;
+        let form = this.data.activity_detail;
         return {
             title: form.title,
             imageUrl: form.cover,
@@ -410,6 +316,7 @@ Page({
             console.log('已点击收藏按钮', e);
             wx.showLoading({
                 title: '正在收藏...',
+                icon: 'none'
             });
             collect.add({
                 data: {
@@ -433,6 +340,7 @@ Page({
         } else {
             wx.showLoading({
                 title: '正在取消...',
+                icon: 'none'
             });
             console.log('已被收藏，即将取消收藏');
             collect.where({
@@ -474,7 +382,7 @@ Page({
             .get({
                 success: (res) => {
                     console.log('获取评论成功', res.data);
-                    var that = this;
+                    let that = this;
                     that.setData({
                         comments: res.data
                     });
@@ -499,7 +407,7 @@ Page({
             return;
         }
         // 安全校验
-        var comment = this.data.comment_input;
+        let comment = this.data.comment_input;
         let that = this;
         wx.cloud.callFunction({
             name: 'textsec',
@@ -557,8 +465,8 @@ Page({
     //
     // 右上角分享
     onShareAppMessage(options) {
-        var that = this;
-        var form = this.data.activity_detail;
+        let that = this;
+        let form = this.data.activity_detail;
         return {
             title: form.title,
             imageUrl: form.coverUrl,
@@ -590,11 +498,79 @@ Page({
         }
     },
 
-    onClickTypeActList(e) {
-        console.log(e);
-
+    async onClickTypeActList(e) {
+        let flag = await util.checkActivityType(e.currentTarget.dataset.id)
         wx.navigateTo({
-            url: '../../packageA/activityDetail/activityDetail?aid=' + e.currentTarget.dataset.id,
+            url: '../../packageA/' + flag,
         });
+    },
+    
+    //定义将Date对象转换为字符串函数
+    timeToString: function (timeObj) {
+        let str = "";
+        let year = timeObj.getFullYear();
+        let month = timeObj.getMonth();
+        let date = timeObj.getDate();
+        let time = timeObj.toTimeString().split(" ")[0];
+        let rex = new RegExp(/:/g);
+        str = year + "-" + month + "-" + date + "-" + time.replace(rex, "-");
+        return str;
+    },
+
+    // 打卡时间校验
+    clockinTimeJudge: function () {
+        let num = this.data.activity_detail.clockinTimeBegin.length; //有几组打卡时间
+        let begin = this.data.activity_detail.clockinTimeBegin;
+        let end = this.data.activity_detail.clockinTimeEnd;
+
+        for(let i = 0 ; i < num; i++){
+            if(this.compareNow(begin[i]) == 1 || this.compareNow(end[i]) == -1){
+                console.log('时间段校验 | 不可以打卡')
+                return false;
+            }
+        }
+        console.log('时间段校验 | 可以打卡')
+        return true;
+    },
+
+    // 是否已打卡
+    clockinJudge: function (res) {
+        let tick = res.data.length; //当天已经打了多少次卡了
+        if(tick == 0) return true; //如果还未打卡  则直接返回true 表示可以打卡
+
+        //检查此刻时间 是否还在用户上一次打卡的时间段里
+        let end = this.data.activity_detail.clockinTimeEnd[tick-1];
+        console.log("e",end)
+        if(this.compareNow(end) == -1) {
+            console.log("还没打过呢")
+            return true;
+        }
+
+        console.log("已经打过卡拉")
+        return false;
+    },
+
+    // 将'HH:MM'字符串时间与当下时间做比较  | 字符串时间较靠后则返回1；靠前返回-1；相等时返回0；
+    compareNow:function (str) {
+        let nowHour = new Date().getHours();
+        let nowMinite = new Date().getMinutes();
+        let originHour = parseInt(str.substr(0,2));
+        let originMinite =  parseInt(str.substr(3,2));
+        console.log('test',nowHour,originHour)
+        console.log("此刻字符串时间",nowHour+':'+nowMinite)
+        console.log("字符串时间",originHour+':'+originMinite)
+        if(originHour > nowHour) {
+            return 1;
+        }else if(originHour < nowHour){
+            return -1;
+        }else{
+            if(originMinite > nowMinite){
+                return 1;
+            }else if(originMinite < nowMinite){
+                return -1;
+            }else{
+                return 0;
+            }
+        }
     }
 });

@@ -50,13 +50,13 @@
 		<view class="infoTitle">信息</view>
 		<van-cell-group class="infoBox" border="{{false}}">
 			<van-cell title="举办部门" title-width="160rpx" value="{{activity_detail.host}}" border="{{false}}" />
-			<van-cell title="报名人数" title-width="160rpx"
-				value="{{regNum}}{{activity_detail.numMax >0 ? '/':''}}{{activity_detail.numMax}}" border="{{false}}" />
+			<!-- <van-cell title="报名人数" title-width="160rpx"
+				value="{{regNum}}{{activity_detail.numMax >0 ? '/':''}}{{activity_detail.numMax}}" border="{{false}}" /> -->
 			<van-cell title="活动地点" title-width="160rpx" value="{{activity_detail.addr}}" border="{{false}}" />
 			<van-cell title="活动时间" title-width="160rpx"
 				value="{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}" border="{{false}}" />
-			<van-cell title="报名时间" title-width="160rpx"
-				value="{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}" border="{{false}}" />
+			<!-- <van-cell title="报名时间" title-width="160rpx"
+				value="{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}" border="{{false}}" /> -->
 			<van-cell title="联系方式" title-width="160rpx" value="{{activity_detail.contact}}" border="{{false}}"
 				value-class="contact" bindtap="call" />
 		</van-cell-group>
@@ -114,7 +114,7 @@
 		<van-goods-action-icon icon="chat-o" text="评论" bind:click="onClickComment" />
 		<van-goods-action-button color="var(--color-theme)" text="{{isCollected? '取消收藏': '收藏'}}" type="warning" plain
 			bind:click="onClickStar" />
-		<van-goods-action-button color="var(--color-theme)" text="{{alreadyTaken? '取消报名': '立即报名'}}" type="warning"
+		<van-goods-action-button color="var(--color-theme)" text="{{alreadyClockinText}}" type="warning"
 			bind:click="onClickRegister" />
 	</van-goods-action>
 </view>
