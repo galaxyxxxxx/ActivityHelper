@@ -18,6 +18,10 @@
     margin-bottom: 40rpx;
     padding: 40rpx 40rpx 30rpx 40rpx;
     box-shadow: 10rpx 10rpx 40rpx rgba(150, 150, 150, 0.35);
+    transition: 0.5s ease-in-out;
+}
+.act:active{
+  transform: scale(1.1);
 }
 
 .act .actIcon {

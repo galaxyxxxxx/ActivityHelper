@@ -1,57 +1,47 @@
-<view class="contain">
-	<!-- 使用acting是否加载完成 来进行大图活动的显示控制 | 原因是为了拖延一下时间 使得内容加载完后再渲染前端 -->
-	<view class="tabPart" wx:if="{{loading}}">
-		<!-- 1未来的恰饭版块 | 大图显示主活动  -->
-		<view class="mainPart">
-			<!-- 1.1时间 -->
-			<view class="actTime">{{month}}.{{day}} · {{year}}</view>
-			<view class="cover" bindtap="linkToMe">
-				<open-data type="userAvatarUrl"></open-data>
+<wxs src='../../wxs/date.wxs' module="tools"></wxs>
+<view class="contain" wx:if="{{loading}}">
+
+	<!-- 头部信息栏 -->
+		<view class='head'>
+			<view class="left">
+				<view class="date">{{tools.today()}}</view>
+				<view class="today">TODAY</view>
 			</view>
-			<view class="todayTitle">TODAY</view>
-			<!-- 1.2图像块 -->
-			<view class="actSquare"
-				style="background: url(http://60.205.155.131/wp-content/uploads/2020/10/home1.gif)  no-repeat; background-size:100% 100%; background-position: center; overflow:hidden"
-				bindtap="viewMoreMain" mark="register" id="{{actMain._id}}">
-				<view class="actLable">最新活动 | {{actMain.addr}}</view>
-				<view class="actTitle">{{actMain.title}}</view>
-				<!-- 首图底部信息栏 报名人数 收藏 更多 -->
-				<view class="bottom">
-					<!-- 报名人数 -->
-					<view class="regNum">
-						<van-icon name="friends" color="white" size="var(--font-size-M)" /> {{actMain.regNum}}人已报名
-					</view>
-					<!-- 更多按钮 -->
+			<view class="right" bindtap="linkToMe"><open-data type="userAvatarUrl"></open-data></view>
+		</view>
+
+		<!-- 首图活动 -->
+		<view class='firstCard'>
+			<view class="top">
+				<view class="lable">最新活动 | {{actMain.addr}}</view>
+			  <view class="title">{{actMain.title}}</view>
+			</view>
+			
+			<view class="bottom">
+				<view class="num">
+					<view wx:if="{{actMain.regNum > 0}}"><van-icon name="friends" color="white" size="var(--font-size-M)" /> {{actMain.regNum}}人已报名</view><view wx:else>{{actMain.host}}的新活动，来看看？</view></view>
+				<view class="more" bindtap="more">
 					<van-button plain round size="small" class="moreButton"
-						custom-style="color: var(--color-theme); top: -13rpx;" mark="register" id="{{actMain._id}}">查看更多
+						custom-style="color: var(--color-theme); " mark="register" id="{{actMain._id}}">查看更多
 					</van-button>
-					<!-- 收藏按钮 -->
-					<!-- <view class="collect" bindtap="collect" mark:starMark="star" data-collectId="{{actMain._id}}" data-index="-1">
-						<van-icon name="star" custom-style="color: gold" size="50rpx" wx:if="{{actMain.isCollected}}" />
-						<van-icon name="star-o" custom-style="color: gold" size="50rpx" wx:if="{{!actMain.isCollected}}" />
-					</view> -->
 				</view>
 			</view>
 		</view>
 
-		<!-- 2活动集 -->
-		<view class="actPart">
-			<!-- 2.1 筛选按钮 -->
-			<view class="selectLine">
-				<view class="divideText">热门活动</view>
-				<view class="selectButton" bindtap="search">
-					<van-icon name="search" size="50rpx" color="var(--color-theme)" />
-				</view>
-			</view>
-			<!-- 2.2列表渲染各活动 -->
-			<view class="acts">
-				<activity-card wx:for="{{acting}}" wx:key="item" activityId="{{item._id}}" addr="{{item.addr}}"
+		<!-- 搜索栏标签 -->
+		<view class="search">
+			<view class="lable">热门活动</view>
+			<view class="searchIcon" bindtap="search"><van-icon name="search" size="50rpx" color="var(--color-theme)" /></view>
+		</view>
+
+		<!-- 活动列表 -->
+		<view class="list">
+			<activity-card wx:for="{{acting}}" wx:key="item" activityId="{{item._id}}" addr="{{item.addr}}"
 					title="{{item.title}}" actTimeBegin="{{item.actTimeBegin}}" actTimeEnd="{{item.actTimeEnd}}"
 					cover="{{item.cover}}" regNum="{{item.regNum}}" host="{{item.host}}" index="{{index}}"
 					isCollected="{{item.isCollected}}" actForm="{{item.actForm}}" bind:collect="collect" />
 				<!-- 这个null块 显示提示信息 顺便用来占位  以便显示出被tabbar遮盖住的部分 -->
 				<view class="null" wx:if="{{acting.length != 0}}">— 滑到底啦 真的没有了qwq —</view>
-			</view>
 		</view>
-	</view>
+
 </view>

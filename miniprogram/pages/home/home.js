@@ -10,40 +10,11 @@ const db = wx.cloud.database({
 });
 const app = getApp();
 const act = db.collection('activity');
-// const collect = db.collection('collect');
-// const user = db.collection('user');
 const _ = db.command;
-
-// const watcher = user.where({
-//   openid: wx.getStorageSync('openid')
-// }).watch({
-//   onChange(event) {
-//     console.log('userInfo change', event);
-//     if (event.docChanges !== undefined && event.docChanges[0].dataType === 'update') {
-//       if (event.docChanges[0].updatedFields.role == 1) {
-//         wx.cloud.callFunction({
-//           name: 'sendAuditMsg',
-//           data: {
-//             openid: wx.getStorageSync('openid')
-//           }
-//         }).then(() => {
-//           wx.setStorageSync('role', 1);
-//         })
-//       }
-//     }
-//   },
-//   onError(err) {}
-// });
 
 Page({
   data: {
     openid: '',
-
-    // 顶部日期
-    year: '',
-    month: '',
-    day: '',
-
     loading: false,
 
     //顶部主活动
@@ -72,6 +43,8 @@ Page({
   },
 
   onLoad: async function (options) {
+
+
     //设置回调，防止小程序globalData拿到空数据
     let that = this;
     app.getopenid(that.cb);
@@ -166,14 +139,17 @@ Page({
     });
   },
   //点击查看更多(MORE)，跳转至活动详情页
-  viewMoreMain(e) {
-    console.log('已点击查看更多按钮 主图', e);
-    let that = this;
-    let aid = that.data.actMain._id;
-    console.log('当前点击的活动id为', aid);
-    wx.navigateTo({
-      url: '../../packageA/activityDetail/activityDetail?aid=' + aid,
-    });
+  more(e) {
+    let act = this.data.actMain;
+    if (act.actForm == '打卡') {
+      wx.navigateTo({
+        url: '../../packageA/clockinDetail/clockinDetail?aid=' + act._id
+      });
+    } else {
+      wx.navigateTo({
+        url: '../../packageA/activityDetail/activityDetail?aid=' + act._id
+      });
+    }
   },
 
   formatDate(date) {

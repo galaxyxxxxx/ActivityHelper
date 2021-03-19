@@ -51,8 +51,15 @@ van-icon {
   margin: 30rpx 0 30rpx 0;
   color: #868688;
 }
+.historyNum{
+  margin: 20rpx 0;
+}
+.history{
+  line-height: 2rem;
+  color: var(--color-gray);
+}
 
-.infoTitle{
+.lable{
   font-size: var(--font-size-M);
   font-weight: 600;
   color: #000;

@@ -23,7 +23,7 @@ const departments = {
 
 Page({
   data: {
-    _id: '',
+    aid: '', //可能是从活动页跳转过来填信息的，此处aid是为了navigateBack
     openid: '',
     name: '',
     uid: '',
@@ -39,79 +39,61 @@ Page({
     dep2temp: '',
 
     department: [{
-      values: Object.keys(departments),
-      className: 'column1',
-    },
-    {
-      values: departments['信息学部'],
-      className: 'column2',
-      defaultIndex: 0,
-    }],
+        values: Object.keys(departments),
+        className: 'column1',
+      },
+      {
+        values: departments['信息学部'],
+        className: 'column2',
+        defaultIndex: 0,
+      }
+    ],
     showDep: false,
   },
 
   onLoad(option) {
-    let opid = option.openid;
+    let openid = wx.getStorageSync('openid');
     this.setData({
-      openid: opid,
+      openid: openid,
       role: wx.getStorageSync('role'),
       org: wx.getStorageSync('org')
     });
-    let openid = this.data.openid;
 
-    let that = this;
+    let that = this
     user.where({
       _openid: openid
     }).get({
       success(res) {
-        console.log(res);
-        that.setData({
-          _id: res.data[0]._id,
-          name: res.data[0].name,
-          uid: res.data[0].uid,
-          tel: res.data[0].tel,
-          email: res.data[0].email,
-          dep1: res.data[0].dep1,
-          dep2: res.data[0].dep2,
-          registed: 1
-        });
+        console.log(res)
+        if (res.data.length > 0) {
+          let u = res.data[0];
+          that.setData({
+            name: u.name,
+            uid: u.uid,
+            tel: u.tel,
+            email: u.email,
+            dep1: u.dep1,
+            dep2: u.dep2,
+            registed: 1
+          });
+        }
+
       }
     });
   },
 
-  onChangeName(e) {
-    let that = this;
-    that.setData({
-      name: e.detail,
+  onChange(e) {
+    this.setData({
       change: 1
-    });
+    })
   },
-  onChangeUid(e) {
-    let that = this;
-    that.setData({
-      uid: e.detail,
-      change: 1
-    });
-  },
-  onChangeTel(e) {
-    let that = this;
-    that.setData({
-      tel: e.detail,
-      change: 1
-    });
-  },
-  onChangeEmail(e) {
-    let that = this;
-    that.setData({
-      email: e.detail,
-      change: 1
-    });
-  },
+
   onShowDep(e) {
     this.setData({
       showDep: true
     });
   },
+
   onChangeDep(e) {
     const {
       picker,
@@ -166,19 +148,20 @@ Page({
   //点击学号 / 电话时的提示信息
   tips1(e) {
     Dialog.alert({
-      message: '该信息仅提供给您所报名活动的主办方😁',
-      confirmButtonText: 'ok理解'
+      message: '该信息将帮助平台向您个性化推荐😎',
+      confirmButtonText: 'ok辛苦啦!'
     }).then(() => {
       // on close
     });
   },
   tips2(e) {
     Dialog.alert({
-      message: '该信息将帮助平台向您个性化推荐😎',
-      confirmButtonText: 'ok辛苦啦!'
+      message: '该信息仅提供给您所报名活动的主办方😁',
+      confirmButtonText: 'ok理解'
     }).then(() => {
       wx.showToast({
         title: 'QAQ不客气!!!',
+        icon: 'none',
         duration: 1000
       });
     });
@@ -187,28 +170,28 @@ Page({
   //社团身份认证
   identify(e) {
     Dialog.confirm({
-      context: this,
-      customStyle: 'font-size: var(--font-size-S);line-height: 50rpx;',
-      closeOnClickOverlay: 'true',
-      messageAlign: 'left',
-      // customStyle: 'font-size:var(--font-size-S)',
-      confirmButtonText: '申请认证',
-      cancelButtonText: '暂不申请',
-      message: '认证社团身份后可代表社团发布活动:D\n\n认证方法\n1 填写并提交当前页个人信息 \n2 点击申请认证按钮\n3 填写新页面部门信息',
-    })
+        context: this,
+        customStyle: 'font-size: var(--font-size-S);line-height: 50rpx;',
+        closeOnClickOverlay: 'true',
+        messageAlign: 'left',
+        // customStyle: 'font-size:var(--font-size-S)',
+        confirmButtonText: '申请认证',
+        cancelButtonText: '暂不申请',
+        message: '认证社团身份后可代表社团发布活动:D\n\n认证方法\n1 填写并提交当前页个人信息 \n2 点击申请认证按钮\n3 填写新页面部门信息',
+      })
       .then(() => {
         console.log('用户确定认证');
         if (this.data.registed == 0) {
           if (this.data.change == 1) {
             wx.showToast({
               title: '请先对已更改的信息进行提交',
-              icon: 'none',
+              icon: 'error',
               duration: 1500
             });
           } else {
             wx.showToast({
               title: '请先完善个人信息 并提交',
-              icon: 'none',
+              icon: 'error',
               duration: 1500
             });
           }
@@ -333,7 +316,7 @@ Page({
           });
         }
       });
-    } else {  //已注册的
+    } else { //已注册的
       user.where({
         openid: this.data.openid
       }).update({
@@ -343,18 +326,20 @@ Page({
           tel: tel,
           email: email,
           dep1: dep1,
-          dep2: dep2,
-          role: 0
+          dep2: dep2
         },
         success(res) {
           wx.showToast({
             title: '已成功完善信息',
             icon: 'success',
-            duration: 3500
+            duration: 1000
           });
-          this.setData({
-            registed: 1
-          });
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 1000)
+
         }
       });
     }

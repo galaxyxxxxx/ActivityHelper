@@ -1,3 +1,4 @@
+<wxs src='../../wxs/date.wxs' module="tools"></wxs>
 <!-- 封面图 -->
 <view>
 	<image src="{{activity_detail.cover==''? defaultPic: activity_detail.cover}}" mode="widthFix" class="cover"></image>
@@ -21,10 +22,21 @@
 	<!-- 活动介绍 -->
 	<view class="description">{{activity_detail.description}}</view>
 
+	<!-- 打卡记录区 -->
+	<view class="histories">
+		<van-divider />
+		<view class="lable">打卡记录</view>
+		<view wx:if="{{history.length == 0}}" class="noComment"> 暂无打卡记录 快来参与吧~</view>
+		<view wx:if="{{history.length > 0}}" class="historyNum">本次活动已打卡了<text style='color: #5a9cde; font-weight: bold'>{{history.length}}</text>次(๑•̀ㅂ•́)و✧</view>
+		<!-- 打卡详情 / 周末补充这里吧 | 最好加上图片 -->
+		<block wx:for="{{history}}">
+			<view class="history">我在{{item.regTime}}打卡了1次</view>
+		</block>
+	</view>
 	<!-- 评论区 -->
 	<view class="comments">
 		<van-divider />
-		<view class="infoTitle">评论</view>
+		<view class="lable">评论</view>
 		<view wx:if="{{comments.length == 0}}" class="noComment"> 暂无评论 快来抢沙发吧~</view>
 		<block wx:for="{{comments}}" wx:key="index">
 			<view class="comment">
@@ -47,44 +59,22 @@
 	<!-- 信息列表 -->
 	<view class="info">
 		<van-divider />
-		<view class="infoTitle">信息</view>
+		<view class="lable">信息</view>
 		<van-cell-group class="infoBox" border="{{false}}">
 			<van-cell title="举办部门" title-width="160rpx" value="{{activity_detail.host}}" border="{{false}}" />
-			<!-- <van-cell title="报名人数" title-width="160rpx"
-				value="{{regNum}}{{activity_detail.numMax >0 ? '/':''}}{{activity_detail.numMax}}" border="{{false}}" /> -->
 			<van-cell title="活动地点" title-width="160rpx" value="{{activity_detail.addr}}" border="{{false}}" />
 			<van-cell title="活动时间" title-width="160rpx"
 				value="{{activity_detail.actTimeBegin}} - {{activity_detail.actTimeEnd}}" border="{{false}}" />
-			<!-- <van-cell title="报名时间" title-width="160rpx"
-				value="{{activity_detail.regTimeBegin}} - {{activity_detail.regTimeEnd}}" border="{{false}}" /> -->
+
 			<van-cell title="联系方式" title-width="160rpx" value="{{activity_detail.contact}}" border="{{false}}"
 				value-class="contact" bindtap="call" />
 		</van-cell-group>
 	</view>
 
-	<!-- 评论输入框 -->
-	<!-- <view class="commentShell">
-		<van-row> -->
-	<!-- 评论输入框 -->
-	<!-- <van-col span="19">
-				<view class="inputComment">
-					<van-field custom-style="widthFix" value="{{comment_input}}" placeholder="输入评论..." border="{{ false }}"
-						type="textarea" autosize fixed="true" bind:change="onChange" />
-				</view>
-			</van-col> -->
-	<!-- 评论按钮 -->
-	<!-- <van-col span="5">
-				<view class="submitComment">
-					<van-button color="var(--color-theme)" size="small" round bind:click="submitComment">评论</van-button>
-				</view>
-			</van-col>
-		</van-row> -->
-	<!-- </view> -->
-
 	<!-- 类似活动 -->
 	<view class="youMayLike" wx:if="{{typeActList.length > 0}}">
 		<van-divider />
-		<view class="moreTitle">更多该类别的活动</view>
+		<view class="lable">更多该类别的活动</view>
 		<view class="moreList" bindtap="moreTypeList">查看全部</view>
 		<view class="list">
 			<block wx:for="{{typeActList}}" wx:key="item">

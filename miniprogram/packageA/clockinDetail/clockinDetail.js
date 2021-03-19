@@ -14,6 +14,7 @@ Page({
         nickName: '',
         avatarUrl: '',
         aid: '',
+        history: [],  //打卡记录
         comment_input: '',
         comments: [],
         isCollected: false,
@@ -47,6 +48,35 @@ Page({
                     });
                 }
             );
+    },
+    getHistoryList(){
+        let that = this
+        let aid = that.data.aid;
+        let openid = wx.getStorageSync('openid');
+        console.log(aid,openid)
+        db.collection('clockinList').where({
+            _openid :openid,
+            aid : aid
+        }).get({
+            success: function(res){
+                console.log('打卡历史！！！',res)
+                
+                let h = res.data
+                h.forEach((cur)=>{
+                    cur.regTime = cur.regTime.toLocaleString()
+                })
+                setTimeout(()=>{
+                    that.setData({
+                        history : res.data
+                    })
+                },0)
+                
+            },
+            fail :function(err){
+                console.log('获取打卡记录失败')
+            }
+        })
+
     },
 
     onLoad: function (options) {
@@ -148,6 +178,7 @@ Page({
                 });
             }
         });
+        this.getHistoryList();
     },
 
     onShow: function () {
@@ -174,7 +205,7 @@ Page({
             setTimeout(() => {
                 wx.hideToast();
                 wx.navigateTo({
-                    url: `../info/info?openid=${this.data.openid}`,
+                    url: `../info/info?aid=${this.data.aid}`,
                 });
             }, 1500);
         } else {

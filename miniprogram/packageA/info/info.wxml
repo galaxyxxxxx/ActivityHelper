@@ -2,15 +2,15 @@
 
 	<view class="formGroup">
 		<van-cell-group>
-			<van-field label="姓名" data-field="name" value="{{ name }}" placeholder="请输入姓名" border="{{ false }}" 
-				bind:change="onChangeName" />
-			<van-field label="学号" data-field="uid" value="{{ uid }}" placeholder="请输入学号" border="{{ false }}" type="number" clearable="{{true}}" bind:click-icon="tips1"
-				bind:change="onChangeUid" right-icon="info-o" />
-			<van-field label="电话" data-field="tel" value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" clearable="{{true}}" bind:click-icon="tips2"
-				bind:change="onChangeTel" right-icon="info-o"  />
-			<van-field label="邮箱" data-field="email" value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}" clearable="{{true}}"
-				bind:change="onChangeEmail" />
-			<van-field label="部门" data-field="org" value="{{ org }}" placeholder="" border="{{ false }}" disabled
+			<van-field label="姓名" data-field="name" model:value="{{ name }}" placeholder="请输入姓名" border="{{ false }}" 
+				bind:change="onChange" />
+			<van-field label="学号" data-field="uid" model:value="{{ uid }}" placeholder="请输入学号" border="{{ false }}" type="number" clearable="{{true}}" bind:click-icon="tips1"
+				bind:change="onChange" right-icon="info-o" />
+			<van-field label="电话" data-field="tel" model:value="{{ tel }}" placeholder="请输入联系电话" border="{{ false }}" type="number" clearable="{{true}}" bind:click-icon="tips2"
+				bind:change="onChange" right-icon="info-o"  />
+			<van-field label="邮箱" data-field="email" model:value="{{ email }}" placeholder="请输入常用邮箱" border="{{ false }}" clearable="{{true}}"
+				bind:change="onChange" />
+			<van-field label="部门" data-field="org" model:value="{{ org }}" placeholder="" border="{{ false }}" disabled
 				wx:if="{{role == 1}}" />
 
 				<van-dialog id="van-dialog"  />
